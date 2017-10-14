@@ -1,6 +1,9 @@
 ext {
     versions = [
             gradle_android : '3.0.0-beta7',
+            gradle_versions: '0.15.0',
+            gradle_git     : '1.7.2',
+            dexcount       : '0.8.1',
             androidSdk     : [
                     compile   : 26,
                     buildTools: '26.0.2',
@@ -13,6 +16,9 @@ ext {
     libraries = [
             build: [
                     gradleAndroid : "com.android.tools.build:gradle:${versions.gradle_android}",
+                    gradleVersions: "com.github.ben-manes:gradle-versions-plugin:${versions.gradle_versions}",
+                    gradleGit     : "org.ajoberstar:gradle-git:${versions.gradle_git}",
+                    gradleDexcount: "com.getkeepsafe.dexcount:dexcount-gradle-plugin:${versions.dexcount}",
             ],
             app  : [
                     appCompat: "com.android.support:appcompat-v7:${versions.support}",
