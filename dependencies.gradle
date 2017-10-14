@@ -1,0 +1,24 @@
+ext {
+    versions = [
+            gradle_android : '3.0.0-beta7',
+            androidSdk     : [
+                    compile   : 26,
+                    buildTools: '26.0.2',
+                    min       : 19,
+                    target    : 26,
+            ],
+            support        : '26.1.0',
+    ]
+
+    libraries = [
+            build: [
+                    gradleAndroid : "com.android.tools.build:gradle:${versions.gradle_android}",
+            ],
+            app  : [
+                    appCompat: "com.android.support:appcompat-v7:${versions.support}",
+            ],
+            apt  : [
+                    butterknife: "com.jakewharton:butterknife-compiler:${versions.butterknife}",
+            ],
+    ]
+}
