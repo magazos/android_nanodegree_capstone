@@ -10,6 +10,8 @@ ext {
                     min       : 19,
                     target    : 26,
             ],
+            sourceCompatibility: JavaVersion.VERSION_1_8,
+            targetCompatibility: JavaVersion.VERSION_1_8,
             support        : '26.1.0',
     ]
 

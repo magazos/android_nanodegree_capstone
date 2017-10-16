@@ -16,6 +16,10 @@ def appVersionName = "${versionMajor}.${versionMinor}.${versionPatch}"
 android {
     compileSdkVersion versions.androidSdk.compile
     buildToolsVersion versions.androidSdk.buildTools
+    compileOptions {
+        sourceCompatibility versions.sourceCompatibility
+        targetCompatibility versions.targetCompatibility
+    }
     defaultConfig {
         applicationId "com.github.niltsiar.ultimatescrobbler"
         minSdkVersion versions.androidSdk.min
