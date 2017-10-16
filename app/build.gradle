@@ -1,17 +1,37 @@
+import org.ajoberstar.grgit.Grgit
+import org.eclipse.jgit.errors.RepositoryNotFoundException
+
 apply plugin: 'com.android.application'
+apply plugin: 'com.getkeepsafe.dexcount'
+
+//Version information
+def versionMajor = VERSION_MAJOR.toInteger()
+def versionMinor = VERSION_MINOR.toInteger()
+def versionPatch = VERSION_PATCH.toInteger()
+def versionRevision = getRevision()
+
+def appVersionCode = versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100
+def appVersionName = "${versionMajor}.${versionMinor}.${versionPatch}"
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion versions.androidSdk.compile
+    buildToolsVersion versions.androidSdk.buildTools
+    compileOptions {
+        sourceCompatibility versions.sourceCompatibility
+        targetCompatibility versions.targetCompatibility
+    }
     defaultConfig {
         applicationId "com.github.niltsiar.ultimatescrobbler"
-        minSdkVersion 19
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        minSdkVersion versions.androidSdk.min
+        targetSdkVersion versions.androidSdk.target
+
+        versionCode appVersionCode
+        versionName appVersionName
     }
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -20,10 +40,26 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation ('com.android.support.test.espresso:espresso-core:3.0.1', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    implementation libraries.app.appCompat
+}
+
+android.applicationVariants.all { variant ->
+    if (variant.buildType.name == "debug") {
+        variant.mergedFlavor.versionName += "-${versionRevision}"
+    }
+}
+
+def static getRevision() {
+    def revision
+    try {
+        revision = getGitRevision()
+    } catch (RepositoryNotFoundException e) {
+        revision = 0
+    }
+    return revision
+}
+
+def static getGitRevision() {
+    def git = Grgit.open(dir: '.')
+    return git.head().abbreviatedId
 }
