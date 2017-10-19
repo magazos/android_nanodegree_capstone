@@ -1,6 +1,7 @@
 package com.github.niltsiar.ultimatescrobbler.domain.model;
 
 import com.google.auto.value.AutoValue;
+import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
 
 @AutoValue
@@ -18,12 +19,13 @@ public abstract class PlayedSong {
     public abstract int getLength();
 
     public static Builder builder() {
-        return new AutoValue_PlayedSong.Builder();
+        return new AutoValue_PlayedSong.Builder().setId(UUID.randomUUID()
+                                                            .toString());
     }
 
     @AutoValue.Builder
     public abstract static class Builder {
-        public abstract Builder setId(String newId);
+        abstract Builder setId(String newId);
 
         public abstract Builder setTrackName(String newTrackName);
 
