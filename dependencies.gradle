@@ -1,6 +1,6 @@
 ext {
     versions = [
-            gradle_android : '3.0.0-beta7',
+            gradle_android : '3.0.0-rc1',
             gradle_versions: '0.15.0',
             gradle_git     : '1.7.2',
             dexcount       : '0.8.1',
