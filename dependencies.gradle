@@ -16,6 +16,7 @@ ext {
             support              : '26.1.0',
             auto_value           : '1.5.2',
             jetbrains_annotations: '15.0',
+            rxjava2              : '2.1.0',
     ]
 
     libraries = [
@@ -30,6 +31,7 @@ ext {
                     appCompat      : "com.android.support:appcompat-v7:${versions.support}",
                     autoValue      : "com.google.auto.value:auto-value:${versions.auto_value}",
                     javaAnnotations: "org.jetbrains:annotations:${versions.jetbrains_annotations}",
+                    rxjava2        : "io.reactivex.rxjava2:rxjava:${versions.rxjava2}",
             ],
             apt  : [
                     autoValue: "com.google.auto.value:auto-value:${versions.auto_value}",
