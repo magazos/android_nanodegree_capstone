@@ -1,8 +1,22 @@
 apply plugin: 'java-library'
+apply plugin: "net.ltgt.apt"
+
+buildscript {
+    dependencies {
+        classpath libraries.build.apt
+    }
+}
 
 dependencies {
+    compileOnly libraries.app.autoValue
+    compileOnly libraries.app.javaAnnotations
 
+
+    apt libraries.apt.autoValue
 }
 
 sourceCompatibility = versions.sourceCompatibility
 targetCompatibility = versions.targetCompatibility
+
+sourceSets.main.java.srcDirs += "${project.buildDir}/generated/source/apt/main"
+
