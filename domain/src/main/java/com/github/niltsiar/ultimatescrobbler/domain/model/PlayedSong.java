@@ -2,7 +2,7 @@ package com.github.niltsiar.ultimatescrobbler.domain.model;
 
 import com.google.auto.value.AutoValue;
 import java.util.UUID;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 @AutoValue
 public abstract class PlayedSong {

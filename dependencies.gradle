@@ -1,22 +1,23 @@
 ext {
     versions = [
-            gradle_android       : '3.0.0-rc1',
-            gradle_versions      : '0.15.0',
-            gradle_git           : '1.7.2',
-            dexcount             : '0.8.1',
-            apt                  : '0.12',
-            androidSdk           : [
+            gradle_android     : '3.0.0-rc2',
+            gradle_versions    : '0.15.0',
+            gradle_git         : '1.7.2',
+            dexcount           : '0.8.1',
+            apt                : '0.12',
+            androidSdk         : [
                     compile   : 26,
                     buildTools: '26.0.2',
                     min       : 19,
                     target    : 26,
             ],
-            sourceCompatibility  : JavaVersion.VERSION_1_8,
-            targetCompatibility  : JavaVersion.VERSION_1_8,
-            support              : '26.1.0',
-            auto_value           : '1.5.2',
-            jetbrains_annotations: '15.0',
-            rxjava2              : '2.1.0',
+            sourceCompatibility: JavaVersion.VERSION_1_8,
+            targetCompatibility: JavaVersion.VERSION_1_8,
+            support            : '26.1.0',
+            auto_value         : '1.5.2',
+            javax_annotations  : '3.0.2',
+            javax_inject       : '1',
+            rxjava2            : '2.1.0',
     ]
 
     libraries = [
@@ -28,10 +29,11 @@ ext {
                     apt           : "net.ltgt.gradle:gradle-apt-plugin:${versions.apt}",
             ],
             app  : [
-                    appCompat      : "com.android.support:appcompat-v7:${versions.support}",
-                    autoValue      : "com.google.auto.value:auto-value:${versions.auto_value}",
-                    javaAnnotations: "org.jetbrains:annotations:${versions.jetbrains_annotations}",
-                    rxjava2        : "io.reactivex.rxjava2:rxjava:${versions.rxjava2}",
+                    appCompat       : "com.android.support:appcompat-v7:${versions.support}",
+                    autoValue       : "com.google.auto.value:auto-value:${versions.auto_value}",
+                    javaxAnnotations: "com.google.code.findbugs:jsr305:${versions.javax_annotations}",
+                    javaxInject     : "javax.inject:javax.inject:${versions.javax_inject}",
+                    rxjava2         : "io.reactivex.rxjava2:rxjava:${versions.rxjava2}",
             ],
             apt  : [
                     autoValue: "com.google.auto.value:auto-value:${versions.auto_value}",

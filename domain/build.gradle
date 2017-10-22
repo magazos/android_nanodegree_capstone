@@ -8,10 +8,11 @@ buildscript {
 }
 
 dependencies {
+    implementation libraries.app.javaxInject
     implementation libraries.app.rxjava2
 
     compileOnly libraries.app.autoValue
-    compileOnly libraries.app.javaAnnotations
+    compileOnly libraries.app.javaxAnnotations
 
     apt libraries.apt.autoValue
 }
