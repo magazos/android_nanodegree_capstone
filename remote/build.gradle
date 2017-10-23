@@ -21,4 +21,15 @@ android {
 
 dependencies {
     implementation project(':data')
+
+    implementation(libraries.app.retrofit) {
+        exclude module: 'okhttp'
+    }
+    implementation libraries.app.retrofitMoshi
+    implementation libraries.app.retrofitRx
+
+
+    annotationProcessor libraries.apt.autoValue
+
+    compileOnly libraries.app.autoValueMoshi
 }
