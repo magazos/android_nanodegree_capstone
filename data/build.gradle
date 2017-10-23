@@ -1,4 +1,11 @@
 apply plugin: 'java-library'
+apply plugin: "net.ltgt.apt-idea"
+
+buildscript {
+    dependencies {
+        classpath libraries.build.apt
+    }
+}
 
 dependencies {
     implementation project(':domain')
@@ -6,7 +13,10 @@ dependencies {
     implementation libraries.app.javaxInject
     implementation libraries.app.rxjava2
 
+    compileOnly libraries.app.autoValue
     compileOnly libraries.app.javaxAnnotations
+
+    apt libraries.apt.autoValue
 }
 
 sourceCompatibility = versions.sourceCompatibility

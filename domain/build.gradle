@@ -1,5 +1,5 @@
 apply plugin: 'java-library'
-apply plugin: "net.ltgt.apt"
+apply plugin: 'net.ltgt.apt-idea'
 
 buildscript {
     dependencies {
@@ -19,6 +19,3 @@ dependencies {
 
 sourceCompatibility = versions.sourceCompatibility
 targetCompatibility = versions.targetCompatibility
-
-sourceSets.main.java.srcDirs += "${project.buildDir}/generated/source/apt/main"
-
