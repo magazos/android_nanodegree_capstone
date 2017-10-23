@@ -25,7 +25,7 @@ public abstract class PlayedSong {
 
     @AutoValue.Builder
     public abstract static class Builder {
-        abstract Builder setId(String newId);
+        public abstract Builder setId(String newId);
 
         public abstract Builder setTrackName(String newTrackName);
 
