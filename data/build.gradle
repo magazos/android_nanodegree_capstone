@@ -1,0 +1,13 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation project(':domain')
+
+    implementation libraries.app.javaxInject
+    implementation libraries.app.rxjava2
+
+    compileOnly libraries.app.javaxAnnotations
+}
+
+sourceCompatibility = versions.sourceCompatibility
+targetCompatibility = versions.targetCompatibility
