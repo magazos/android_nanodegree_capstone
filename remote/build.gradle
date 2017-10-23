@@ -16,17 +16,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
     implementation project(':data')
 
+    implementation libraries.app.okhttp
     implementation(libraries.app.retrofit) {
         exclude module: 'okhttp'
     }
     implementation libraries.app.retrofitMoshi
     implementation libraries.app.retrofitRx
+    implementation libraries.app.moshiLazyAdapters
 
 
     annotationProcessor libraries.apt.autoValue
