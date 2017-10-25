@@ -1,4 +1,4 @@
-package com.github.niltsiar.ultimatescrobbler.domain.interactor.scrobble;
+package com.github.niltsiar.ultimatescrobbler.domain.interactor.nowplaying;
 
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.CompletableUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
