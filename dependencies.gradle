@@ -22,6 +22,7 @@ ext {
             retrofit           : '2.3.0',
             auto_value_moshi   : '0.4.4',
             moshi_lazy_adapters: '2.1',
+            rxrelay            : '2.0.0',
     ]
 
     libraries = [
@@ -44,6 +45,7 @@ ext {
                     retrofitRx       : "com.squareup.retrofit2:adapter-rxjava:${versions.retrofit}",
                     autoValueMoshi   : "com.ryanharter.auto.value:auto-value-moshi:${versions.auto_value_moshi}",
                     moshiLazyAdapters: "com.serjltt.moshi:moshi-lazy-adapters:${versions.moshi_lazy_adapters}",
+                    rxrelay          : "com.jakewharton.rxrelay2:rxrelay:${versions.rxrelay}",
             ],
             apt  : [
                     autoValue: "com.google.auto.value:auto-value:${versions.auto_value}",

@@ -10,6 +10,7 @@ buildscript {
 dependencies {
     implementation libraries.app.javaxInject
     implementation libraries.app.rxjava2
+    implementation libraries.app.rxrelay
 
     compileOnly libraries.app.autoValue
     compileOnly libraries.app.javaxAnnotations
