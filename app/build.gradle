@@ -27,6 +27,11 @@ android {
 
         versionCode appVersionCode
         versionName appVersionName
+
+        buildConfigField "String", "LAST_FM_API_KEY", LAST_FM_API_KEY
+        buildConfigField "String", "LAST_FM_API_SECRET", LAST_FM_API_SECRET
+        buildConfigField "String", "TEST_USERNAME", LAST_FM_TEST_USER
+        buildConfigField "String", "TEST_PASSWORD", LAST_FM_TEST_PASSWORD
     }
     buildTypes {
         debug {
@@ -41,8 +46,23 @@ android {
 
 dependencies {
     implementation project(':domain')
+    implementation project(':data')
+    implementation project(':remote')
 
     implementation libraries.app.appCompat
+
+    implementation libraries.app.rxjava2
+    implementation libraries.app.butterknife
+    implementation libraries.app.timber
+    implementation libraries.app.dagger
+    implementation libraries.app.daggerSupport
+    implementation libraries.app.retrofit
+
+    compileOnly libraries.app.javaxAnnotations
+
+    annotationProcessor libraries.apt.daggerCompiler
+    annotationProcessor libraries.apt.daggerProcessor
+    annotationProcessor libraries.apt.butterknife
 }
 
 android.applicationVariants.all { variant ->
