@@ -56,7 +56,15 @@ dependencies {
     implementation libraries.app.timber
     implementation libraries.app.dagger
     implementation libraries.app.daggerSupport
-    implementation libraries.app.retrofit
+    implementation libraries.app.okhttp
+    implementation(libraries.app.retrofit) {
+        exclude module: 'okhttp'
+    }
+    implementation libraries.app.retrofitMoshi
+    implementation libraries.app.retrofitRx
+    implementation libraries.app.moshiLazyAdapters
+
+    implementation libraries.app.javaxInject
 
     compileOnly libraries.app.javaxAnnotations
 

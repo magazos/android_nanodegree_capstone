@@ -11,6 +11,8 @@ import retrofit2.http.Query;
 
 public interface ScrobblerService {
 
+    String WS_URL = "https://ws.audioscrobler.com/";
+
     @FormUrlEncoded
     @POST("2.0")
     @Wrapped(path = {"session", "key"})
