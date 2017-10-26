@@ -1,7 +1,8 @@
 package com.github.niltsiar.ultimatescrobbler.data;
 
+import com.github.niltsiar.ultimatescrobbler.data.mapper.CredentialsMapper;
 import com.github.niltsiar.ultimatescrobbler.data.mapper.PlayedSongMapper;
-import com.github.niltsiar.ultimatescrobbler.data.source.ScrobblerRemoteDataStore;
+import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerDataStore;
 import com.github.niltsiar.ultimatescrobbler.domain.model.Credentials;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
@@ -11,18 +12,20 @@ import javax.inject.Inject;
 
 public class ScrobblerDataRepository implements ScrobblerRepository {
 
-    private ScrobblerRemoteDataStore remoteDataStore;
+    private ScrobblerDataStore remoteDataStore;
+    private CredentialsMapper credentialsMapper;
     private PlayedSongMapper playedSongMapper;
 
     @Inject
-    public ScrobblerDataRepository(ScrobblerRemoteDataStore remoteDataStore, PlayedSongMapper playedSongMapper) {
+    public ScrobblerDataRepository(ScrobblerDataStore remoteDataStore, CredentialsMapper credentialsMapper, PlayedSongMapper playedSongMapper) {
         this.remoteDataStore = remoteDataStore;
+        this.credentialsMapper = credentialsMapper;
         this.playedSongMapper = playedSongMapper;
     }
 
     @Override
     public Single<String> getMobileSession(Credentials credentials) {
-        return null;
+        return remoteDataStore.getMobileSession(credentialsMapper.mapToEntity(credentials));
     }
 
     @Override
