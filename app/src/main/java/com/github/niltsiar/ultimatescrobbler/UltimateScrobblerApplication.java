@@ -7,6 +7,7 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import javax.inject.Inject;
+import timber.log.Timber;
 
 public class UltimateScrobblerApplication extends Application implements HasActivityInjector {
 
@@ -20,6 +21,8 @@ public class UltimateScrobblerApplication extends Application implements HasActi
                                   .application(this)
                                   .build()
                                   .inject(this);
+
+        Timber.plant(new Timber.DebugTree());
 
     }
 

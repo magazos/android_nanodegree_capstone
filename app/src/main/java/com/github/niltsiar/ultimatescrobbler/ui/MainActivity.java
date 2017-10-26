@@ -7,17 +7,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.niltsiar.ultimatescrobbler.BuildConfig;
 import com.github.niltsiar.ultimatescrobbler.R;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.GetMobileSession;
 import com.github.niltsiar.ultimatescrobbler.domain.model.Credentials;
-import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
 import dagger.android.AndroidInjection;
-import io.reactivex.observers.DisposableSingleObserver;
 import javax.inject.Inject;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
     @Inject
-    ScrobblerRepository scrobblerRepository;
+    GetMobileSession getMobileSessionUseCase;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,20 +29,11 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.test_button)
     public void onTestButtonClicked() {
-        scrobblerRepository.getMobileSession(Credentials.builder()
-                                                        .setUsername(BuildConfig.TEST_USERNAME)
-                                                        .setPassword(BuildConfig.TEST_PASSWORD)
-                                                        .build())
-                           .subscribeWith(new DisposableSingleObserver<String>() {
-                               @Override
-                               public void onSuccess(String s) {
-                                   Timber.i(s);
-                               }
+        getMobileSessionUseCase.execute(Credentials.builder()
+                                                   .setUsername(BuildConfig.TEST_USERNAME)
+                                                   .setPassword(BuildConfig.TEST_PASSWORD)
+                                                   .build())
 
-                               @Override
-                               public void onError(Throwable e) {
-
-                               }
-                           });
+                               .subscribe(s -> Timber.i(s));
     }
 }
