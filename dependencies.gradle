@@ -1,18 +1,18 @@
 ext {
     versions = [
-            gradle_android : '3.0.0-rc1',
+            gradle_android : '3.0.0',
             gradle_versions: '0.15.0',
             gradle_git     : '1.7.2',
             dexcount       : '0.8.1',
             androidSdk     : [
-                    compile   : 26,
-                    buildTools: '26.0.2',
+                    compile   : 27,
+                    buildTools: '27.0.0',
                     min       : 19,
-                    target    : 26,
+                    target    : 27,
             ],
             sourceCompatibility: JavaVersion.VERSION_1_8,
             targetCompatibility: JavaVersion.VERSION_1_8,
-            support        : '26.1.0',
+            support        : '27.0.0',
     ]
 
     libraries = [
