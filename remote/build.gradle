@@ -23,12 +23,9 @@ dependencies {
 
     implementation libraries.app.javaxInject
     implementation libraries.app.rxjava2
-    implementation libraries.app.okhttp
     implementation(libraries.app.retrofit) {
         exclude module: 'okhttp'
     }
-    implementation libraries.app.retrofitMoshi
-    implementation libraries.app.retrofitRx
     implementation libraries.app.moshiLazyAdapters
 
     compileOnly libraries.app.javaxAnnotations
