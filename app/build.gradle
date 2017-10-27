@@ -64,8 +64,9 @@ dependencies {
     implementation libraries.app.retrofitMoshi
     implementation libraries.app.retrofitRx
     implementation libraries.app.moshiLazyAdapters
-
     implementation libraries.app.javaxInject
+
+    debugImplementation libraries.debug.loggingInterceptor
 
     compileOnly libraries.app.javaxAnnotations
 

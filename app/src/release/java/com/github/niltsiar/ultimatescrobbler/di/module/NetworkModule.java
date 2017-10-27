@@ -7,8 +7,6 @@ import okhttp3.OkHttpClient;
 @Module
 public class NetworkModule {
 
-
-
     @Provides
     static OkHttpClient provideOkHttpClient() {
         return new OkHttpClient();

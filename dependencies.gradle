@@ -56,6 +56,9 @@ ext {
                     dagger                   : "com.google.dagger:dagger:${versions.dagger}",
                     daggerSupport            : "com.google.dagger:dagger-android-support:${versions.dagger}",
             ],
+            debug: [
+                    loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
+            ],
             apt  : [
                     autoValue      : "com.google.auto.value:auto-value:${versions.auto_value}",
                     autoValueMoshi : "com.ryanharter.auto.value:auto-value-moshi:${versions.auto_value_moshi}",
