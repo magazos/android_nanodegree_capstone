@@ -1,15 +1,13 @@
 package com.github.niltsiar.ultimatescrobbler;
 
 import android.app.Activity;
-import android.app.Application;
 import com.github.niltsiar.ultimatescrobbler.di.DaggerApplicationComponent;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import javax.inject.Inject;
-import timber.log.Timber;
 
-public class UltimateScrobblerApplication extends Application implements HasActivityInjector {
+public class UltimateScrobblerApplication extends CustomApplication implements HasActivityInjector {
 
     @Inject
     DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
@@ -21,8 +19,6 @@ public class UltimateScrobblerApplication extends Application implements HasActi
                                   .application(this)
                                   .build()
                                   .inject(this);
-
-        Timber.plant(new Timber.DebugTree());
 
     }
 

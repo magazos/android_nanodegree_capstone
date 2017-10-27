@@ -29,6 +29,7 @@ ext {
             dagger             : '2.12',
             oklog              : '2.2.0',
             chuck              : '1.1.0',
+            stetho             : '1.5.0',
     ]
 
     libraries = [
@@ -61,7 +62,10 @@ ext {
             debug: [
                     loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
                     oklog             : "com.github.simonpercic:oklog3:${versions.oklog}",
-                    chuck             : "com.readystatesoftware.chuck:library:${versions.chuck}"
+                    chuck             : "com.readystatesoftware.chuck:library:${versions.chuck}",
+                    stetho            : "com.facebook.stetho:stetho:${versions.stetho}",
+                    stethoOkhttp      : "com.facebook.stetho:stetho-okhttp3:${versions.stetho}",
+                    stethoTimber      : "com.facebook.stetho:stetho-timber:${versions.stetho}",
             ],
             apt  : [
                     autoValue      : "com.google.auto.value:auto-value:${versions.auto_value}",

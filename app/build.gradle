@@ -69,6 +69,9 @@ dependencies {
     debugImplementation libraries.debug.loggingInterceptor
     debugImplementation libraries.debug.oklog
     debugImplementation libraries.debug.chuck
+    debugImplementation libraries.debug.stetho
+    debugImplementation libraries.debug.stethoOkhttp
+    debugImplementation libraries.debug.stethoTimber
 
     compileOnly libraries.app.javaxAnnotations
 
