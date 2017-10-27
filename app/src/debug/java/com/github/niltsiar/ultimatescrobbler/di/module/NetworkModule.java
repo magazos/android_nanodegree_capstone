@@ -1,5 +1,6 @@
 package com.github.niltsiar.ultimatescrobbler.di.module;
 
+import com.github.simonpercic.oklog3.OkLogInterceptor;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
@@ -22,7 +23,13 @@ public class NetworkModule {
         });
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
+        OkLogInterceptor okLogInterceptor = OkLogInterceptor.builder()
+                                                            .withAllLogData()
+                                                            .shortenInfoUrl(false)
+                                                            .build();
+
         return new OkHttpClient.Builder().addInterceptor(loggingInterceptor)
+                                         .addInterceptor(okLogInterceptor)
                                          .build();
     }
 }

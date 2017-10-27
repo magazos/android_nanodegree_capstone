@@ -67,6 +67,7 @@ dependencies {
     implementation libraries.app.javaxInject
 
     debugImplementation libraries.debug.loggingInterceptor
+    debugImplementation libraries.debug.oklog
 
     compileOnly libraries.app.javaxAnnotations
 

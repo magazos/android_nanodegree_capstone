@@ -27,6 +27,7 @@ ext {
             butterknife        : '8.8.1',
             timber             : '4.5.1',
             dagger             : '2.12',
+            oklog: '2.2.0',
     ]
 
     libraries = [
@@ -58,6 +59,7 @@ ext {
             ],
             debug: [
                     loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
+                    oklog:  "com.github.simonpercic:oklog3:${versions.oklog}",
             ],
             apt  : [
                     autoValue      : "com.google.auto.value:auto-value:${versions.auto_value}",
