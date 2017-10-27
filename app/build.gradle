@@ -68,6 +68,7 @@ dependencies {
 
     debugImplementation libraries.debug.loggingInterceptor
     debugImplementation libraries.debug.oklog
+    debugImplementation libraries.debug.chuck
 
     compileOnly libraries.app.javaxAnnotations
 

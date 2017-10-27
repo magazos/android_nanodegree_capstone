@@ -29,7 +29,7 @@ public class ApplicationModule {
 
     @Provides
     static Context provideContext(Application application) {
-        return application;
+        return application.getApplicationContext();
     }
 
     @ApiKey
@@ -50,7 +50,7 @@ public class ApplicationModule {
     }
 
     @Provides
-    static ScrobblerDataStore providesScrobblerDataStore(ScrobblerRemoteDataStore dataStore) {
+    static ScrobblerDataStore provideScrobblerDataStore(ScrobblerRemoteDataStore dataStore) {
         return dataStore;
     }
 
