@@ -2,12 +2,12 @@ package com.github.niltsiar.ultimatescrobbler.cache.preferences;
 
 import com.f2prateek.rx.preferences2.Preference;
 import com.f2prateek.rx.preferences2.RxSharedPreferences;
-import com.github.niltsiar.ultimatescrobbler.data.repository.ConfigurationDataStore;
+import com.github.niltsiar.ultimatescrobbler.data.repository.ConfigurationCache;
 import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
 import javax.inject.Inject;
 
-public class ConfigurationCacheImpl implements ConfigurationDataStore {
+public class ConfigurationCacheImpl implements ConfigurationCache {
 
     RxSharedPreferences preferences;
     Preference<String> mobileSessionPreference;
@@ -21,19 +21,19 @@ public class ConfigurationCacheImpl implements ConfigurationDataStore {
     }
 
     @Override
-    public Single<String> getMobileSession() {
+    public Single<String> getMobileSessionToken() {
         return mobileSessionPreference.asObservable()
                                       .firstElement()
                                       .toSingle();
     }
 
     @Override
-    public Consumer<? super String> saveMobileSession() {
+    public Consumer<? super String> saveMobileSessionToken() {
         return mobileSessionPreference.asConsumer();
     }
 
     @Override
-    public void removeMobileSession() {
+    public void removeMobileSessionToken() {
         mobileSessionPreference.delete();
     }
 }

@@ -7,7 +7,7 @@ import io.reactivex.Single;
 
 public interface ScrobblerRemote {
 
-    Single<String> getMobileSession(CredentialsEntity credentials);
+    Single<String> requestMobileSessionToken(CredentialsEntity credentials);
 
     Completable sendNowPlaying(PlayedSongEntity nowPlayingSong);
 

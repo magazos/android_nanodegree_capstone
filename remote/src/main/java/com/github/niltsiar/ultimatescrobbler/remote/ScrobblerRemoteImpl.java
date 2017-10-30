@@ -29,7 +29,7 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
     }
 
     @Override
-    public Single<String> getMobileSession(CredentialsEntity credentials) {
+    public Single<String> requestMobileSessionToken(CredentialsEntity credentials) {
         SortedMap<String, String> params = new TreeMap<>();
         params.put("method", GET_MOBILE_SESSION_METHOD_NAME);
         params.put("username", credentials.getUsername());
@@ -39,7 +39,7 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
         String signature = getSignature(params);
         params.put("api_sig", signature);
 
-        return scrobblerService.getSessionToken(params, RESPONSE_FORMAT);
+        return scrobblerService.requestMobileSessionToken(params, RESPONSE_FORMAT);
     }
 
     @Override

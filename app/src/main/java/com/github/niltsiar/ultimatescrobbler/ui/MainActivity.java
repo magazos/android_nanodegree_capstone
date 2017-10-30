@@ -7,7 +7,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.niltsiar.ultimatescrobbler.BuildConfig;
 import com.github.niltsiar.ultimatescrobbler.R;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.GetMobileSession;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionToken;
 import com.github.niltsiar.ultimatescrobbler.domain.model.Credentials;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
@@ -16,7 +16,7 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity {
 
     @Inject
-    GetMobileSession getMobileSessionUseCase;
+    RequestMobileSessionToken getMobileSessionUseCase;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

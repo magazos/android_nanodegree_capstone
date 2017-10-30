@@ -7,7 +7,7 @@ import io.reactivex.Single;
 
 public interface ScrobblerRepository {
 
-    Single<String> getMobileSession(Credentials credentials);
+    Single<String> requestMobileSessionToken(Credentials credentials);
 
     Completable sendNowPlaying(PlayedSong nowPlayingSong);
 }

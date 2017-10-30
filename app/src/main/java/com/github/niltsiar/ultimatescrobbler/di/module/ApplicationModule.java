@@ -8,9 +8,9 @@ import com.f2prateek.rx.preferences2.RxSharedPreferences;
 import com.github.niltsiar.ultimatescrobbler.BuildConfig;
 import com.github.niltsiar.ultimatescrobbler.cache.preferences.ConfigurationCacheImpl;
 import com.github.niltsiar.ultimatescrobbler.data.ScrobblerDataRepository;
-import com.github.niltsiar.ultimatescrobbler.data.repository.ConfigurationDataStore;
+import com.github.niltsiar.ultimatescrobbler.data.repository.ConfigurationCache;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerRemote;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.GetMobileSession;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionToken;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
 import com.github.niltsiar.ultimatescrobbler.remote.ApiKey;
 import com.github.niltsiar.ultimatescrobbler.remote.ApiSecret;
@@ -51,7 +51,7 @@ public class ApplicationModule {
     static ScrobblerRepository provideScrobblerRepository(ScrobblerDataRepository repository) {
         return repository;
     }
-    
+
     @Provides
     static ScrobblerRemote provideScrobblerRemote(ScrobblerRemoteImpl remote) {
         return remote;
@@ -71,12 +71,12 @@ public class ApplicationModule {
     }
 
     @Provides
-    static GetMobileSession providesGetMobileSession(ScrobblerRepository repository) {
-        return new GetMobileSession(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    static RequestMobileSessionToken providesGetMobileSession(ScrobblerRepository repository) {
+        return new RequestMobileSessionToken(repository, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 
     @Provides
-    static ConfigurationDataStore providesConfigurationDataStore(RxSharedPreferences rxSharedPreferences) {
+    static ConfigurationCache providesConfigurationDataStore(RxSharedPreferences rxSharedPreferences) {
         return new ConfigurationCacheImpl(rxSharedPreferences);
     }
 

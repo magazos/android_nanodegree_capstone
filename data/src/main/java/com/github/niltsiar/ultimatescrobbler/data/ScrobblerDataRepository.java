@@ -2,7 +2,7 @@ package com.github.niltsiar.ultimatescrobbler.data;
 
 import com.github.niltsiar.ultimatescrobbler.data.mapper.CredentialsMapper;
 import com.github.niltsiar.ultimatescrobbler.data.mapper.PlayedSongMapper;
-import com.github.niltsiar.ultimatescrobbler.data.repository.ConfigurationDataStore;
+import com.github.niltsiar.ultimatescrobbler.data.repository.ConfigurationCache;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerRemote;
 import com.github.niltsiar.ultimatescrobbler.domain.model.Credentials;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
@@ -14,13 +14,12 @@ import javax.inject.Inject;
 public class ScrobblerDataRepository implements ScrobblerRepository {
 
     private ScrobblerRemote scrobblerRemote;
-    private ConfigurationDataStore configurationDataStore;
+    private ConfigurationCache configurationDataStore;
     private CredentialsMapper credentialsMapper;
     private PlayedSongMapper playedSongMapper;
 
     @Inject
-    public ScrobblerDataRepository(ScrobblerRemote scrobblerRemote,
-            ConfigurationDataStore configurationDataStore,
+    public ScrobblerDataRepository(ScrobblerRemote scrobblerRemote, ConfigurationCache configurationDataStore,
             CredentialsMapper credentialsMapper,
             PlayedSongMapper playedSongMapper) {
         this.scrobblerRemote = scrobblerRemote;
@@ -30,9 +29,9 @@ public class ScrobblerDataRepository implements ScrobblerRepository {
     }
 
     @Override
-    public Single<String> getMobileSession(Credentials credentials) {
-        return scrobblerRemote.getMobileSession(credentialsMapper.mapToEntity(credentials))
-                              .doOnSuccess(configurationDataStore.saveMobileSession());
+    public Single<String> requestMobileSessionToken(Credentials credentials) {
+        return scrobblerRemote.requestMobileSessionToken(credentialsMapper.mapToEntity(credentials))
+                              .doOnSuccess(configurationDataStore.saveMobileSessionToken());
     }
 
     @Override

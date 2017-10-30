@@ -7,12 +7,12 @@ import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import javax.inject.Inject;
 
-public class GetMobileSession extends SingleUseCase<String, Credentials> {
+public class RequestMobileSessionToken extends SingleUseCase<String, Credentials> {
 
     private ScrobblerRepository scrobblerRepository;
 
     @Inject
-    public GetMobileSession(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
+    public RequestMobileSessionToken(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
         super(executionScheduler, postExecutionScheduler);
 
         this.scrobblerRepository = scrobblerRepository;
@@ -20,6 +20,6 @@ public class GetMobileSession extends SingleUseCase<String, Credentials> {
 
     @Override
     protected Single<String> buildUseCaseObservable(Credentials param) {
-        return scrobblerRepository.getMobileSession(param);
+        return scrobblerRepository.requestMobileSessionToken(param);
     }
 }
