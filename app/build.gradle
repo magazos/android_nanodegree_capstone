@@ -74,6 +74,7 @@ dependencies {
     debugImplementation (libraries.debug.stethoTimber) {
         exclude module: 'timber'
     }
+    debugImplementation libraries.debug.leakCanary
 
     compileOnly libraries.app.javaxAnnotations
 

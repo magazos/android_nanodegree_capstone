@@ -30,6 +30,7 @@ ext {
             oklog              : '2.2.0',
             chuck              : '1.1.0',
             stetho             : '1.5.0',
+            leakCanary         : '1.5.4',
     ]
 
     libraries = [
@@ -66,6 +67,7 @@ ext {
                     stetho            : "com.facebook.stetho:stetho:${versions.stetho}",
                     stethoOkhttp      : "com.facebook.stetho:stetho-okhttp3:${versions.stetho}",
                     stethoTimber      : "com.facebook.stetho:stetho-timber:${versions.stetho}",
+                    leakCanary        : "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}",
             ],
             apt  : [
                     autoValue      : "com.google.auto.value:auto-value:${versions.auto_value}",
