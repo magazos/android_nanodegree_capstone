@@ -9,8 +9,8 @@ import javax.inject.Inject;
 
 public class ConfigurationCacheImpl implements ConfigurationCache {
 
-    RxSharedPreferences preferences;
-    Preference<String> mobileSessionPreference;
+    private RxSharedPreferences preferences;
+    private Preference<String> mobileSessionPreference;
 
     private static final String MOBILE_SESSION_PREFERENCE = "MOBILE_SESSION_PREFERENCE";
 

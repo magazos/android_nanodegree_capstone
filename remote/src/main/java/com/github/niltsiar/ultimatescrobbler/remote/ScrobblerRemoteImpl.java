@@ -3,6 +3,9 @@ package com.github.niltsiar.ultimatescrobbler.remote;
 import com.github.niltsiar.ultimatescrobbler.data.model.CredentialsEntity;
 import com.github.niltsiar.ultimatescrobbler.data.model.PlayedSongEntity;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerRemote;
+import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.ApiKey;
+import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.ApiSecret;
+import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.MobileSessionToken;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import java.util.Map;
@@ -16,16 +19,21 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
     private ScrobblerService scrobblerService;
     private String apiKey;
     private String apiSecret;
+    private String mobileSessionToken;
 
     private static final String RESPONSE_FORMAT = "json";
     private static final String UPDATE_NOW_PLAYING_METHOD_NAME = "track.updateNowPlaying";
     private static final String GET_MOBILE_SESSION_METHOD_NAME = "auth.getMobileSession";
 
     @Inject
-    public ScrobblerRemoteImpl(ScrobblerService scrobblerService, @ApiKey String apiKey, @ApiSecret String apiSecret) {
+    public ScrobblerRemoteImpl(ScrobblerService scrobblerService,
+            @ApiKey String apiKey,
+            @ApiSecret String apiSecret,
+            @MobileSessionToken String mobileSessionToken) {
         this.scrobblerService = scrobblerService;
         this.apiKey = apiKey;
         this.apiSecret = apiSecret;
+        this.mobileSessionToken = mobileSessionToken;
     }
 
     @Override
@@ -44,16 +52,16 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
 
     @Override
     public Completable sendNowPlaying(final PlayedSongEntity nowPlayingSong) {
-        final SortedMap<String, String> params = new TreeMap<>();
+        SortedMap<String, String> params = new TreeMap<>();
         params.put("method", UPDATE_NOW_PLAYING_METHOD_NAME);
         params.put("artist", nowPlayingSong.getArtistName());
         params.put("track", nowPlayingSong.getTrackName());
         params.put("album", nowPlayingSong.getAlbumName());
         //params.put("duration", nowPlayingSong.getDuration());
         params.put("api_key", apiKey);
-        //params.put("sk", AUTH);
+        params.put("sk", mobileSessionToken);
 
-        final String signature = getSignature(params);
+        String signature = getSignature(params);
         params.put("api_sig", signature);
 
         return scrobblerService.updateNowPlaying(params, RESPONSE_FORMAT)

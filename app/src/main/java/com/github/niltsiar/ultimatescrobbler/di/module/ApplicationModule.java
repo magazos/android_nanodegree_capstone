@@ -12,10 +12,11 @@ import com.github.niltsiar.ultimatescrobbler.data.repository.ConfigurationCache;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerRemote;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionToken;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
-import com.github.niltsiar.ultimatescrobbler.remote.ApiKey;
-import com.github.niltsiar.ultimatescrobbler.remote.ApiSecret;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerRemoteImpl;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerService;
+import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.ApiKey;
+import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.ApiSecret;
+import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.MobileSessionToken;
 import com.serjltt.moshi.adapters.Wrapped;
 import com.squareup.moshi.Moshi;
 import dagger.Module;
@@ -45,6 +46,13 @@ public class ApplicationModule {
     @Provides
     static String provideApiSecret() {
         return BuildConfig.LAST_FM_API_SECRET;
+    }
+
+    @MobileSessionToken
+    @Provides
+    static String provideMobileSessionToken(ConfigurationCache cache) {
+        return cache.getMobileSessionToken()
+                    .blockingGet();
     }
 
     @Provides
