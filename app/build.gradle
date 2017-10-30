@@ -54,6 +54,7 @@ dependencies {
 
     implementation libraries.app.rxjava2
     implementation libraries.app.rxandroid
+    implementation libraries.app.rxrelay
     implementation libraries.app.butterknife
     implementation libraries.app.timber
     implementation libraries.app.dagger
