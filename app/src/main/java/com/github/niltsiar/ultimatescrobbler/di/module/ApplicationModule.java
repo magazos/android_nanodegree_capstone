@@ -9,9 +9,7 @@ import com.github.niltsiar.ultimatescrobbler.BuildConfig;
 import com.github.niltsiar.ultimatescrobbler.cache.preferences.ConfigurationCacheImpl;
 import com.github.niltsiar.ultimatescrobbler.data.ScrobblerDataRepository;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ConfigurationDataStore;
-import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerDataStore;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerRemote;
-import com.github.niltsiar.ultimatescrobbler.data.source.ScrobblerRemoteDataStore;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.GetMobileSession;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
 import com.github.niltsiar.ultimatescrobbler.remote.ApiKey;
@@ -53,12 +51,7 @@ public class ApplicationModule {
     static ScrobblerRepository provideScrobblerRepository(ScrobblerDataRepository repository) {
         return repository;
     }
-
-    @Provides
-    static ScrobblerDataStore provideScrobblerDataStore(ScrobblerRemoteDataStore dataStore) {
-        return dataStore;
-    }
-
+    
     @Provides
     static ScrobblerRemote provideScrobblerRemote(ScrobblerRemoteImpl remote) {
         return remote;
