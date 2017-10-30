@@ -31,6 +31,7 @@ ext {
             chuck              : '1.1.0',
             stetho             : '1.5.0',
             leakCanary         : '1.5.4',
+            rxpreferences      : '2.0.0-RC3'
     ]
 
     libraries = [
@@ -59,6 +60,7 @@ ext {
                     timber                   : "com.jakewharton:timber:${versions.timber}",
                     dagger                   : "com.google.dagger:dagger:${versions.dagger}",
                     daggerSupport            : "com.google.dagger:dagger-android-support:${versions.dagger}",
+                    rxpreferences            : "com.f2prateek.rx.preferences2:rx-preferences:${versions.rxpreferences}",
             ],
             debug: [
                     loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",

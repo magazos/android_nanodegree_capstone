@@ -2,8 +2,13 @@ package com.github.niltsiar.ultimatescrobbler.di.module;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import com.f2prateek.rx.preferences2.RxSharedPreferences;
 import com.github.niltsiar.ultimatescrobbler.BuildConfig;
+import com.github.niltsiar.ultimatescrobbler.cache.preferences.ConfigurationCacheImpl;
 import com.github.niltsiar.ultimatescrobbler.data.ScrobblerDataRepository;
+import com.github.niltsiar.ultimatescrobbler.data.repository.ConfigurationDataStore;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerDataStore;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerRemote;
 import com.github.niltsiar.ultimatescrobbler.data.source.ScrobblerRemoteDataStore;
@@ -75,5 +80,16 @@ public class ApplicationModule {
     @Provides
     static GetMobileSession providesGetMobileSession(ScrobblerRepository repository) {
         return new GetMobileSession(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    }
+
+    @Provides
+    static ConfigurationDataStore providesConfigurationDataStore(RxSharedPreferences rxSharedPreferences) {
+        return new ConfigurationCacheImpl(rxSharedPreferences);
+    }
+
+    @Provides
+    static RxSharedPreferences providesRxSharedPreferences(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return RxSharedPreferences.create(sharedPreferences);
     }
 }
