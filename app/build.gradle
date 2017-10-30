@@ -71,7 +71,9 @@ dependencies {
     debugImplementation libraries.debug.chuck
     debugImplementation libraries.debug.stetho
     debugImplementation libraries.debug.stethoOkhttp
-    debugImplementation libraries.debug.stethoTimber
+    debugImplementation (libraries.debug.stethoTimber) {
+        exclude module: 'timber'
+    }
 
     compileOnly libraries.app.javaxAnnotations
 

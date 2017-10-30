@@ -1,6 +1,7 @@
 package com.github.niltsiar.ultimatescrobbler.di.module;
 
 import android.content.Context;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.github.simonpercic.oklog3.OkLogInterceptor;
 import com.readystatesoftware.chuck.ChuckInterceptor;
 import dagger.Module;
@@ -33,6 +34,7 @@ public class NetworkModule {
         return new OkHttpClient.Builder().addInterceptor(loggingInterceptor)
                                          .addInterceptor(okLogInterceptor)
                                          .addInterceptor(chuckInterceptor)
+                                         .addNetworkInterceptor(new StethoInterceptor())
                                          .build();
     }
 }
