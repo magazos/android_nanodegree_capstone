@@ -20,6 +20,6 @@ public interface ScrobblerService {
 
     @FormUrlEncoded
     @POST("2.0")
-    @Wrapped(path = {"lfm", "nowplaying"})
+    @Wrapped(path = {"nowplaying"})
     Single<ScrobbledSongModel> updateNowPlaying(@FieldMap Map<String, String> parameters, @Query("format") String format);
 }

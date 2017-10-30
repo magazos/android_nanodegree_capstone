@@ -13,6 +13,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import javax.inject.Inject;
 import okio.ByteString;
+import timber.log.Timber;
 
 public class ScrobblerRemoteImpl implements ScrobblerRemote {
 
@@ -65,6 +66,7 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
         params.put("api_sig", signature);
 
         return scrobblerService.updateNowPlaying(params, RESPONSE_FORMAT)
+                               .doOnSuccess(song -> Timber.i(song.toString()))
                                .toCompletable();
     }
 
