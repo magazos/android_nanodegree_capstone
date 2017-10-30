@@ -16,7 +16,7 @@ public interface ScrobblerService {
     @FormUrlEncoded
     @POST("2.0")
     @Wrapped(path = {"session", "key"})
-    Single<String> getSessionToker(@FieldMap Map<String, String> parameters, @Query("format") String format);
+    Single<String> getSessionToken(@FieldMap Map<String, String> parameters, @Query("format") String format);
 
     @FormUrlEncoded
     @POST("2.0")

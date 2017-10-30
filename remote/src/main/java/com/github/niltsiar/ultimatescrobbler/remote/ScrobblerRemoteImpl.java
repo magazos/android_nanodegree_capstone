@@ -39,7 +39,7 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
         String signature = getSignature(params);
         params.put("api_sig", signature);
 
-        return scrobblerService.getSessionToker(params, RESPONSE_FORMAT);
+        return scrobblerService.getSessionToken(params, RESPONSE_FORMAT);
     }
 
     @Override
