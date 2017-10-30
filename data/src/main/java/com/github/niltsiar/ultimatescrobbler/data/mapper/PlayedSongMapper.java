@@ -17,7 +17,7 @@ public class PlayedSongMapper implements Mapper<PlayedSongEntity, PlayedSong> {
                          .setTrackName(type.getTrackName())
                          .setArtistName(type.getArtistName())
                          .setAlbumName(type.getAlbumName())
-                         .setLength(0)
+                         .setLength(type.getDuration())
                          .build();
     }
 
@@ -28,6 +28,7 @@ public class PlayedSongMapper implements Mapper<PlayedSongEntity, PlayedSong> {
                                .setTrackName(type.getTrackName())
                                .setArtistName(type.getArtistName())
                                .setAlbumName(type.getAlbumName())
+                               .setDuration(type.getLength())
                                .build();
     }
 }

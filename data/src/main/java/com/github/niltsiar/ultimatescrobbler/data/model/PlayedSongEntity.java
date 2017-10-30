@@ -15,6 +15,8 @@ public abstract class PlayedSongEntity {
     @Nullable
     public abstract String getAlbumName();
 
+    public abstract int getDuration();
+
     public static Builder builder() {
         return new AutoValue_PlayedSongEntity.Builder();
     }
@@ -28,6 +30,8 @@ public abstract class PlayedSongEntity {
         public abstract Builder setArtistName(String newArtistName);
 
         public abstract Builder setAlbumName(String newAlbumName);
+
+        public abstract Builder setDuration(int newDuration);
 
         public abstract PlayedSongEntity build();
     }

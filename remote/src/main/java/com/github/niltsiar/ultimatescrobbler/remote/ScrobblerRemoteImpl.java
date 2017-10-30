@@ -57,7 +57,7 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
         params.put("artist", nowPlayingSong.getArtistName());
         params.put("track", nowPlayingSong.getTrackName());
         params.put("album", nowPlayingSong.getAlbumName());
-        //params.put("duration", nowPlayingSong.getDuration());
+        params.put("duration", String.valueOf(nowPlayingSong.getDuration()));
         params.put("api_key", apiKey);
         params.put("sk", mobileSessionToken);
 
