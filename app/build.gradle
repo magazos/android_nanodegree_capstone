@@ -68,6 +68,7 @@ dependencies {
     implementation libraries.app.moshiLazyAdapters
     implementation libraries.app.javaxInject
     implementation libraries.app.rxpreferences
+    implementation libraries.app.firebaseJobDispatcher
 
     debugImplementation libraries.debug.loggingInterceptor
     debugImplementation libraries.debug.oklog

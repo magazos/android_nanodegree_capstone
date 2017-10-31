@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import com.f2prateek.rx.preferences2.RxSharedPreferences;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.github.niltsiar.ultimatescrobbler.BuildConfig;
 import com.github.niltsiar.ultimatescrobbler.cache.preferences.ConfigurationCacheImpl;
 import com.github.niltsiar.ultimatescrobbler.data.ScrobblerDataRepository;
@@ -102,5 +104,10 @@ public class ApplicationModule {
     static RxSharedPreferences providesRxSharedPreferences(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return RxSharedPreferences.create(sharedPreferences);
+    }
+
+    @Provides
+    static FirebaseJobDispatcher providesFirebaseJobDispatcher(Context context) {
+        return new FirebaseJobDispatcher(new GooglePlayDriver(context));
     }
 }
