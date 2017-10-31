@@ -10,7 +10,7 @@ def versionMinor = VERSION_MINOR.toInteger()
 def versionPatch = VERSION_PATCH.toInteger()
 def versionRevision = getRevision()
 
-def appVersionCode = versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100
+def appVersionCode = versionMajor * 1_000_000 + versionMinor * 1_000 + versionPatch
 def appVersionName = "${versionMajor}.${versionMinor}.${versionPatch}"
 
 android {
