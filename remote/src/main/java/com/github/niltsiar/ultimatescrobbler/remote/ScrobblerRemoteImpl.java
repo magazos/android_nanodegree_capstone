@@ -1,11 +1,13 @@
 package com.github.niltsiar.ultimatescrobbler.remote;
 
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.github.niltsiar.ultimatescrobbler.data.model.CredentialsEntity;
 import com.github.niltsiar.ultimatescrobbler.data.model.PlayedSongEntity;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerRemote;
 import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.ApiKey;
 import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.ApiSecret;
 import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.MobileSessionToken;
+import com.github.niltsiar.ultimatescrobbler.remote.services.SendNowPlayingService;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import java.util.Map;
@@ -13,10 +15,10 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import javax.inject.Inject;
 import okio.ByteString;
-import timber.log.Timber;
 
 public class ScrobblerRemoteImpl implements ScrobblerRemote {
 
+    private FirebaseJobDispatcher dispatcher;
     private ScrobblerService scrobblerService;
     private String apiKey;
     private String apiSecret;
@@ -27,10 +29,11 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
     private static final String GET_MOBILE_SESSION_METHOD_NAME = "auth.getMobileSession";
 
     @Inject
-    public ScrobblerRemoteImpl(ScrobblerService scrobblerService,
+    public ScrobblerRemoteImpl(FirebaseJobDispatcher dispatcher, ScrobblerService scrobblerService,
             @ApiKey String apiKey,
             @ApiSecret String apiSecret,
             @MobileSessionToken String mobileSessionToken) {
+        this.dispatcher = dispatcher;
         this.scrobblerService = scrobblerService;
         this.apiKey = apiKey;
         this.apiSecret = apiSecret;
@@ -52,22 +55,22 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
     }
 
     @Override
-    public Completable sendNowPlaying(final PlayedSongEntity nowPlayingSong) {
-        SortedMap<String, String> params = new TreeMap<>();
-        params.put("method", UPDATE_NOW_PLAYING_METHOD_NAME);
-        params.put("artist", nowPlayingSong.getArtistName());
-        params.put("track", nowPlayingSong.getTrackName());
-        params.put("album", nowPlayingSong.getAlbumName());
-        params.put("duration", String.valueOf(nowPlayingSong.getDuration()));
-        params.put("api_key", apiKey);
-        params.put("sk", mobileSessionToken);
+    public Completable sendNowPlaying(PlayedSongEntity nowPlayingSong) {
+        return Completable.fromAction(() -> {
+            SortedMap<String, String> params = new TreeMap<>();
+            params.put("method", UPDATE_NOW_PLAYING_METHOD_NAME);
+            params.put("artist", nowPlayingSong.getArtistName());
+            params.put("track", nowPlayingSong.getTrackName());
+            params.put("album", nowPlayingSong.getAlbumName());
+            params.put("duration", String.valueOf(nowPlayingSong.getDuration()));
+            params.put("api_key", apiKey);
+            params.put("sk", mobileSessionToken);
 
-        String signature = getSignature(params);
-        params.put("api_sig", signature);
+            String signature = getSignature(params);
+            params.put("api_sig", signature);
 
-        return scrobblerService.updateNowPlaying(params, RESPONSE_FORMAT)
-                               .doOnSuccess(song -> Timber.i(song.toString()))
-                               .toCompletable();
+            dispatcher.mustSchedule(SendNowPlayingService.createJob(dispatcher, params));
+        });
     }
 
     private String getSignature(SortedMap<String, String> params) {
