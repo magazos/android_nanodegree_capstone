@@ -5,18 +5,23 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import com.f2prateek.rx.preferences2.RxSharedPreferences;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.github.niltsiar.ultimatescrobbler.BuildConfig;
 import com.github.niltsiar.ultimatescrobbler.cache.preferences.ConfigurationCacheImpl;
 import com.github.niltsiar.ultimatescrobbler.data.ScrobblerDataRepository;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ConfigurationCache;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerRemote;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionToken;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.nowplaying.SendNowPlaying;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerRemoteImpl;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerService;
+import com.github.niltsiar.ultimatescrobbler.remote.model.AutoValueMoshiAdapterFactory;
 import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.ApiKey;
 import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.ApiSecret;
 import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.MobileSessionToken;
+import com.serjltt.moshi.adapters.FallbackOnNull;
 import com.serjltt.moshi.adapters.Wrapped;
 import com.squareup.moshi.Moshi;
 import dagger.Module;
@@ -67,7 +72,9 @@ public class ApplicationModule {
 
     @Provides
     static ScrobblerService provideScrobblerService(OkHttpClient okHttpClient) {
-        Moshi moshi = new Moshi.Builder().add(Wrapped.ADAPTER_FACTORY)
+        Moshi moshi = new Moshi.Builder().add(AutoValueMoshiAdapterFactory.create())
+                                         .add(Wrapped.ADAPTER_FACTORY)
+                                         .add(FallbackOnNull.ADAPTER_FACTORY)
                                          .build();
 
         return new Retrofit.Builder().baseUrl(ScrobblerService.WS_URL)
@@ -79,8 +86,13 @@ public class ApplicationModule {
     }
 
     @Provides
-    static RequestMobileSessionToken providesGetMobileSession(ScrobblerRepository repository) {
+    static RequestMobileSessionToken providesRequestMobileSessionToken(ScrobblerRepository repository) {
         return new RequestMobileSessionToken(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    }
+
+    @Provides
+    static SendNowPlaying providesSendNowPlaying(ScrobblerRepository repository) {
+        return new SendNowPlaying(repository, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 
     @Provides
@@ -92,5 +104,10 @@ public class ApplicationModule {
     static RxSharedPreferences providesRxSharedPreferences(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return RxSharedPreferences.create(sharedPreferences);
+    }
+
+    @Provides
+    static FirebaseJobDispatcher providesFirebaseJobDispatcher(Context context) {
+        return new FirebaseJobDispatcher(new GooglePlayDriver(context));
     }
 }

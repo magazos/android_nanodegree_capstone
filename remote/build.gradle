@@ -3,13 +3,14 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion versions.androidSdk.compile
     buildToolsVersion versions.androidSdk.buildTools
-
-
+    compileOptions {
+        sourceCompatibility versions.sourceCompatibility
+        targetCompatibility versions.targetCompatibility
+    }
     defaultConfig {
         minSdkVersion versions.androidSdk.min
         targetSdkVersion versions.androidSdk.target
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -27,6 +28,10 @@ dependencies {
         exclude module: 'okhttp'
     }
     implementation libraries.app.moshiLazyAdapters
+    implementation libraries.app.timber
+    implementation libraries.app.firebaseJobDispatcher
+    implementation libraries.app.dagger
+    implementation libraries.app.daggerSupport
 
     compileOnly libraries.app.javaxAnnotations
     compileOnly libraries.app.autoValue
@@ -34,4 +39,6 @@ dependencies {
 
     annotationProcessor libraries.apt.autoValue
     annotationProcessor libraries.apt.autoValueMoshi
+    annotationProcessor libraries.apt.daggerCompiler
+    annotationProcessor libraries.apt.daggerProcessor
 }

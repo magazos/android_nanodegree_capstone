@@ -7,16 +7,25 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.niltsiar.ultimatescrobbler.BuildConfig;
 import com.github.niltsiar.ultimatescrobbler.R;
+import com.github.niltsiar.ultimatescrobbler.SpotifyReceiver;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionToken;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.nowplaying.SendNowPlaying;
 import com.github.niltsiar.ultimatescrobbler.domain.model.Credentials;
 import dagger.android.AndroidInjection;
+import io.reactivex.disposables.Disposable;
 import javax.inject.Inject;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
     @Inject
-    RequestMobileSessionToken getMobileSessionUseCase;
+    RequestMobileSessionToken requestMobileSessionTokenUseCase;
+
+    @Inject
+    SendNowPlaying sendNowPlayingUseCase;
+
+    SpotifyReceiver spotifyReceiver;
+    Disposable playedSongsDisposable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,15 +34,33 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_activity);
 
         ButterKnife.bind(this);
+
+        spotifyReceiver = new SpotifyReceiver();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        playedSongsDisposable = spotifyReceiver.getPlayedSongs()
+                                               .subscribe(playedSong -> sendNowPlayingUseCase.execute(playedSong)
+                                                                                             .subscribe());
+        registerReceiver(spotifyReceiver, SpotifyReceiver.getSpotifyIntents());
+    }
+
+    @Override
+    protected void onStop() {
+        playedSongsDisposable.dispose();
+        unregisterReceiver(spotifyReceiver);
+        super.onStop();
     }
 
     @OnClick(R.id.test_button)
     public void onTestButtonClicked() {
-        getMobileSessionUseCase.execute(Credentials.builder()
-                                                   .setUsername(BuildConfig.TEST_USERNAME)
-                                                   .setPassword(BuildConfig.TEST_PASSWORD)
-                                                   .build())
+        requestMobileSessionTokenUseCase.execute(Credentials.builder()
+                                                            .setUsername(BuildConfig.TEST_USERNAME)
+                                                            .setPassword(BuildConfig.TEST_PASSWORD)
+                                                            .build())
 
-                               .subscribe(s -> Timber.i(s));
+                                        .subscribe(s -> Timber.i(s));
     }
 }
