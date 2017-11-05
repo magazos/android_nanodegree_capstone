@@ -33,6 +33,7 @@ ext {
             leakCanary            : '1.5.4',
             rxpreferences         : '2.0.0-RC3',
             firebase_jobdispatcher: '0.8.4',
+            schematic             : '0.7.0',
     ]
 
     libraries = [
@@ -63,6 +64,7 @@ ext {
                     daggerSupport            : "com.google.dagger:dagger-android-support:${versions.dagger}",
                     rxpreferences            : "com.f2prateek.rx.preferences2:rx-preferences:${versions.rxpreferences}",
                     firebaseJobDispatcher    : "com.firebase:firebase-jobdispatcher:${versions.firebase_jobdispatcher}",
+                    schematic                : "net.simonvt.schematic:schematic:${versions.schematic}",
             ],
             debug: [
                     loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
@@ -79,6 +81,7 @@ ext {
                     butterknife    : "com.jakewharton:butterknife-compiler:${versions.butterknife}",
                     daggerCompiler : "com.google.dagger:dagger-compiler:${versions.dagger}",
                     daggerProcessor: "com.google.dagger:dagger-android-processor:${versions.dagger}",
+                    schematic      : "net.simonvt.schematic:schematic-compiler:${versions.schematic}",
             ],
     ]
 }

@@ -24,4 +24,7 @@ dependencies {
 
     implementation libraries.app.javaxInject
     implementation libraries.app.rxpreferences
+    implementation libraries.app.schematic
+
+    annotationProcessor libraries.apt.schematic
 }
