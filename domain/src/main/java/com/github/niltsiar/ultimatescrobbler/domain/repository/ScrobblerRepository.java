@@ -10,4 +10,6 @@ public interface ScrobblerRepository {
     Single<String> requestMobileSessionToken(Credentials credentials);
 
     Completable sendNowPlaying(PlayedSong nowPlayingSong);
+
+    Completable savePlayedSong(PlayedSong playedSong);
 }
