@@ -10,9 +10,10 @@ import com.github.niltsiar.ultimatescrobbler.R;
 import com.github.niltsiar.ultimatescrobbler.SpotifyReceiver;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionToken;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.nowplaying.SendNowPlaying;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.saveplayedsong.SavePlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.model.Credentials;
 import dagger.android.AndroidInjection;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.CompositeDisposable;
 import javax.inject.Inject;
 import timber.log.Timber;
 
@@ -24,8 +25,11 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     SendNowPlaying sendNowPlayingUseCase;
 
+    @Inject
+    SavePlayedSong savePlayedSongUseCase;
+
     SpotifyReceiver spotifyReceiver;
-    Disposable playedSongsDisposable;
+    CompositeDisposable playedSongsDisposables;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,15 +45,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        playedSongsDisposable = spotifyReceiver.getPlayedSongs()
-                                               .subscribe(playedSong -> sendNowPlayingUseCase.execute(playedSong)
-                                                                                             .subscribe());
+        playedSongsDisposables.add(spotifyReceiver.getPlayedSongs()
+                                                  .subscribe(playedSong -> sendNowPlayingUseCase.execute(playedSong)
+                                                                                                .subscribe()));
+        playedSongsDisposables.add(spotifyReceiver.getPlayedSongs()
+                                                  .subscribe(playedSong -> savePlayedSongUseCase.execute(playedSong)
+                                                                                                .subscribe()));
         registerReceiver(spotifyReceiver, SpotifyReceiver.getSpotifyIntents());
     }
 
     @Override
     protected void onStop() {
-        playedSongsDisposable.dispose();
+        playedSongsDisposables.clear();
         unregisterReceiver(spotifyReceiver);
         super.onStop();
     }
