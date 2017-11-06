@@ -7,9 +7,18 @@ android {
         sourceCompatibility versions.sourceCompatibility
         targetCompatibility versions.targetCompatibility
     }
+    publishNonDefault true
     defaultConfig {
         minSdkVersion versions.androidSdk.min
         targetSdkVersion versions.androidSdk.target
+
+        def baseAuthority = "com.github.niltsiar.ultimatescrobbler"
+        def songsAuthorityValue = baseAuthority + ".SongsProvider"
+
+        buildConfigField "String", "SONGS_AUTHORITY", "\"${songsAuthorityValue}\""
+        manifestPlaceholders = [
+                songsAuthority: songsAuthorityValue,
+        ]
     }
     buildTypes {
         release {

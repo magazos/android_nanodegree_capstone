@@ -11,7 +11,7 @@ public interface PlayedSongColumns {
 
     @DataType(TEXT)
     @PrimaryKey
-    String _ID = "_id";
+    String ID = "_id";
 
     @DataType(TEXT)
     @NotNull

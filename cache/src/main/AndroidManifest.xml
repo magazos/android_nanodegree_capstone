@@ -1,1 +1,12 @@
-<manifest package="com.github.niltsiar.ultimatescrobbler.cache" />
+<manifest package="com.github.niltsiar.ultimatescrobbler.cache"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <application>
+
+    <provider
+      android:authorities="${songsAuthority}"
+      android:name=".provider.SongsProvider"
+      exported="false" />
+
+  </application>
+</manifest>
