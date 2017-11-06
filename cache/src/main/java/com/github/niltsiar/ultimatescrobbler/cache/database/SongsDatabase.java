@@ -1,4 +1,4 @@
-package com.github.niltsiar.ultimatescrobbler.cache.storage;
+package com.github.niltsiar.ultimatescrobbler.cache.database;
 
 import net.simonvt.schematic.annotation.Database;
 import net.simonvt.schematic.annotation.Table;

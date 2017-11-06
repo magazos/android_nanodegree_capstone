@@ -1,4 +1,4 @@
-package com.github.niltsiar.ultimatescrobbler.cache.storage;
+package com.github.niltsiar.ultimatescrobbler.cache.database;
 
 import android.net.Uri;
 import com.github.niltsiar.ultimatescrobbler.cache.BuildConfig;
@@ -18,7 +18,7 @@ public final class SongsProvider {
 
     static final String AUTHORITY = BuildConfig.SONGS_AUTHORITY;
 
-    static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     interface Path {
         String PLAYED_SONGS = "played_songs";
