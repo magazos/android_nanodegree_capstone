@@ -64,4 +64,13 @@ public class ScrobblerDataRepository implements ScrobblerRepository {
                          .map(playedSongMapper::mapFromEntity)
                          .toList();
     }
+
+    @Override
+    public Completable scrobblePlayedSongs(List<PlayedSong> playedSongs) {
+        return scrobblerRemote.get()
+                              .scrobblePlayedSongs(Observable.fromIterable(playedSongs)
+                                                             .map(song -> playedSongMapper.mapToEntity(song))
+                                                             .toList()
+                                                             .blockingGet());
+    }
 }

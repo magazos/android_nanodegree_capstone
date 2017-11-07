@@ -17,4 +17,6 @@ public interface ScrobblerRepository {
     Single<Long> countStoredPlayedSongs();
 
     Single<List<PlayedSong>> getStoredPlayedSongs();
+
+    Completable scrobblePlayedSongs(List<PlayedSong> playedSongs);
 }
