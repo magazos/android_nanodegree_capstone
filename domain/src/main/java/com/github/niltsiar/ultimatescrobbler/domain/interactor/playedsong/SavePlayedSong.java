@@ -1,4 +1,4 @@
-package com.github.niltsiar.ultimatescrobbler.domain.interactor.saveplayedsong;
+package com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong;
 
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.SingleUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
