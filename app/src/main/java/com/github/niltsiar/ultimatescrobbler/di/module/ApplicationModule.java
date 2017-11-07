@@ -15,8 +15,9 @@ import com.github.niltsiar.ultimatescrobbler.data.repository.ConfigurationCache;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerRemote;
 import com.github.niltsiar.ultimatescrobbler.data.repository.SongsCache;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionToken;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SendNowPlaying;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetStoredPlayedSongs;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SavePlayedSong;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SendNowPlaying;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerRemoteImpl;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerService;
@@ -122,5 +123,10 @@ public class ApplicationModule {
     @Provides
     static SavePlayedSong provideSavePlayedSong(ScrobblerRepository repository) {
         return new SavePlayedSong(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    }
+
+    @Provides
+    static GetStoredPlayedSongs provideGetStoredPlayedSongs(ScrobblerRepository repository) {
+        return new GetStoredPlayedSongs(repository, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 }

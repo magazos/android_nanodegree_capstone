@@ -9,7 +9,9 @@ import com.github.niltsiar.ultimatescrobbler.domain.model.Credentials;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
@@ -53,5 +55,13 @@ public class ScrobblerDataRepository implements ScrobblerRepository {
     @Override
     public Single<Long> countStoredPlayedSongs() {
         return songsCache.countStoredPlayedSongs();
+    }
+
+    @Override
+    public Single<List<PlayedSong>> getStoredPlayedSongs() {
+        return songsCache.getStoredPlayedSongs()
+                         .flatMapObservable(Observable::fromIterable)
+                         .map(playedSongMapper::mapFromEntity)
+                         .toList();
     }
 }

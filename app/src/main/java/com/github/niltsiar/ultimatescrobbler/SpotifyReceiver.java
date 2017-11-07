@@ -50,14 +50,18 @@ public class SpotifyReceiver extends BroadcastReceiver {
             String albumName = intent.getStringExtra("album");
             String trackName = intent.getStringExtra("track");
             String length = Integer.toString(intent.getIntExtra("length", 0));
-            PlayedSong playedSong = PlayedSong.builder()
-                                              .setArtistName(artistName)
-                                              .setAlbumName(albumName)
-                                              .setTrackName(trackName)
-                                              .setLength(Integer.valueOf(length))
-                                              .build();
+            try {
+                PlayedSong playedSong = PlayedSong.builder()
+                                                  .setArtistName(artistName)
+                                                  .setAlbumName(albumName)
+                                                  .setTrackName(trackName)
+                                                  .setLength(Integer.valueOf(length))
+                                                  .build();
 
-            playedSongs.accept(playedSong);
+                playedSongs.accept(playedSong);
+            } catch (NullPointerException ex) {
+                Timber.d("Ignoring malformed song");
+            }
         } else if (action.equals(BroadcastTypes.PLAYBACK_STATE_CHANGED)) {
             boolean playing = intent.getBooleanExtra("playing", false);
             int positionInMs = intent.getIntExtra("playbackPosition", 0);

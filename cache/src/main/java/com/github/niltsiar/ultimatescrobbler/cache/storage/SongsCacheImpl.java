@@ -5,11 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import com.github.niltsiar.ultimatescrobbler.cache.database.PlayedSongColumns;
 import com.github.niltsiar.ultimatescrobbler.cache.database.SongsProvider;
+import com.github.niltsiar.ultimatescrobbler.cache.mapper.CacheSongMapper;
 import com.github.niltsiar.ultimatescrobbler.data.model.PlayedSongEntity;
 import com.github.niltsiar.ultimatescrobbler.data.repository.SongsCache;
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import javax.inject.Inject;
 
 public class SongsCacheImpl implements SongsCache {
@@ -54,6 +57,31 @@ public class SongsCacheImpl implements SongsCache {
                 count = cursor.getLong(0);
             }
             return count;
+        });
+    }
+
+    @Override
+    public Single<List<PlayedSongEntity>> getStoredPlayedSongs() {
+        return Single.fromCallable(() -> {
+            List<PlayedSongEntity> list = new ArrayList<>();
+            try (Cursor cursor = context.getContentResolver()
+                                        .query(SongsProvider.PlayedSongs.PLAYED_SONGS, PlayedSongColumns.Query.PROJECTION, null, null, null)) {
+                int count = 0;
+                if (null == cursor) {
+                    return list;
+                } else {
+                    count = cursor.getCount();
+                    if (0 == count) {
+                        return list;
+                    }
+                }
+
+                for (int index = 0; index < count; index++) {
+                    cursor.moveToPosition(index);
+                    list.add(CacheSongMapper.mapFromCache(cursor));
+                }
+            }
+            return list;
         });
     }
 }

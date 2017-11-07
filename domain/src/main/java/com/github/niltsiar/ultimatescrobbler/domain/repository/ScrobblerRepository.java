@@ -4,6 +4,7 @@ import com.github.niltsiar.ultimatescrobbler.domain.model.Credentials;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import java.util.List;
 
 public interface ScrobblerRepository {
 
@@ -14,4 +15,6 @@ public interface ScrobblerRepository {
     Completable savePlayedSong(PlayedSong playedSong);
 
     Single<Long> countStoredPlayedSongs();
+
+    Single<List<PlayedSong>> getStoredPlayedSongs();
 }
