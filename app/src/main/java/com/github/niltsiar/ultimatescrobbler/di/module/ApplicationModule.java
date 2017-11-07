@@ -9,11 +9,14 @@ import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.github.niltsiar.ultimatescrobbler.BuildConfig;
 import com.github.niltsiar.ultimatescrobbler.cache.preferences.ConfigurationCacheImpl;
+import com.github.niltsiar.ultimatescrobbler.cache.storage.SongsCacheImpl;
 import com.github.niltsiar.ultimatescrobbler.data.ScrobblerDataRepository;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ConfigurationCache;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerRemote;
+import com.github.niltsiar.ultimatescrobbler.data.repository.SongsCache;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionToken;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.nowplaying.SendNowPlaying;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.saveplayedsong.SavePlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerRemoteImpl;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerService;
@@ -86,28 +89,38 @@ public class ApplicationModule {
     }
 
     @Provides
-    static RequestMobileSessionToken providesRequestMobileSessionToken(ScrobblerRepository repository) {
+    static RequestMobileSessionToken provideRequestMobileSessionToken(ScrobblerRepository repository) {
         return new RequestMobileSessionToken(repository, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 
     @Provides
-    static SendNowPlaying providesSendNowPlaying(ScrobblerRepository repository) {
+    static SendNowPlaying provideSendNowPlaying(ScrobblerRepository repository) {
         return new SendNowPlaying(repository, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 
     @Provides
-    static ConfigurationCache providesConfigurationDataStore(RxSharedPreferences rxSharedPreferences) {
+    static ConfigurationCache provideConfigurationDataStore(RxSharedPreferences rxSharedPreferences) {
         return new ConfigurationCacheImpl(rxSharedPreferences);
     }
 
     @Provides
-    static RxSharedPreferences providesRxSharedPreferences(Context context) {
+    static RxSharedPreferences provideRxSharedPreferences(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return RxSharedPreferences.create(sharedPreferences);
     }
 
     @Provides
-    static FirebaseJobDispatcher providesFirebaseJobDispatcher(Context context) {
+    static FirebaseJobDispatcher provideFirebaseJobDispatcher(Context context) {
         return new FirebaseJobDispatcher(new GooglePlayDriver(context));
+    }
+
+    @Provides
+    static SongsCache provivdeSongCache(Context context) {
+        return new SongsCacheImpl(context);
+    }
+
+    @Provides
+    static SavePlayedSong provideSavePlayedSong(ScrobblerRepository repository) {
+        return new SavePlayedSong(repository, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 }

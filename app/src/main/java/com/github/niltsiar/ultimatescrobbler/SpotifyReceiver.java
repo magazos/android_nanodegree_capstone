@@ -51,7 +51,6 @@ public class SpotifyReceiver extends BroadcastReceiver {
             String trackName = intent.getStringExtra("track");
             String length = Integer.toString(intent.getIntExtra("length", 0));
             PlayedSong playedSong = PlayedSong.builder()
-                                              .setId(trackId)
                                               .setArtistName(artistName)
                                               .setAlbumName(albumName)
                                               .setTrackName(trackName)

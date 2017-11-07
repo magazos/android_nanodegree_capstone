@@ -10,6 +10,14 @@ android {
     defaultConfig {
         minSdkVersion versions.androidSdk.min
         targetSdkVersion versions.androidSdk.target
+
+        def baseAuthority = "com.github.niltsiar.ultimatescrobbler"
+        def songsAuthorityValue = baseAuthority + ".SongsProvider"
+
+        buildConfigField "String", "SONGS_AUTHORITY", "\"${songsAuthorityValue}\""
+        manifestPlaceholders = [
+                songsAuthority: songsAuthorityValue,
+        ]
     }
     buildTypes {
         release {
@@ -24,4 +32,7 @@ dependencies {
 
     implementation libraries.app.javaxInject
     implementation libraries.app.rxpreferences
+    implementation libraries.app.schematic
+
+    annotationProcessor libraries.apt.schematic
 }
