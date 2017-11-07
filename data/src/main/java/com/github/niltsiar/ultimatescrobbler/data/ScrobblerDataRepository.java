@@ -11,17 +11,18 @@ import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerReposito
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 public class ScrobblerDataRepository implements ScrobblerRepository {
 
-    private ScrobblerRemote scrobblerRemote;
+    private Provider<ScrobblerRemote> scrobblerRemote;
     private ConfigurationCache configurationCache;
     private SongsCache songsCache;
     private CredentialsMapper credentialsMapper;
     private PlayedSongMapper playedSongMapper;
 
     @Inject
-    public ScrobblerDataRepository(ScrobblerRemote scrobblerRemote, ConfigurationCache configurationCache, SongsCache songsCache,
+    public ScrobblerDataRepository(Provider<ScrobblerRemote> scrobblerRemote, ConfigurationCache configurationCache, SongsCache songsCache,
             CredentialsMapper credentialsMapper,
             PlayedSongMapper playedSongMapper) {
         this.scrobblerRemote = scrobblerRemote;
@@ -33,13 +34,15 @@ public class ScrobblerDataRepository implements ScrobblerRepository {
 
     @Override
     public Single<String> requestMobileSessionToken(Credentials credentials) {
-        return scrobblerRemote.requestMobileSessionToken(credentialsMapper.mapToEntity(credentials))
+        return scrobblerRemote.get()
+                              .requestMobileSessionToken(credentialsMapper.mapToEntity(credentials))
                               .doOnSuccess(configurationCache.saveMobileSessionToken());
     }
 
     @Override
     public Completable sendNowPlaying(PlayedSong nowPlayingSong) {
-        return scrobblerRemote.sendNowPlaying(playedSongMapper.mapToEntity(nowPlayingSong));
+        return scrobblerRemote.get()
+                              .sendNowPlaying(playedSongMapper.mapToEntity(nowPlayingSong));
     }
 
     @Override
