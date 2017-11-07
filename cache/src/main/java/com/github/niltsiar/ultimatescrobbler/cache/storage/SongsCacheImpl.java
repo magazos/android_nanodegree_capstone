@@ -47,10 +47,11 @@ public class SongsCacheImpl implements SongsCache {
             String[] projection = new String[]{QUERY_COUNT};
             try (Cursor cursor = context.getContentResolver()
                                         .query(SongsProvider.PlayedSongs.PLAYED_SONGS, projection, null, null, null)) {
-                if (null != cursor && 0 != cursor.getCount()) {
-                    cursor.moveToFirst();
-                    count = cursor.getLong(0);
+                if (null == cursor || 0 == cursor.getCount()) {
+                    return count;
                 }
+                cursor.moveToFirst();
+                count = cursor.getLong(0);
             }
             return count;
         });
