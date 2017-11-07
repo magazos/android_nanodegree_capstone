@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         spotifyReceiver = new SpotifyReceiver();
+        playedSongsDisposables = new CompositeDisposable();
     }
 
     @Override
