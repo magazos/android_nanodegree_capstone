@@ -1,8 +1,10 @@
 package com.github.niltsiar.ultimatescrobbler.cache.mapper;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import com.github.niltsiar.ultimatescrobbler.cache.database.PlayedSongColumns;
 import com.github.niltsiar.ultimatescrobbler.data.model.PlayedSongEntity;
+import java.util.Calendar;
 
 public class CacheSongMapper {
 
@@ -18,5 +20,18 @@ public class CacheSongMapper {
                                .setAlbumName(cursor.getString(PlayedSongColumns.Query.Index.ALBUM_NAME))
                                .setDuration(cursor.getInt(PlayedSongColumns.Query.Index.LENGTH))
                                .build();
+    }
+
+    public static ContentValues mapToCache(PlayedSongEntity playedSongEntity) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(PlayedSongColumns.ID, playedSongEntity.getId());
+        contentValues.put(PlayedSongColumns.TRACK_NAME, playedSongEntity.getTrackName());
+        contentValues.put(PlayedSongColumns.ARTIST_NAME, playedSongEntity.getArtistName());
+        contentValues.put(PlayedSongColumns.ALBUM_NAME, playedSongEntity.getAlbumName());
+        contentValues.put(PlayedSongColumns.LENGTH, playedSongEntity.getDuration());
+        contentValues.put(PlayedSongColumns.PLAYED_INSTANT, Calendar.getInstance()
+                                                                    .getTimeInMillis());
+
+        return contentValues;
     }
 }

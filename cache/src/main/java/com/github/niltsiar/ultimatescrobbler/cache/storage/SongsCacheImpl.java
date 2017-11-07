@@ -1,6 +1,5 @@
 package com.github.niltsiar.ultimatescrobbler.cache.storage;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import com.github.niltsiar.ultimatescrobbler.cache.database.PlayedSongColumns;
@@ -11,7 +10,6 @@ import com.github.niltsiar.ultimatescrobbler.data.repository.SongsCache;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -30,16 +28,8 @@ public class SongsCacheImpl implements SongsCache {
     @Override
     public Completable savePlayedSong(PlayedSongEntity playedSongEntity) {
         return Completable.fromAction(() -> {
-            ContentValues cv = new ContentValues();
-            cv.put(PlayedSongColumns.ID, playedSongEntity.getId());
-            cv.put(PlayedSongColumns.TRACK_NAME, playedSongEntity.getTrackName());
-            cv.put(PlayedSongColumns.ARTIST_NAME, playedSongEntity.getArtistName());
-            cv.put(PlayedSongColumns.ALBUM_NAME, playedSongEntity.getAlbumName());
-            cv.put(PlayedSongColumns.LENGTH, playedSongEntity.getDuration());
-            cv.put(PlayedSongColumns.PLAYED_INSTANT, Calendar.getInstance()
-                                                             .getTimeInMillis());
             context.getContentResolver()
-                   .insert(SongsProvider.PlayedSongs.PLAYED_SONGS, cv);
+                   .insert(SongsProvider.PlayedSongs.PLAYED_SONGS, CacheSongMapper.mapToCache(playedSongEntity));
         });
     }
 
