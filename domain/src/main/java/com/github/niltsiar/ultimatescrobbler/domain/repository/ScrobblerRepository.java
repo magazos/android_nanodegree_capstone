@@ -12,4 +12,6 @@ public interface ScrobblerRepository {
     Completable sendNowPlaying(PlayedSong nowPlayingSong);
 
     Completable savePlayedSong(PlayedSong playedSong);
+
+    Single<Long> countStoredPlayedSongs();
 }

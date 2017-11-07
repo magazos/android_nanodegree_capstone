@@ -7,7 +7,6 @@ android {
         sourceCompatibility versions.sourceCompatibility
         targetCompatibility versions.targetCompatibility
     }
-    publishNonDefault true
     defaultConfig {
         minSdkVersion versions.androidSdk.min
         targetSdkVersion versions.androidSdk.target

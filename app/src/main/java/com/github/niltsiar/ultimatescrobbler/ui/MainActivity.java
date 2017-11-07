@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
                                                                                                 .subscribe()));
         playedSongsDisposables.add(spotifyReceiver.getPlayedSongs()
                                                   .subscribe(playedSong -> savePlayedSongUseCase.execute(playedSong)
-                                                                                                .subscribe()));
+                                                                                                .subscribe(count -> Timber.i("%d stored songs",
+                                                                                                                             count))));
         registerReceiver(spotifyReceiver, SpotifyReceiver.getSpotifyIntents());
     }
 

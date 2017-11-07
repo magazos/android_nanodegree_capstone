@@ -1,13 +1,13 @@
 package com.github.niltsiar.ultimatescrobbler.domain.interactor.saveplayedsong;
 
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.CompletableUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.SingleUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
-import io.reactivex.Completable;
 import io.reactivex.Scheduler;
+import io.reactivex.Single;
 import javax.inject.Inject;
 
-public class SavePlayedSong extends CompletableUseCase<PlayedSong> {
+public class SavePlayedSong extends SingleUseCase<Long, PlayedSong> {
 
     private ScrobblerRepository scrobblerRepository;
 
@@ -19,7 +19,8 @@ public class SavePlayedSong extends CompletableUseCase<PlayedSong> {
     }
 
     @Override
-    protected Completable buildUseCaseObservable(PlayedSong currentSong) {
-        return scrobblerRepository.savePlayedSong(currentSong);
+    protected Single<Long> buildUseCaseObservable(PlayedSong currentSong) {
+        return scrobblerRepository.savePlayedSong(currentSong)
+                                  .andThen(scrobblerRepository.countStoredPlayedSongs());
     }
 }
