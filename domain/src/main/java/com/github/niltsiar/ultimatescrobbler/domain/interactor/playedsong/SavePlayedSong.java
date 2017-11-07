@@ -5,13 +5,11 @@ import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
-import javax.inject.Inject;
 
 public class SavePlayedSong extends SingleUseCase<Long, PlayedSong> {
 
     private ScrobblerRepository scrobblerRepository;
 
-    @Inject
     public SavePlayedSong(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
         super(executionScheduler, postExecutionScheduler);
 
