@@ -17,6 +17,8 @@ public abstract class PlayedSongEntity {
 
     public abstract int getDuration();
 
+    public abstract int getTimestamp();
+
     public static Builder builder() {
         return new AutoValue_PlayedSongEntity.Builder();
     }
@@ -32,6 +34,8 @@ public abstract class PlayedSongEntity {
         public abstract Builder setAlbumName(String newAlbumName);
 
         public abstract Builder setDuration(int newDuration);
+
+        public abstract Builder setTimestamp(int newTimestamp);
 
         public abstract PlayedSongEntity build();
     }

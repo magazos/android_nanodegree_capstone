@@ -18,6 +18,7 @@ public class PlayedSongMapper implements Mapper<PlayedSongEntity, PlayedSong> {
                          .setArtistName(type.getArtistName())
                          .setAlbumName(type.getAlbumName())
                          .setLength(type.getDuration())
+                         .setTimestamp(type.getTimestamp())
                          .build();
     }
 
@@ -29,6 +30,7 @@ public class PlayedSongMapper implements Mapper<PlayedSongEntity, PlayedSong> {
                                .setArtistName(type.getArtistName())
                                .setAlbumName(type.getAlbumName())
                                .setDuration(type.getLength())
+                               .setTimestamp(type.getTimestamp())
                                .build();
     }
 }
