@@ -37,7 +37,7 @@ public final class SongsProvider {
 
         @ContentUri(path = Path.PLAYED_SONGS,
                     type = "vnd.android.cursor.dir/played_song",
-                    defaultSort = PlayedSongColumns.PLAYED_INSTANT)
+                    defaultSort = PlayedSongColumns.TIMESTAMP)
         public static Uri PLAYED_SONGS = buildUri(Path.PLAYED_SONGS);
 
         @InexactContentUri(path = Path.PLAYED_SONGS + "/#",

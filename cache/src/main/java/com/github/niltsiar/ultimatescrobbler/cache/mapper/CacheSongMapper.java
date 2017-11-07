@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import com.github.niltsiar.ultimatescrobbler.cache.database.PlayedSongColumns;
 import com.github.niltsiar.ultimatescrobbler.data.model.PlayedSongEntity;
-import java.util.Calendar;
 
 public class CacheSongMapper {
 
@@ -19,6 +18,7 @@ public class CacheSongMapper {
                                .setArtistName(cursor.getString(PlayedSongColumns.Query.Index.ARTIST_NAME))
                                .setAlbumName(cursor.getString(PlayedSongColumns.Query.Index.ALBUM_NAME))
                                .setDuration(cursor.getInt(PlayedSongColumns.Query.Index.LENGTH))
+                               .setTimestamp(cursor.getInt(PlayedSongColumns.Query.Index.TIMESTAMP))
                                .build();
     }
 
@@ -29,8 +29,7 @@ public class CacheSongMapper {
         contentValues.put(PlayedSongColumns.ARTIST_NAME, playedSongEntity.getArtistName());
         contentValues.put(PlayedSongColumns.ALBUM_NAME, playedSongEntity.getAlbumName());
         contentValues.put(PlayedSongColumns.LENGTH, playedSongEntity.getDuration());
-        contentValues.put(PlayedSongColumns.PLAYED_INSTANT, Calendar.getInstance()
-                                                                    .getTimeInMillis());
+        contentValues.put(PlayedSongColumns.TIMESTAMP, playedSongEntity.getTimestamp());
 
         return contentValues;
     }
