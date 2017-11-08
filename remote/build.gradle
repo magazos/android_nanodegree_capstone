@@ -32,6 +32,7 @@ dependencies {
     implementation libraries.app.firebaseJobDispatcher
     implementation libraries.app.dagger
     implementation libraries.app.daggerSupport
+    implementation libraries.app.threetenbp
 
     compileOnly libraries.app.javaxAnnotations
     compileOnly libraries.app.autoValue

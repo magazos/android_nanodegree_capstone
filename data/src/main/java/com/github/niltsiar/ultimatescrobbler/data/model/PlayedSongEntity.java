@@ -2,6 +2,7 @@ package com.github.niltsiar.ultimatescrobbler.data.model;
 
 import com.google.auto.value.AutoValue;
 import javax.annotation.Nullable;
+import org.threeten.bp.Instant;
 
 @AutoValue
 public abstract class PlayedSongEntity {
@@ -17,7 +18,7 @@ public abstract class PlayedSongEntity {
 
     public abstract int getDuration();
 
-    public abstract int getTimestamp();
+    public abstract Instant getTimestamp();
 
     public static Builder builder() {
         return new AutoValue_PlayedSongEntity.Builder();
@@ -35,7 +36,7 @@ public abstract class PlayedSongEntity {
 
         public abstract Builder setDuration(int newDuration);
 
-        public abstract Builder setTimestamp(int newTimestamp);
+        public abstract Builder setTimestamp(Instant newTimestamp);
 
         public abstract PlayedSongEntity build();
     }

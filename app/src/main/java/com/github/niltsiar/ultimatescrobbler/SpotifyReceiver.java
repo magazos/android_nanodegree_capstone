@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import com.jakewharton.rxrelay2.PublishRelay;
 import io.reactivex.Observable;
+import org.threeten.bp.Instant;
 import timber.log.Timber;
 
 public class SpotifyReceiver extends BroadcastReceiver {
@@ -49,13 +50,15 @@ public class SpotifyReceiver extends BroadcastReceiver {
             String artistName = intent.getStringExtra("artist");
             String albumName = intent.getStringExtra("album");
             String trackName = intent.getStringExtra("track");
-            String length = Integer.toString(intent.getIntExtra("length", 0));
+            int length = intent.getIntExtra("length", 0);
+
             try {
                 PlayedSong playedSong = PlayedSong.builder()
                                                   .setArtistName(artistName)
                                                   .setAlbumName(albumName)
                                                   .setTrackName(trackName)
-                                                  .setLength(Integer.valueOf(length))
+                                                  .setLength(length)
+                                                  .setTimestamp(Instant.ofEpochSecond(timeSent))
                                                   .build();
 
                 playedSongs.accept(playedSong);
