@@ -19,7 +19,7 @@ public class CacheSongMapper {
                                .setArtistName(cursor.getString(PlayedSongColumns.Query.Index.ARTIST_NAME))
                                .setAlbumName(cursor.getString(PlayedSongColumns.Query.Index.ALBUM_NAME))
                                .setDuration(cursor.getInt(PlayedSongColumns.Query.Index.LENGTH))
-                               .setTimestamp(Instant.ofEpochSecond(cursor.getLong(PlayedSongColumns.Query.Index.TIMESTAMP)))
+                               .setTimestamp(Instant.ofEpochMilli(cursor.getLong(PlayedSongColumns.Query.Index.TIMESTAMP)))
                                .build();
     }
 
@@ -31,7 +31,7 @@ public class CacheSongMapper {
         contentValues.put(PlayedSongColumns.ALBUM_NAME, playedSongEntity.getAlbumName());
         contentValues.put(PlayedSongColumns.LENGTH, playedSongEntity.getDuration());
         contentValues.put(PlayedSongColumns.TIMESTAMP, playedSongEntity.getTimestamp()
-                                                                       .getEpochSecond());
+                                                                       .toEpochMilli());
 
         return contentValues;
     }

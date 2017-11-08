@@ -31,8 +31,8 @@ public abstract class ScrobbledSongModel {
     public abstract String getAlbumArtist();
 
     @Json(name = "timestamp")
-    @FallbackOnNull(fallbackInt = Integer.MIN_VALUE)
-    public abstract int getTimeStamp();
+    @FallbackOnNull(fallbackLong = 0)
+    public abstract long getTimeStamp();
 
     @Json(name = "ignoredMessage")
     @Wrapped(path = "code")

@@ -58,7 +58,7 @@ public class SpotifyReceiver extends BroadcastReceiver {
                                                   .setAlbumName(albumName)
                                                   .setTrackName(trackName)
                                                   .setLength(length)
-                                                  .setTimestamp(Instant.ofEpochSecond(timeSent))
+                                                  .setTimestamp(Instant.ofEpochMilli(timeSent))
                                                   .build();
 
                 playedSongs.accept(playedSong);
