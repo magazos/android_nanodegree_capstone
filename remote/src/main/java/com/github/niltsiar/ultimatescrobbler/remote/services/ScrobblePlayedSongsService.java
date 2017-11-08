@@ -12,9 +12,9 @@ import com.github.niltsiar.ultimatescrobbler.remote.model.ScrobbledSongModel;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
+import java.util.UUID;
 import timber.log.Timber;
 
 public class ScrobblePlayedSongsService extends ScrobblerJobService {
@@ -23,12 +23,10 @@ public class ScrobblePlayedSongsService extends ScrobblerJobService {
     public boolean onStartJob(JobParameters job) {
         Map<String, String> params = bundleToMap(job.getExtras());
 
-        DisposableSingleObserver<List<ScrobbledSongModel>> observer = new DisposableSingleObserver<List<ScrobbledSongModel>>() {
+        DisposableSingleObserver<ScrobbledSongModel> observer = new DisposableSingleObserver<ScrobbledSongModel>() {
             @Override
-            public void onSuccess(List<ScrobbledSongModel> scrobbledSongModels) {
-                for (ScrobbledSongModel scrobbledSong : scrobbledSongModels) {
-                    Timber.i(scrobbledSong.toString());
-                }
+            public void onSuccess(ScrobbledSongModel scrobbledSongModel) {
+                Timber.i(scrobbledSongModel.toString());
                 finishJob(job, false);
             }
 
@@ -51,7 +49,8 @@ public class ScrobblePlayedSongsService extends ScrobblerJobService {
 
         return dispatcher.newJobBuilder()
                          .setService(ScrobblePlayedSongsService.class)
-                         .setTag(ScrobblePlayedSongsService.class.getName())
+                         .setTag(UUID.randomUUID()
+                                     .toString())
                          .setRecurring(false)
                          .setLifetime(Lifetime.FOREVER)
                          .setTrigger(Trigger.NOW)

@@ -10,6 +10,7 @@ import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.MobileSessionToke
 import com.github.niltsiar.ultimatescrobbler.remote.services.ScrobblePlayedSongsService;
 import com.github.niltsiar.ultimatescrobbler.remote.services.SendNowPlayingService;
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import java.util.List;
 import java.util.Map;
@@ -88,27 +89,28 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
 
     @Override
     public Completable scrobblePlayedSongs(List<PlayedSongEntity> playedSongs) {
-        return Completable.fromAction(() -> {
-            SortedMap<String, String> params = new TreeMap<>();
-            params.put(METHOD_PARAM_NAME, SCROBBLE_METHOD_NAME);
+        return Completable.fromObservable(Observable.fromIterable(playedSongs)
+                                                    .doOnEach((notification -> {
+                                                        if (!notification.isOnNext()) {
+                                                            return;
+                                                        }
+                                                        PlayedSongEntity song = notification.getValue();
+                                                        SortedMap<String, String> params = new TreeMap<>();
+                                                        params.put(METHOD_PARAM_NAME, SCROBBLE_METHOD_NAME);
+                                                        params.put(ARTIST_PARAM_NAME, song.getArtistName());
+                                                        params.put(TRACK_PARAM_NAME, song.getTrackName());
+                                                        params.put(TIMESTAMP_PARAM_NAME, String.valueOf(song.getTimestamp()
+                                                                                                            .getEpochSecond()));
+                                                        params.put(ALBUM_PARAM_NAME, song.getAlbumName());
+                                                        params.put(DURATION_PARAM_NAME, String.valueOf(song.getDuration()));
+                                                        params.put(API_KEY_PARAM_NAME, apiKey);
+                                                        params.put(SESSION_TOKEN_PARAM_NAME, mobileSessionToken);
 
-            int listSize = playedSongs.size();
-            for (int index = 0; index < listSize; index++) {
-                PlayedSongEntity song = playedSongs.get(index);
-                params.put(createIndexedParamName(ARTIST_PARAM_NAME, index), song.getArtistName());
-                params.put(createIndexedParamName(TRACK_PARAM_NAME, index), song.getTrackName());
-                params.put(createIndexedParamName(TIMESTAMP_PARAM_NAME, index), String.valueOf(song.getTimestamp()));
-                params.put(createIndexedParamName(ALBUM_PARAM_NAME, index), song.getAlbumName());
-                params.put(createIndexedParamName(DURATION_PARAM_NAME, index), String.valueOf(song.getDuration()));
-            }
-            params.put(API_KEY_PARAM_NAME, apiKey);
-            params.put(SESSION_TOKEN_PARAM_NAME, mobileSessionToken);
+                                                        String signature = getSignature(params);
+                                                        params.put(API_SIGNATURE_PARAM_NAME, signature);
 
-            String signature = getSignature(params);
-            params.put(API_SIGNATURE_PARAM_NAME, signature);
-
-            dispatcher.mustSchedule(ScrobblePlayedSongsService.createJob(dispatcher, params));
-        });
+                                                        dispatcher.mustSchedule(ScrobblePlayedSongsService.createJob(dispatcher, params));
+                                                    })));
     }
 
     private String getSignature(SortedMap<String, String> params) {
