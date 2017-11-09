@@ -1,5 +1,6 @@
 package com.github.niltsiar.ultimatescrobbler.remote;
 
+import com.github.niltsiar.ultimatescrobbler.remote.model.InfoSongModel;
 import com.github.niltsiar.ultimatescrobbler.remote.model.ScrobbledSongModel;
 import com.serjltt.moshi.adapters.Wrapped;
 import io.reactivex.Single;
@@ -30,4 +31,9 @@ public interface ScrobblerService {
     @POST(WS_PATH)
     @Wrapped(path = {"scrobbles", "scrobble"})
     Single<ScrobbledSongModel> scrobble(@FieldMap Map<String, String> parameters, @Query(QUERY_FORMAT_PARAMETER) String format);
+
+    @FormUrlEncoded
+    @POST(WS_PATH)
+    @Wrapped(path = {"track"})
+    Single<InfoSongModel> getInfo(@FieldMap Map<String, String> parameters, @Query(QUERY_FORMAT_PARAMETER) String format);
 }
