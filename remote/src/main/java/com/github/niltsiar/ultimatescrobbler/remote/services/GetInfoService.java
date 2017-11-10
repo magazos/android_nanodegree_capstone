@@ -32,8 +32,8 @@ public class GetInfoService extends ScrobblerJobService {
 
         DisposableSingleObserver<InfoSongModel> observer = new DisposableSingleObserver<InfoSongModel>() {
             @Override
-            public void onSuccess(InfoSongModel scrobbledSongModel) {
-                Timber.i(scrobbledSongModel.toString());
+            public void onSuccess(InfoSongModel infoSongModel) {
+                Timber.i(infoSongModel.toString());
                 finishJob(job, false);
             }
 
@@ -56,7 +56,7 @@ public class GetInfoService extends ScrobblerJobService {
         extras.putLong(TIMESTAMP_PARAM, timestamp);
 
         return dispatcher.newJobBuilder()
-                         .setService(ScrobblePlayedSongsService.class)
+                         .setService(GetInfoService.class)
                          .setTag(UUID.randomUUID()
                                      .toString())
                          .setRecurring(false)

@@ -21,16 +21,13 @@ public abstract class InfoSongModel {
     @Wrapped(path = "name")
     public abstract String getArtist();
 
-    @Json(name = "album")
-    @Wrapped(path = "title")
+    @Wrapped(path = {"album", "title"})
     public abstract String getAlbum();
 
-    @Json(name = "album")
-    @Wrapped(path = "artist")
+    @Wrapped(path = {"album", "artist"})
     public abstract String getAlbumArtist();
 
-    @Json(name = "album")
-    @Wrapped(path = "image")
+    @Wrapped(path = {"album", "image"})
     public abstract String getAlbumArt();
 
     @Json(name = "toptags")
@@ -38,10 +35,9 @@ public abstract class InfoSongModel {
     public abstract List<String> getTags();
 
     @Json(name = "wiki")
-    @Wrapped(path = "summary")
+    @Wrapped(path = {"wiki", "summary"})
     public abstract String getSummary();
 
-    @Json(name = "wiki")
-    @Wrapped(path = "content")
+    @Wrapped(path = {"wiki", "content"})
     public abstract String getContent();
 }
