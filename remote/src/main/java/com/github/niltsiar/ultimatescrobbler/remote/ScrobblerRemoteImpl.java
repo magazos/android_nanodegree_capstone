@@ -41,6 +41,8 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
     private static final String API_KEY_PARAM_NAME = "api_key";
     private static final String SESSION_TOKEN_PARAM_NAME = "sk";
     private static final String API_SIGNATURE_PARAM_NAME = "api_sig";
+    private static final String USERNAME_PARAM_NAME = "username";
+    private static final String PASSWORD_PARAM_NAME = "password";
 
     @Inject
     public ScrobblerRemoteImpl(FirebaseJobDispatcher dispatcher, ScrobblerService scrobblerService,
@@ -57,13 +59,13 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
     @Override
     public Single<String> requestMobileSessionToken(CredentialsEntity credentials) {
         SortedMap<String, String> params = new TreeMap<>();
-        params.put("method", GET_MOBILE_SESSION_METHOD_NAME);
-        params.put("username", credentials.getUsername());
-        params.put("password", credentials.getPassword());
-        params.put("api_key", apiKey);
+        params.put(METHOD_PARAM_NAME, GET_MOBILE_SESSION_METHOD_NAME);
+        params.put(USERNAME_PARAM_NAME, credentials.getUsername());
+        params.put(PASSWORD_PARAM_NAME, credentials.getPassword());
+        params.put(API_KEY_PARAM_NAME, apiKey);
 
         String signature = getSignature(params);
-        params.put("api_sig", signature);
+        params.put(API_SIGNATURE_PARAM_NAME, signature);
 
         return scrobblerService.requestMobileSessionToken(params, RESPONSE_FORMAT);
     }
@@ -71,17 +73,10 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
     @Override
     public Completable sendNowPlaying(PlayedSongEntity nowPlayingSong) {
         return Completable.fromAction(() -> {
-            SortedMap<String, String> params = new TreeMap<>();
-            params.put("method", UPDATE_NOW_PLAYING_METHOD_NAME);
-            params.put("artist", nowPlayingSong.getArtistName());
-            params.put("track", nowPlayingSong.getTrackName());
-            params.put("album", nowPlayingSong.getAlbumName());
-            params.put("duration", String.valueOf(nowPlayingSong.getDuration()));
-            params.put("api_key", apiKey);
-            params.put("sk", mobileSessionToken);
+            SortedMap<String, String> params = createCommonSongApiParams(nowPlayingSong);
 
             String signature = getSignature(params);
-            params.put("api_sig", signature);
+            params.put(API_SIGNATURE_PARAM_NAME, signature);
 
             dispatcher.mustSchedule(SendNowPlayingService.createJob(dispatcher, params));
         });
@@ -90,21 +85,10 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
     @Override
     public Completable scrobblePlayedSongs(List<PlayedSongEntity> playedSongs) {
         return Completable.fromObservable(Observable.fromIterable(playedSongs)
-                                                    .doOnEach((notification -> {
-                                                        if (!notification.isOnNext()) {
-                                                            return;
-                                                        }
-                                                        PlayedSongEntity song = notification.getValue();
-                                                        SortedMap<String, String> params = new TreeMap<>();
-                                                        params.put(METHOD_PARAM_NAME, SCROBBLE_METHOD_NAME);
-                                                        params.put(ARTIST_PARAM_NAME, song.getArtistName());
-                                                        params.put(TRACK_PARAM_NAME, song.getTrackName());
+                                                    .doOnNext((song -> {
+                                                        SortedMap<String, String> params = createCommonSongApiParams(song);
                                                         params.put(TIMESTAMP_PARAM_NAME, String.valueOf(song.getTimestamp()
                                                                                                             .getEpochSecond()));
-                                                        params.put(ALBUM_PARAM_NAME, song.getAlbumName());
-                                                        params.put(DURATION_PARAM_NAME, String.valueOf(song.getDuration()));
-                                                        params.put(API_KEY_PARAM_NAME, apiKey);
-                                                        params.put(SESSION_TOKEN_PARAM_NAME, mobileSessionToken);
 
                                                         String signature = getSignature(params);
                                                         params.put(API_SIGNATURE_PARAM_NAME, signature);
@@ -126,7 +110,15 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
                          .hex();
     }
 
-    private static String createIndexedParamName(String paramName, int index) {
-        return paramName + "[" + index + "]";
+    private SortedMap<String, String> createCommonSongApiParams(PlayedSongEntity nowPlayingSong) {
+        SortedMap<String, String> params = new TreeMap<>();
+        params.put(METHOD_PARAM_NAME, UPDATE_NOW_PLAYING_METHOD_NAME);
+        params.put(ARTIST_PARAM_NAME, nowPlayingSong.getArtistName());
+        params.put(TRACK_PARAM_NAME, nowPlayingSong.getTrackName());
+        params.put(ALBUM_PARAM_NAME, nowPlayingSong.getAlbumName());
+        params.put(DURATION_PARAM_NAME, String.valueOf(nowPlayingSong.getDuration()));
+        params.put(API_KEY_PARAM_NAME, apiKey);
+        params.put(SESSION_TOKEN_PARAM_NAME, mobileSessionToken);
+        return params;
     }
 }
