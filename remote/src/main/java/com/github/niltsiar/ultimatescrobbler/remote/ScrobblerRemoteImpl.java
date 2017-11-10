@@ -3,10 +3,12 @@ package com.github.niltsiar.ultimatescrobbler.remote;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.github.niltsiar.ultimatescrobbler.data.model.CredentialsEntity;
 import com.github.niltsiar.ultimatescrobbler.data.model.PlayedSongEntity;
+import com.github.niltsiar.ultimatescrobbler.data.model.ScrobbledSongEntity;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerRemote;
 import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.ApiKey;
 import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.ApiSecret;
 import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.MobileSessionToken;
+import com.github.niltsiar.ultimatescrobbler.remote.services.GetInfoService;
 import com.github.niltsiar.ultimatescrobbler.remote.services.ScrobblePlayedSongsService;
 import com.github.niltsiar.ultimatescrobbler.remote.services.SendNowPlayingService;
 import io.reactivex.Completable;
@@ -31,6 +33,7 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
     private static final String UPDATE_NOW_PLAYING_METHOD_NAME = "track.updateNowPlaying";
     private static final String GET_MOBILE_SESSION_METHOD_NAME = "auth.getMobileSession";
     private static final String SCROBBLE_METHOD_NAME = "track.scrobble";
+    private static final String GET_INFO_METHOD_NAME = "track.getInfo";
 
     private static final String METHOD_PARAM_NAME = "method";
     private static final String ARTIST_PARAM_NAME = "artist";
@@ -73,7 +76,7 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
     @Override
     public Completable sendNowPlaying(PlayedSongEntity nowPlayingSong) {
         return Completable.fromAction(() -> {
-            SortedMap<String, String> params = createCommonSongApiParams(nowPlayingSong);
+            SortedMap<String, String> params = createCommonSongApiParams(UPDATE_NOW_PLAYING_METHOD_NAME, nowPlayingSong);
 
             String signature = getSignature(params);
             params.put(API_SIGNATURE_PARAM_NAME, signature);
@@ -86,7 +89,7 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
     public Completable scrobblePlayedSongs(List<PlayedSongEntity> playedSongs) {
         return Completable.fromObservable(Observable.fromIterable(playedSongs)
                                                     .doOnNext((song -> {
-                                                        SortedMap<String, String> params = createCommonSongApiParams(song);
+                                                        SortedMap<String, String> params = createCommonSongApiParams(SCROBBLE_METHOD_NAME, song);
                                                         params.put(TIMESTAMP_PARAM_NAME, String.valueOf(song.getTimestamp()
                                                                                                             .getEpochSecond()));
 
@@ -95,6 +98,21 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
 
                                                         dispatcher.mustSchedule(ScrobblePlayedSongsService.createJob(dispatcher, params));
                                                     })));
+    }
+
+    @Override
+    public Completable getSongInformation(ScrobbledSongEntity scrobbledSong, String userName) {
+        return Completable.fromAction(() -> {
+            SortedMap<String, String> params = new TreeMap<>();
+            params.put(METHOD_PARAM_NAME, GET_INFO_METHOD_NAME);
+            params.put(TRACK_PARAM_NAME, scrobbledSong.getTrackName());
+            params.put(ARTIST_PARAM_NAME, scrobbledSong.getArtist());
+            params.put(USERNAME_PARAM_NAME, userName);
+            params.put(API_KEY_PARAM_NAME, apiKey);
+
+            dispatcher.mustSchedule(GetInfoService.createJob(dispatcher, params, scrobbledSong.getTimeStamp()
+                                                                                              .getEpochSecond()));
+        });
     }
 
     private String getSignature(SortedMap<String, String> params) {
@@ -110,9 +128,9 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
                          .hex();
     }
 
-    private SortedMap<String, String> createCommonSongApiParams(PlayedSongEntity nowPlayingSong) {
+    private SortedMap<String, String> createCommonSongApiParams(String methodName, PlayedSongEntity nowPlayingSong) {
         SortedMap<String, String> params = new TreeMap<>();
-        params.put(METHOD_PARAM_NAME, UPDATE_NOW_PLAYING_METHOD_NAME);
+        params.put(METHOD_PARAM_NAME, methodName);
         params.put(ARTIST_PARAM_NAME, nowPlayingSong.getArtistName());
         params.put(TRACK_PARAM_NAME, nowPlayingSong.getTrackName());
         params.put(ALBUM_PARAM_NAME, nowPlayingSong.getAlbumName());
