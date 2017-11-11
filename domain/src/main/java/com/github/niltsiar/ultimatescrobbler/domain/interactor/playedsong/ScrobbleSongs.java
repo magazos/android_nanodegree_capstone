@@ -1,25 +1,24 @@
-package com.github.niltsiar.ultimatescrobbler.domain.interactor.nowplaying;
+package com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong;
 
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.CompletableUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
 import io.reactivex.Completable;
 import io.reactivex.Scheduler;
-import javax.inject.Inject;
+import java.util.List;
 
-public class SendNowPlaying extends CompletableUseCase<PlayedSong> {
+public class ScrobbleSongs extends CompletableUseCase<List<PlayedSong>> {
 
     private ScrobblerRepository scrobblerRepository;
 
-    @Inject
-    public SendNowPlaying(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
+    public ScrobbleSongs(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
         super(executionScheduler, postExecutionScheduler);
 
         this.scrobblerRepository = scrobblerRepository;
     }
 
     @Override
-    protected Completable buildUseCaseObservable(PlayedSong currentSong) {
-        return scrobblerRepository.sendNowPlaying(currentSong);
+    protected Completable buildUseCaseObservable(List<PlayedSong> playedSongs) {
+        return scrobblerRepository.scrobblePlayedSongs(playedSongs);
     }
 }

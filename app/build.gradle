@@ -69,6 +69,10 @@ dependencies {
     implementation libraries.app.javaxInject
     implementation libraries.app.rxpreferences
     implementation libraries.app.firebaseJobDispatcher
+    implementation libraries.app.threetenbp
+    implementation (libraries.app.threetenabp) {
+        exclude module: 'threetenbp'
+    }
 
     debugImplementation libraries.debug.loggingInterceptor
     debugImplementation libraries.debug.oklog

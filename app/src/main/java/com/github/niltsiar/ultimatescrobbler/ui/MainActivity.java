@@ -9,10 +9,14 @@ import com.github.niltsiar.ultimatescrobbler.BuildConfig;
 import com.github.niltsiar.ultimatescrobbler.R;
 import com.github.niltsiar.ultimatescrobbler.SpotifyReceiver;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionToken;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.nowplaying.SendNowPlaying;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.saveplayedsong.SavePlayedSong;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetStoredPlayedSongs;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SavePlayedSong;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.ScrobbleSongs;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SendNowPlaying;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.GetSongInformation;
 import com.github.niltsiar.ultimatescrobbler.domain.model.Credentials;
 import dagger.android.AndroidInjection;
+import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import javax.inject.Inject;
 import timber.log.Timber;
@@ -27,6 +31,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Inject
     SavePlayedSong savePlayedSongUseCase;
+
+    @Inject
+    GetStoredPlayedSongs getStoredPlayedSongsUseCase;
+
+    @Inject
+    ScrobbleSongs scrobbleSongsUseCase;
+
+    @Inject
+    GetSongInformation getSongInformationUseCase;
 
     SpotifyReceiver spotifyReceiver;
     CompositeDisposable playedSongsDisposables;
@@ -51,8 +64,24 @@ public class MainActivity extends AppCompatActivity {
                                                                                                 .subscribe()));
         playedSongsDisposables.add(spotifyReceiver.getPlayedSongs()
                                                   .subscribe(playedSong -> savePlayedSongUseCase.execute(playedSong)
-                                                                                                .subscribe(count -> Timber.i("%d stored songs",
-                                                                                                                             count))));
+                                                                                                .subscribe(count -> {
+                                                                                                    Timber.i("%d stored songs", count);
+                                                                                                })));
+
+        playedSongsDisposables.add(spotifyReceiver.getPlayedSongs()
+                                                  .subscribe(ignored -> {
+                                                      getStoredPlayedSongsUseCase.execute(null)
+                                                                                 .doOnSuccess(playedSongs -> {
+                                                                                     Observable.fromIterable(playedSongs)
+                                                                                               .subscribe(playedSong -> {
+                                                                                                   Timber.i(playedSong.toString());
+                                                                                               });
+                                                                                 })
+                                                                                 .subscribe(playedSongs -> {
+                                                                                     scrobbleSongsUseCase.execute(playedSongs)
+                                                                                                         .subscribe();
+                                                                                 });
+                                                  }));
         registerReceiver(spotifyReceiver, SpotifyReceiver.getSpotifyIntents());
     }
 

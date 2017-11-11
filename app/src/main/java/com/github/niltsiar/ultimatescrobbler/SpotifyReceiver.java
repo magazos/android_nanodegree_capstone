@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import com.jakewharton.rxrelay2.PublishRelay;
 import io.reactivex.Observable;
+import org.threeten.bp.Instant;
 import timber.log.Timber;
 
 public class SpotifyReceiver extends BroadcastReceiver {
@@ -49,15 +50,21 @@ public class SpotifyReceiver extends BroadcastReceiver {
             String artistName = intent.getStringExtra("artist");
             String albumName = intent.getStringExtra("album");
             String trackName = intent.getStringExtra("track");
-            String length = Integer.toString(intent.getIntExtra("length", 0));
-            PlayedSong playedSong = PlayedSong.builder()
-                                              .setArtistName(artistName)
-                                              .setAlbumName(albumName)
-                                              .setTrackName(trackName)
-                                              .setLength(Integer.valueOf(length))
-                                              .build();
+            int length = intent.getIntExtra("length", 0);
 
-            playedSongs.accept(playedSong);
+            try {
+                PlayedSong playedSong = PlayedSong.builder()
+                                                  .setArtistName(artistName)
+                                                  .setAlbumName(albumName)
+                                                  .setTrackName(trackName)
+                                                  .setLength(length)
+                                                  .setTimestamp(Instant.ofEpochMilli(timeSent))
+                                                  .build();
+
+                playedSongs.accept(playedSong);
+            } catch (NullPointerException ex) {
+                Timber.d("Ignoring malformed song");
+            }
         } else if (action.equals(BroadcastTypes.PLAYBACK_STATE_CHANGED)) {
             boolean playing = intent.getBooleanExtra("playing", false);
             int positionInMs = intent.getIntExtra("playbackPosition", 0);

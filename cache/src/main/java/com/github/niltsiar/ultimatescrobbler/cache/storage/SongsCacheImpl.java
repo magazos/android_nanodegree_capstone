@@ -1,15 +1,16 @@
 package com.github.niltsiar.ultimatescrobbler.cache.storage;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import com.github.niltsiar.ultimatescrobbler.cache.database.PlayedSongColumns;
 import com.github.niltsiar.ultimatescrobbler.cache.database.SongsProvider;
+import com.github.niltsiar.ultimatescrobbler.cache.mapper.CacheSongMapper;
 import com.github.niltsiar.ultimatescrobbler.data.model.PlayedSongEntity;
 import com.github.niltsiar.ultimatescrobbler.data.repository.SongsCache;
 import io.reactivex.Completable;
 import io.reactivex.Single;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 
 public class SongsCacheImpl implements SongsCache {
@@ -27,16 +28,8 @@ public class SongsCacheImpl implements SongsCache {
     @Override
     public Completable savePlayedSong(PlayedSongEntity playedSongEntity) {
         return Completable.fromAction(() -> {
-            ContentValues cv = new ContentValues();
-            cv.put(PlayedSongColumns.ID, playedSongEntity.getId());
-            cv.put(PlayedSongColumns.TRACK_NAME, playedSongEntity.getTrackName());
-            cv.put(PlayedSongColumns.ARTIST_NAME, playedSongEntity.getArtistName());
-            cv.put(PlayedSongColumns.ALBUM_NAME, playedSongEntity.getAlbumName());
-            cv.put(PlayedSongColumns.LENGTH, playedSongEntity.getDuration());
-            cv.put(PlayedSongColumns.PLAYED_INSTANT, Calendar.getInstance()
-                                                             .getTimeInMillis());
             context.getContentResolver()
-                   .insert(SongsProvider.PlayedSongs.PLAYED_SONGS, cv);
+                   .insert(SongsProvider.PlayedSongs.PLAYED_SONGS, CacheSongMapper.mapToCache(playedSongEntity));
         });
     }
 
@@ -47,12 +40,38 @@ public class SongsCacheImpl implements SongsCache {
             String[] projection = new String[]{QUERY_COUNT};
             try (Cursor cursor = context.getContentResolver()
                                         .query(SongsProvider.PlayedSongs.PLAYED_SONGS, projection, null, null, null)) {
-                if (null != cursor && 0 != cursor.getCount()) {
-                    cursor.moveToFirst();
-                    count = cursor.getLong(0);
+                if (null == cursor || 0 == cursor.getCount()) {
+                    return count;
                 }
+                cursor.moveToFirst();
+                count = cursor.getLong(0);
             }
             return count;
+        });
+    }
+
+    @Override
+    public Single<List<PlayedSongEntity>> getStoredPlayedSongs() {
+        return Single.fromCallable(() -> {
+            List<PlayedSongEntity> list = new ArrayList<>();
+            try (Cursor cursor = context.getContentResolver()
+                                        .query(SongsProvider.PlayedSongs.PLAYED_SONGS, PlayedSongColumns.Query.PROJECTION, null, null, null)) {
+                int count = 0;
+                if (null == cursor) {
+                    return list;
+                } else {
+                    count = cursor.getCount();
+                    if (0 == count) {
+                        return list;
+                    }
+                }
+
+                for (int index = 0; index < count; index++) {
+                    cursor.moveToPosition(index);
+                    list.add(CacheSongMapper.mapFromCache(cursor));
+                }
+            }
+            return list;
         });
     }
 }

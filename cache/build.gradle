@@ -33,6 +33,7 @@ dependencies {
     implementation libraries.app.javaxInject
     implementation libraries.app.rxpreferences
     implementation libraries.app.schematic
+    implementation libraries.app.threetenbp
 
     annotationProcessor libraries.apt.schematic
 }

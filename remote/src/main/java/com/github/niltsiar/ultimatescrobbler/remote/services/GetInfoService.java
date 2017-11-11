@@ -5,26 +5,35 @@ import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.JobParameters;
+import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
-import com.github.niltsiar.ultimatescrobbler.remote.model.ScrobbledSongModel;
+import com.github.niltsiar.ultimatescrobbler.remote.model.InfoSongModel;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import java.util.Map;
 import java.util.SortedMap;
+import java.util.UUID;
 import timber.log.Timber;
 
-public class SendNowPlayingService extends ScrobblerJobService {
+public class GetInfoService extends ScrobblerJobService {
+
+    private static final String TIMESTAMP_PARAM = "extra_timestamp";
 
     @Override
     public boolean onStartJob(JobParameters job) {
+        long timestamp = 0;
+        Bundle extras = job.getExtras();
+        if (extras.containsKey(TIMESTAMP_PARAM)) {
+            timestamp = extras.getLong(TIMESTAMP_PARAM);
+        }
         Map<String, String> params = bundleToMap(job.getExtras());
 
-        DisposableSingleObserver<ScrobbledSongModel> observer = new DisposableSingleObserver<ScrobbledSongModel>() {
+        DisposableSingleObserver<InfoSongModel> observer = new DisposableSingleObserver<InfoSongModel>() {
             @Override
-            public void onSuccess(ScrobbledSongModel scrobbledSongModel) {
-                Timber.i(scrobbledSongModel.toString());
+            public void onSuccess(InfoSongModel infoSongModel) {
+                Timber.i(infoSongModel.toString());
                 finishJob(job, false);
             }
 
@@ -34,25 +43,27 @@ public class SendNowPlayingService extends ScrobblerJobService {
             }
         };
 
-        Disposable disposable = scrobblerService.updateNowPlaying(params, RESPONSE_FORMAT)
+        Disposable disposable = scrobblerService.getInfo(params, RESPONSE_FORMAT)
                                                 .subscribeOn(Schedulers.io())
                                                 .subscribeWith(observer);
         compositeDisposable.add(disposable);
 
-        return true;
+        return false;
     }
 
-    public static Job createJob(FirebaseJobDispatcher dispatcher, SortedMap<String, String> params) {
+    public static Job createJob(FirebaseJobDispatcher dispatcher, SortedMap<String, String> params, long timestamp) {
         Bundle extras = mapToBundle(params);
+        extras.putLong(TIMESTAMP_PARAM, timestamp);
 
         return dispatcher.newJobBuilder()
-                         .setService(SendNowPlayingService.class)
-                         .setTag(SendNowPlayingService.class.getName())
+                         .setService(GetInfoService.class)
+                         .setTag(UUID.randomUUID()
+                                     .toString())
                          .setRecurring(false)
-                         .setLifetime(30)
+                         .setLifetime(Lifetime.FOREVER)
                          .setTrigger(Trigger.NOW)
-                         .setReplaceCurrent(true)
-                         .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
+                         .setReplaceCurrent(false)
+                         .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
                          .setConstraints(Constraint.ON_ANY_NETWORK)
                          .setExtras(extras)
                          .build();

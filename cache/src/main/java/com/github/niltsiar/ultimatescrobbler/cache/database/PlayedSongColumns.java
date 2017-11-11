@@ -30,6 +30,19 @@ public interface PlayedSongColumns {
 
     @DataType(INTEGER)
     @NotNull
-    String PLAYED_INSTANT = "played_instant";
+    String TIMESTAMP = "played_instant";
 
+    interface Query {
+        String[] PROJECTION = {ID, TRACK_NAME, ARTIST_NAME, ALBUM_NAME, LENGTH, TIMESTAMP,
+        };
+
+        interface Index {
+            int ID = 0;
+            int TRACK_NAME = 1;
+            int ARTIST_NAME = 2;
+            int ALBUM_NAME = 3;
+            int LENGTH = 4;
+            int TIMESTAMP = 5;
+        }
+    }
 }

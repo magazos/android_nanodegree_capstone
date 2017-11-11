@@ -5,6 +5,7 @@ import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.JobParameters;
+import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 import com.github.niltsiar.ultimatescrobbler.remote.model.ScrobbledSongModel;
@@ -13,9 +14,10 @@ import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import java.util.Map;
 import java.util.SortedMap;
+import java.util.UUID;
 import timber.log.Timber;
 
-public class SendNowPlayingService extends ScrobblerJobService {
+public class ScrobblePlayedSongsService extends ScrobblerJobService {
 
     @Override
     public boolean onStartJob(JobParameters job) {
@@ -34,25 +36,26 @@ public class SendNowPlayingService extends ScrobblerJobService {
             }
         };
 
-        Disposable disposable = scrobblerService.updateNowPlaying(params, RESPONSE_FORMAT)
+        Disposable disposable = scrobblerService.scrobble(params, RESPONSE_FORMAT)
                                                 .subscribeOn(Schedulers.io())
                                                 .subscribeWith(observer);
         compositeDisposable.add(disposable);
 
-        return true;
+        return false;
     }
 
     public static Job createJob(FirebaseJobDispatcher dispatcher, SortedMap<String, String> params) {
         Bundle extras = mapToBundle(params);
 
         return dispatcher.newJobBuilder()
-                         .setService(SendNowPlayingService.class)
-                         .setTag(SendNowPlayingService.class.getName())
+                         .setService(ScrobblePlayedSongsService.class)
+                         .setTag(UUID.randomUUID()
+                                     .toString())
                          .setRecurring(false)
-                         .setLifetime(30)
+                         .setLifetime(Lifetime.FOREVER)
                          .setTrigger(Trigger.NOW)
-                         .setReplaceCurrent(true)
-                         .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
+                         .setReplaceCurrent(false)
+                         .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
                          .setConstraints(Constraint.ON_ANY_NETWORK)
                          .setExtras(extras)
                          .build();

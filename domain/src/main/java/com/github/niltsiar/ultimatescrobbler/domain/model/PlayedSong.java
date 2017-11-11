@@ -3,6 +3,7 @@ package com.github.niltsiar.ultimatescrobbler.domain.model;
 import com.google.auto.value.AutoValue;
 import java.util.UUID;
 import javax.annotation.Nullable;
+import org.threeten.bp.Instant;
 
 @AutoValue
 public abstract class PlayedSong {
@@ -18,6 +19,8 @@ public abstract class PlayedSong {
 
     public abstract int getLength();
 
+    public abstract Instant getTimestamp();
+
     public static Builder builder() {
         return new AutoValue_PlayedSong.Builder().setId(UUID.randomUUID()
                                                             .toString());
@@ -31,9 +34,11 @@ public abstract class PlayedSong {
 
         public abstract Builder setArtistName(String newArtistName);
 
-        public abstract Builder setAlbumName(@Nullable String newAlbumName);
+        public abstract Builder setAlbumName(String newAlbumName);
 
         public abstract Builder setLength(int newLength);
+
+        public abstract Builder setTimestamp(Instant newTimestamp);
 
         public abstract PlayedSong build();
     }
