@@ -13,6 +13,7 @@ import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetSto
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SavePlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.ScrobbleSongs;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SendNowPlaying;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.GetSongInformation;
 import com.github.niltsiar.ultimatescrobbler.domain.model.Credentials;
 import dagger.android.AndroidInjection;
 import io.reactivex.Observable;
@@ -36,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Inject
     ScrobbleSongs scrobbleSongsUseCase;
+
+    @Inject
+    GetSongInformation getSongInformationUseCase;
 
     SpotifyReceiver spotifyReceiver;
     CompositeDisposable playedSongsDisposables;

@@ -19,6 +19,7 @@ import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetSto
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SavePlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.ScrobbleSongs;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SendNowPlaying;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.GetSongInformation;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerRemoteImpl;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerService;
@@ -39,7 +40,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 @Module
-public class ApplicationModule {
+public abstract class ApplicationModule {
 
     @Provides
     static Context provideContext(Application application) {
@@ -134,5 +135,10 @@ public class ApplicationModule {
     @Provides
     static ScrobbleSongs provideScrobbleSongs(ScrobblerRepository repository) {
         return new ScrobbleSongs(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    }
+
+    @Provides
+    static GetSongInformation provideGetSongInformation(ScrobblerRepository repository) {
+        return new GetSongInformation(repository, BuildConfig.TEST_USERNAME, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 }
