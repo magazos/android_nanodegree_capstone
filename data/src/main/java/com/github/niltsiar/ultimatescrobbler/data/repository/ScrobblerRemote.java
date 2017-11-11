@@ -15,5 +15,5 @@ public interface ScrobblerRemote {
 
     Completable scrobblePlayedSongs(List<PlayedSongEntity> playedSongs);
 
-    Completable getSongInformation(ScrobbledSongEntity scrobbledSong, String username);
+    Completable requestSongInformation(ScrobbledSongEntity scrobbledSong, String username);
 }

@@ -101,13 +101,13 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
     }
 
     @Override
-    public Completable getSongInformation(ScrobbledSongEntity scrobbledSong, String userName) {
+    public Completable requestSongInformation(ScrobbledSongEntity scrobbledSong, String username) {
         return Completable.fromAction(() -> {
             SortedMap<String, String> params = new TreeMap<>();
             params.put(METHOD_PARAM_NAME, GET_INFO_METHOD_NAME);
             params.put(TRACK_PARAM_NAME, scrobbledSong.getTrackName());
             params.put(ARTIST_PARAM_NAME, scrobbledSong.getArtist());
-            params.put(USERNAME_PARAM_NAME, userName);
+            params.put(USERNAME_PARAM_NAME, username);
             params.put(API_KEY_PARAM_NAME, apiKey);
 
             dispatcher.mustSchedule(GetInfoService.createJob(dispatcher, params, scrobbledSong.getTimeStamp()
