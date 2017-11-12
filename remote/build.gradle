@@ -29,7 +29,6 @@ dependencies {
     }
     implementation libraries.app.moshiLazyAdapters
     implementation libraries.app.timber
-    implementation libraries.app.firebaseJobDispatcher
     implementation libraries.app.dagger
     implementation libraries.app.daggerSupport
     implementation libraries.app.threetenbp
