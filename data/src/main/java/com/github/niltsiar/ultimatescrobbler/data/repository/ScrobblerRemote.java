@@ -1,9 +1,10 @@
 package com.github.niltsiar.ultimatescrobbler.data.repository;
 
 import com.github.niltsiar.ultimatescrobbler.data.model.CredentialsEntity;
+import com.github.niltsiar.ultimatescrobbler.data.model.InfoSongEntity;
 import com.github.niltsiar.ultimatescrobbler.data.model.PlayedSongEntity;
 import com.github.niltsiar.ultimatescrobbler.data.model.ScrobbledSongEntity;
-import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import java.util.List;
 
@@ -11,9 +12,9 @@ public interface ScrobblerRemote {
 
     Single<String> requestMobileSessionToken(CredentialsEntity credentials);
 
-    Completable sendNowPlaying(PlayedSongEntity nowPlayingSong);
+    Single<ScrobbledSongEntity> sendNowPlaying(PlayedSongEntity nowPlayingSong);
 
-    Completable scrobblePlayedSongs(List<PlayedSongEntity> playedSongs);
+    Observable<ScrobbledSongEntity> scrobblePlayedSongs(List<PlayedSongEntity> playedSongs);
 
-    Completable requestSongInformation(ScrobbledSongEntity scrobbledSong, String username);
+    Single<InfoSongEntity> requestSongInformation(ScrobbledSongEntity scrobbledSong);
 }
