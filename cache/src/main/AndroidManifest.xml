@@ -5,8 +5,7 @@
 
     <provider
       android:authorities="${songsAuthority}"
-      android:name=".provider.SongsProvider"
-      exported="false" />
+      android:name=".provider.SongsProvider" />
 
   </application>
 </manifest>

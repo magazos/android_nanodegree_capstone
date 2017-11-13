@@ -40,7 +40,7 @@ public final class SongsProvider {
                     defaultSort = PlayedSongColumns.TIMESTAMP)
         public static Uri PLAYED_SONGS = buildUri(Path.PLAYED_SONGS);
 
-        @InexactContentUri(path = Path.PLAYED_SONGS + "/#",
+        @InexactContentUri(path = Path.PLAYED_SONGS + "/*",
                            name = "SONG_ID",
                            type = "vnd.android.cursor.item/played_song",
                            whereColumn = PlayedSongColumns.ID,
