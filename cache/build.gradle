@@ -35,5 +35,7 @@ dependencies {
     implementation libraries.app.schematic
     implementation libraries.app.threetenbp
 
+    compileOnly libraries.app.javaxAnnotations
+
     annotationProcessor libraries.apt.schematic
 }
