@@ -7,11 +7,11 @@ import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import javax.annotation.Nonnull;
 
-public class RequestMobileSessionToken extends SingleUseCase<String, Credentials> {
+public class RequestMobileSessionTokenUseCase extends SingleUseCase<String, Credentials> {
 
     private ScrobblerRepository scrobblerRepository;
 
-    public RequestMobileSessionToken(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
+    public RequestMobileSessionTokenUseCase(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
         super(executionScheduler, postExecutionScheduler);
 
         this.scrobblerRepository = scrobblerRepository;

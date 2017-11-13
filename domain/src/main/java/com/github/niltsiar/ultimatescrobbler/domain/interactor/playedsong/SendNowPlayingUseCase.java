@@ -7,11 +7,11 @@ import io.reactivex.Completable;
 import io.reactivex.Scheduler;
 import javax.annotation.Nonnull;
 
-public class SendNowPlaying extends CompletableUseCase<PlayedSong> {
+public class SendNowPlayingUseCase extends CompletableUseCase<PlayedSong> {
 
     private ScrobblerRepository scrobblerRepository;
 
-    public SendNowPlaying(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
+    public SendNowPlayingUseCase(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
         super(executionScheduler, postExecutionScheduler);
 
         this.scrobblerRepository = scrobblerRepository;
