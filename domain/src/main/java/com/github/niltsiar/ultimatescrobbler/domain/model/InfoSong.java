@@ -1,11 +1,11 @@
-package com.github.niltsiar.ultimatescrobbler.data.model;
+package com.github.niltsiar.ultimatescrobbler.domain.model;
 
 import com.google.auto.value.AutoValue;
 import java.util.List;
 import org.threeten.bp.Instant;
 
 @AutoValue
-public abstract class InfoSongEntity {
+public abstract class InfoSong {
 
     public abstract String getTrackName();
 
@@ -23,15 +23,8 @@ public abstract class InfoSongEntity {
 
     public abstract String getWikiContent();
 
-    abstract Builder toBuilder();
-
-    public InfoSongEntity withTimestamp(Instant newTimestamp) {
-        return toBuilder().setTimestamp(newTimestamp)
-                          .build();
-    }
-
     public static Builder builder() {
-        return new AutoValue_InfoSongEntity.Builder();
+        return new AutoValue_InfoSong.Builder();
     }
 
     @AutoValue.Builder
@@ -52,6 +45,6 @@ public abstract class InfoSongEntity {
 
         public abstract Builder setWikiContent(String newWikiContent);
 
-        public abstract InfoSongEntity build();
+        public abstract InfoSong build();
     }
 }
