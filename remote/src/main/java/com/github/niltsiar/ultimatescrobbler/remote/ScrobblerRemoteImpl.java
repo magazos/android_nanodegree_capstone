@@ -90,13 +90,14 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
 
     @Override
     public Observable<ScrobbledSongEntity> scrobblePlayedSongs(List<PlayedSongEntity> playedSongs) {
-        SortedMap<String, String> params = createCommonSongApiParams(UPDATE_NOW_PLAYING_METHOD_NAME);
+        SortedMap<String, String> params = createCommonSongApiParams(SCROBBLE_METHOD_NAME);
         int listSize = playedSongs.size();
         for (int index = 0; index < listSize; index++) {
             PlayedSongEntity song = playedSongs.get(index);
             params.put(createIndexedParamName(ARTIST_PARAM_NAME, index), song.getArtistName());
             params.put(createIndexedParamName(TRACK_PARAM_NAME, index), song.getTrackName());
-            params.put(createIndexedParamName(TIMESTAMP_PARAM_NAME, index), String.valueOf(song.getTimestamp()));
+            params.put(createIndexedParamName(TIMESTAMP_PARAM_NAME, index), String.valueOf(song.getTimestamp()
+                                                                                               .getEpochSecond()));
             params.put(createIndexedParamName(ALBUM_PARAM_NAME, index), song.getAlbumName());
             params.put(createIndexedParamName(DURATION_PARAM_NAME, index), String.valueOf(song.getDuration()));
         }
@@ -104,6 +105,7 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
         params.put(API_SIGNATURE_PARAM_NAME, signature);
 
         return scrobblerService.scrobble(params, RESPONSE_FORMAT)
+                               .flatMap(Observable::fromIterable)
                                .map(scrobbledSongMapper::mapFromRemote);
 
     }
@@ -117,7 +119,7 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
         params.put(API_KEY_PARAM_NAME, apiKey);
 
         return scrobblerService.requestSongInformation(params, RESPONSE_FORMAT)
-                               .map(infoSong -> infoSongMapper.mapFromRemote(infoSong, scrobbledSong.getTimeStamp()));
+                               .map(infoSong -> infoSongMapper.mapFromRemote(infoSong, scrobbledSong.getTimestamp()));
     }
 
     private String getSignature(SortedMap<String, String> params) {

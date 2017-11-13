@@ -18,7 +18,7 @@ public class ScrobbledSongMapper implements EntityMapper<ScrobbledSongModel, Scr
                                   .setArtist(type.getArtist())
                                   .setAlbum(type.getAlbum())
                                   .setAlbumArtist(type.getAlbumArtist())
-                                  .setTimeStamp(Instant.ofEpochSecond(type.getTimeStamp()))
+                                  .setTimestamp(Instant.ofEpochSecond(type.getTimeStamp()))
                                   .build();
     }
 }

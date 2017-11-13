@@ -14,7 +14,7 @@ public abstract class ScrobbledSongEntity {
 
     public abstract String getAlbumArtist();
 
-    public abstract Instant getTimeStamp();
+    public abstract Instant getTimestamp();
 
     public static Builder builder() {
         return new AutoValue_ScrobbledSongEntity.Builder();
@@ -30,7 +30,7 @@ public abstract class ScrobbledSongEntity {
 
         public abstract Builder setAlbumArtist(String newAlbumArtist);
 
-        public abstract Builder setTimeStamp(Instant newTimeStamp);
+        public abstract Builder setTimestamp(Instant newTimestamp);
 
         public abstract ScrobbledSongEntity build();
     }
