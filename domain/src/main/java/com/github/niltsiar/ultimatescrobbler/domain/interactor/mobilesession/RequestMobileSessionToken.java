@@ -5,6 +5,7 @@ import com.github.niltsiar.ultimatescrobbler.domain.model.Credentials;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import javax.annotation.Nonnull;
 
 public class RequestMobileSessionToken extends SingleUseCase<String, Credentials> {
 
@@ -17,7 +18,7 @@ public class RequestMobileSessionToken extends SingleUseCase<String, Credentials
     }
 
     @Override
-    protected Single<String> buildUseCaseObservable(Credentials param) {
+    protected Single<String> buildUseCaseObservable(@Nonnull Credentials param) {
         return scrobblerRepository.requestMobileSessionToken(param);
     }
 }

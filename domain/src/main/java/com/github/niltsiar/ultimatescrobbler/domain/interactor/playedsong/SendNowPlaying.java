@@ -5,6 +5,7 @@ import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
 import io.reactivex.Completable;
 import io.reactivex.Scheduler;
+import javax.annotation.Nonnull;
 
 public class SendNowPlaying extends CompletableUseCase<PlayedSong> {
 
@@ -17,7 +18,7 @@ public class SendNowPlaying extends CompletableUseCase<PlayedSong> {
     }
 
     @Override
-    protected Completable buildUseCaseObservable(PlayedSong currentSong) {
+    protected Completable buildUseCaseObservable(@Nonnull PlayedSong currentSong) {
         return scrobblerRepository.sendNowPlaying(currentSong);
     }
 }

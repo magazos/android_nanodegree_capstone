@@ -1,13 +1,15 @@
 package com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong;
 
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.CompletableUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.ObservableUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
+import com.github.niltsiar.ultimatescrobbler.domain.model.ScrobbledSong;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
-import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import java.util.List;
+import javax.annotation.Nonnull;
 
-public class ScrobbleSongs extends CompletableUseCase<List<PlayedSong>> {
+public class ScrobbleSongs extends ObservableUseCase<ScrobbledSong, List<PlayedSong>> {
 
     private ScrobblerRepository scrobblerRepository;
 
@@ -18,7 +20,7 @@ public class ScrobbleSongs extends CompletableUseCase<List<PlayedSong>> {
     }
 
     @Override
-    protected Completable buildUseCaseObservable(List<PlayedSong> playedSongs) {
+    protected Observable<ScrobbledSong> buildUseCaseObservable(@Nonnull List<PlayedSong> playedSongs) {
         return scrobblerRepository.scrobblePlayedSongs(playedSongs);
     }
 }
