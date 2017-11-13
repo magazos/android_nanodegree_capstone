@@ -19,6 +19,8 @@ public interface ScrobblerRepository {
 
     Single<Long> countStoredPlayedSongs();
 
+    Single<PlayedSong> getStoredPlayedSong(String songId);
+
     Single<List<PlayedSong>> getStoredPlayedSongs();
 
     Observable<ScrobbledSong> scrobblePlayedSongs(List<PlayedSong> playedSongs);

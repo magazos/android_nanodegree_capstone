@@ -1,6 +1,7 @@
 package com.github.niltsiar.ultimatescrobbler.cache.storage;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import com.github.niltsiar.ultimatescrobbler.cache.database.PlayedSongColumns;
 import com.github.niltsiar.ultimatescrobbler.cache.database.SongsProvider;
@@ -47,6 +48,22 @@ public class SongsCacheImpl implements SongsCache {
                 count = cursor.getLong(0);
             }
             return count;
+        });
+    }
+
+    @Override
+    public Single<PlayedSongEntity> getStoredPlayedSong(String id) {
+        return Single.fromCallable(() -> {
+            try (Cursor cursor = context.getContentResolver()
+                                        .query(SongsProvider.PlayedSongs.withId(id), PlayedSongColumns.Query.PROJECTION, null, null, null, null)) {
+
+                if (0 == cursor.getCount()) {
+                    throw new Resources.NotFoundException();
+                }
+
+                cursor.moveToFirst();
+                return CacheSongMapper.mapFromCache(cursor);
+            }
         });
     }
 

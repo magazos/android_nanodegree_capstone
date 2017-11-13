@@ -30,9 +30,13 @@ public class ScrobblerDataRepository implements ScrobblerRepository {
     private InfoSongMapper infoSongMapper;
 
     @Inject
-    public ScrobblerDataRepository(Provider<ScrobblerRemote> scrobblerRemote, ConfigurationCache configurationCache, SongsCache songsCache,
+    public ScrobblerDataRepository(Provider<ScrobblerRemote> scrobblerRemote,
+            ConfigurationCache configurationCache,
+            SongsCache songsCache,
             CredentialsMapper credentialsMapper,
-            PlayedSongMapper playedSongMapper, ScrobbledSongMapper scrobbledSongMapper, InfoSongMapper infoSongMapper) {
+            PlayedSongMapper playedSongMapper,
+            ScrobbledSongMapper scrobbledSongMapper,
+            InfoSongMapper infoSongMapper) {
         this.scrobblerRemote = scrobblerRemote;
         this.configurationCache = configurationCache;
         this.songsCache = songsCache;
@@ -64,6 +68,12 @@ public class ScrobblerDataRepository implements ScrobblerRepository {
     @Override
     public Single<Long> countStoredPlayedSongs() {
         return songsCache.countStoredPlayedSongs();
+    }
+
+    @Override
+    public Single<PlayedSong> getStoredPlayedSong(String songId) {
+        return songsCache.getStoredPlayedSong(songId)
+                         .map(playedSongMapper::mapFromEntity);
     }
 
     @Override
