@@ -8,11 +8,11 @@ import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import javax.annotation.Nonnull;
 
-public class GetSongInformation extends SingleUseCase<InfoSong, ScrobbledSong> {
+public class GetSongInformationUseCase extends SingleUseCase<InfoSong, ScrobbledSong> {
 
     private ScrobblerRepository scrobblerRepository;
 
-    public GetSongInformation(ScrobblerRepository scrobblerRepository,
+    public GetSongInformationUseCase(ScrobblerRepository scrobblerRepository,
             Scheduler executionScheduler,
             Scheduler postExecutionScheduler) {
         super(executionScheduler, postExecutionScheduler);

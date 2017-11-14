@@ -9,11 +9,11 @@ import io.reactivex.Scheduler;
 import java.util.List;
 import javax.annotation.Nonnull;
 
-public class ScrobbleSongs extends ObservableUseCase<ScrobbledSong, List<PlayedSong>> {
+public class ScrobbleSongsUseCase extends ObservableUseCase<ScrobbledSong, List<PlayedSong>> {
 
     private ScrobblerRepository scrobblerRepository;
 
-    public ScrobbleSongs(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
+    public ScrobbleSongsUseCase(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
         super(executionScheduler, postExecutionScheduler);
 
         this.scrobblerRepository = scrobblerRepository;
