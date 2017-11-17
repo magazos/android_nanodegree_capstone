@@ -1,6 +1,7 @@
 package com.github.niltsiar.ultimatescrobbler.remote.mapper;
 
 import com.github.niltsiar.ultimatescrobbler.data.model.InfoSongEntity;
+import com.github.niltsiar.ultimatescrobbler.data.model.ScrobbledSongEntity;
 import com.github.niltsiar.ultimatescrobbler.remote.model.InfoSongModel;
 import java.util.ArrayList;
 import javax.inject.Inject;
@@ -45,5 +46,18 @@ public class InfoSongMapper implements EntityMapper<InfoSongModel, InfoSongEntit
 
     public InfoSongEntity mapFromRemote(InfoSongModel infoSong, Instant timestamp) {
         return mapFromRemote(infoSong).withTimestamp(timestamp);
+    }
+
+    public InfoSongEntity mapFromEntity(ScrobbledSongEntity scrobbledSongEntity) {
+        return InfoSongEntity.builder()
+                             .setTrackName(scrobbledSongEntity.getTrackName())
+                             .setArtist(scrobbledSongEntity.getArtist())
+                             .setAlbum(scrobbledSongEntity.getAlbum())
+                             .setAlbumArtist(scrobbledSongEntity.getAlbumArtist())
+                             .setTimestamp(scrobbledSongEntity.getTimestamp())
+                             .setAlbumArtUrl("")
+                             .setTags(new ArrayList<>())
+                             .setWikiContent("")
+                             .build();
     }
 }

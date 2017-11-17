@@ -119,7 +119,8 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
         params.put(API_KEY_PARAM_NAME, apiKey);
 
         return scrobblerService.requestSongInformation(params, RESPONSE_FORMAT)
-                               .map(infoSong -> infoSongMapper.mapFromRemote(infoSong, scrobbledSong.getTimestamp()));
+                               .map(infoSong -> infoSongMapper.mapFromRemote(infoSong, scrobbledSong.getTimestamp()))
+                               .onErrorReturnItem(infoSongMapper.mapFromEntity(scrobbledSong));
     }
 
     private String getSignature(SortedMap<String, String> params) {
