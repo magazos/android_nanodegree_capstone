@@ -2,6 +2,7 @@ package com.github.niltsiar.ultimatescrobbler.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -11,16 +12,15 @@ import com.github.niltsiar.ultimatescrobbler.BuildConfig;
 import com.github.niltsiar.ultimatescrobbler.R;
 import com.github.niltsiar.ultimatescrobbler.SpotifyReceiver;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionTokenUseCase;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetStoredPlayedSongs;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetPlayedSongsUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SavePlayedSong;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.ScrobbleSongs;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.GetSongInformation;
 import com.github.niltsiar.ultimatescrobbler.domain.model.Credentials;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
+import com.github.niltsiar.ultimatescrobbler.services.ScrobblePlayedSongsService;
 import com.github.niltsiar.ultimatescrobbler.services.SendNowPlayingService;
 import dagger.android.AndroidInjection;
+import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import javax.inject.Inject;
 import timber.log.Timber;
@@ -34,13 +34,7 @@ public class MainActivity extends AppCompatActivity {
     SavePlayedSong savePlayedSongUseCase;
 
     @Inject
-    GetStoredPlayedSongs getStoredPlayedSongsUseCase;
-
-    @Inject
-    ScrobbleSongs scrobbleSongsUseCase;
-
-    @Inject
-    GetSongInformation getSongInformationUseCase;
+    GetPlayedSongsUseCase getStoredPlayedSongsUseCase;
 
     @Inject
     FirebaseJobDispatcher dispatcher;
@@ -64,17 +58,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        DisposableObserver<PlayedSong> savePlayedSong = new DisposableObserver<PlayedSong>() {
+        DisposableObserver<Pair<Long, PlayedSong>> playedSongDisposable = new DisposableObserver<Pair<Long, PlayedSong>>() {
+
             @Override
-            public void onNext(PlayedSong playedSong) {
-                Disposable disposable = savePlayedSongUseCase.execute(playedSong)
-                                                             .subscribe(count -> {
-                                                                 Timber.i("%d stored songs", count);
-                                                                 Job sendNowPlayingJob = SendNowPlayingService.createJob(dispatcher,
-                                                                                                                         playedSong.getId());
-                                                                 dispatcher.mustSchedule(sendNowPlayingJob);
-                                                             });
-                playedSongsDisposables.add(disposable);
+            public void onNext(Pair<Long, PlayedSong> longPlayedSongPair) {
+                Long count = longPlayedSongPair.first;
+                PlayedSong playedSong = longPlayedSongPair.second;
+                Timber.i("%d stored songs", count);
+                Job sendNowPlayingJob = SendNowPlayingService.createJob(dispatcher, playedSong.getId());
+                dispatcher.mustSchedule(sendNowPlayingJob);
+                if (0 == count % 2) {
+                    Job scrobbledStoredSongs = ScrobblePlayedSongsService.createJob(dispatcher);
+                    dispatcher.mustSchedule(scrobbledStoredSongs);
+                }
             }
 
             @Override
@@ -88,10 +84,13 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        playedSongsDisposables.add(savePlayedSong);
+        playedSongsDisposables.add(playedSongDisposable);
 
         spotifyReceiver.getPlayedSongs()
-                       .subscribe(savePlayedSong);
+                       .flatMap(playedSong -> savePlayedSongUseCase.execute(playedSong)
+                                                                   .flatMapObservable(countStoredSongs -> Observable.just(
+                                                                           new Pair<>(countStoredSongs, playedSong))))
+                       .subscribe(playedSongDisposable);
 
         registerReceiver(spotifyReceiver, SpotifyReceiver.getSpotifyIntents());
     }
