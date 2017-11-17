@@ -3,28 +3,4 @@
 
   <uses-permission android:name="android.permission.INTERNET" />
 
-  <application>
-    <service
-      android:name=".services.SendNowPlayingService"
-      android:exported="false">
-      <intent-filter>
-        <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
-      </intent-filter>
-    </service>
-    <service
-      android:name=".services.ScrobblePlayedSongsService"
-      android:exported="false">
-      <intent-filter>
-        <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
-      </intent-filter>
-    </service>
-    <service
-      android:name=".services.GetInfoService"
-      android:exported="false">
-      <intent-filter>
-        <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
-      </intent-filter>
-    </service>
-  </application>
-
 </manifest>

@@ -1,28 +1,27 @@
 package com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation;
 
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.CompletableUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.SingleUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.model.InfoSong;
 import com.github.niltsiar.ultimatescrobbler.domain.model.ScrobbledSong;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
-import io.reactivex.Completable;
 import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import javax.annotation.Nonnull;
 
-public class GetSongInformation extends CompletableUseCase<ScrobbledSong> {
+public class GetSongInformationUseCase extends SingleUseCase<InfoSong, ScrobbledSong> {
 
     private ScrobblerRepository scrobblerRepository;
-    private String username;
 
-    public GetSongInformation(ScrobblerRepository scrobblerRepository,
-            String username,
+    public GetSongInformationUseCase(ScrobblerRepository scrobblerRepository,
             Scheduler executionScheduler,
             Scheduler postExecutionScheduler) {
         super(executionScheduler, postExecutionScheduler);
 
         this.scrobblerRepository = scrobblerRepository;
-        this.username = username;
     }
 
     @Override
-    protected Completable buildUseCaseObservable(ScrobbledSong song) {
-        return scrobblerRepository.getSongInformation(song, username);
+    protected Single<InfoSong> buildUseCaseObservable(@Nonnull ScrobbledSong song) {
+        return scrobblerRepository.getSongInformation(song);
     }
 }

@@ -1,9 +1,11 @@
 package com.github.niltsiar.ultimatescrobbler.domain.repository;
 
 import com.github.niltsiar.ultimatescrobbler.domain.model.Credentials;
+import com.github.niltsiar.ultimatescrobbler.domain.model.InfoSong;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.model.ScrobbledSong;
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import java.util.List;
 
@@ -17,9 +19,11 @@ public interface ScrobblerRepository {
 
     Single<Long> countStoredPlayedSongs();
 
+    Single<PlayedSong> getStoredPlayedSong(String songId);
+
     Single<List<PlayedSong>> getStoredPlayedSongs();
 
-    Completable scrobblePlayedSongs(List<PlayedSong> playedSongs);
+    Observable<ScrobbledSong> scrobblePlayedSongs(List<PlayedSong> playedSongs);
 
-    Completable getSongInformation(ScrobbledSong song, String username);
+    Single<InfoSong> getSongInformation(ScrobbledSong song);
 }

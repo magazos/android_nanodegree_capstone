@@ -16,5 +16,20 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+
+    <service
+      android:name=".services.SendNowPlayingService"
+      android:exported="false">
+      <intent-filter>
+        <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+      </intent-filter>
+    </service>
+    <service
+      android:name=".services.ScrobblePlayedSongsService"
+      android:exported="false">
+      <intent-filter>
+        <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+      </intent-filter>
+    </service>
   </application>
 </manifest>

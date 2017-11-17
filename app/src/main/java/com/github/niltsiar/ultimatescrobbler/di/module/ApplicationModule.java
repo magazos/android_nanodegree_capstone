@@ -14,12 +14,13 @@ import com.github.niltsiar.ultimatescrobbler.data.ScrobblerDataRepository;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ConfigurationCache;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerRemote;
 import com.github.niltsiar.ultimatescrobbler.data.repository.SongsCache;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionToken;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetStoredPlayedSongs;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionTokenUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetPlayedSongUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetPlayedSongsUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SavePlayedSong;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.ScrobbleSongs;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SendNowPlaying;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.GetSongInformation;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.ScrobbleSongsUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SendNowPlayingUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.GetSongInformationUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerRemoteImpl;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerService;
@@ -92,13 +93,13 @@ public abstract class ApplicationModule {
     }
 
     @Provides
-    static RequestMobileSessionToken provideRequestMobileSessionToken(ScrobblerRepository repository) {
-        return new RequestMobileSessionToken(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    static RequestMobileSessionTokenUseCase provideRequestMobileSessionToken(ScrobblerRepository repository) {
+        return new RequestMobileSessionTokenUseCase(repository, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 
     @Provides
-    static SendNowPlaying provideSendNowPlaying(ScrobblerRepository repository) {
-        return new SendNowPlaying(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    static SendNowPlayingUseCase provideSendNowPlaying(ScrobblerRepository repository) {
+        return new SendNowPlayingUseCase(repository, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 
     @Provides
@@ -118,7 +119,7 @@ public abstract class ApplicationModule {
     }
 
     @Provides
-    static SongsCache provivdeSongCache(Context context) {
+    static SongsCache provideSongCache(Context context) {
         return new SongsCacheImpl(context);
     }
 
@@ -128,17 +129,22 @@ public abstract class ApplicationModule {
     }
 
     @Provides
-    static GetStoredPlayedSongs provideGetStoredPlayedSongs(ScrobblerRepository repository) {
-        return new GetStoredPlayedSongs(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    static GetPlayedSongsUseCase provideGetStoredPlayedSongs(ScrobblerRepository repository) {
+        return new GetPlayedSongsUseCase(repository, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 
     @Provides
-    static ScrobbleSongs provideScrobbleSongs(ScrobblerRepository repository) {
-        return new ScrobbleSongs(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    static ScrobbleSongsUseCase provideScrobbleSongs(ScrobblerRepository repository) {
+        return new ScrobbleSongsUseCase(repository, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 
     @Provides
-    static GetSongInformation provideGetSongInformation(ScrobblerRepository repository) {
-        return new GetSongInformation(repository, BuildConfig.TEST_USERNAME, Schedulers.io(), AndroidSchedulers.mainThread());
+    static GetSongInformationUseCase provideGetSongInformation(ScrobblerRepository repository) {
+        return new GetSongInformationUseCase(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    }
+
+    @Provides
+    static GetPlayedSongUseCase provideGetPlayedSongUseCase(ScrobblerRepository repository) {
+        return new GetPlayedSongUseCase(repository, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 }

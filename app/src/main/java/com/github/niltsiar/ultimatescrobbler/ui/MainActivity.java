@@ -2,44 +2,42 @@ package com.github.niltsiar.ultimatescrobbler.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.Job;
 import com.github.niltsiar.ultimatescrobbler.BuildConfig;
 import com.github.niltsiar.ultimatescrobbler.R;
 import com.github.niltsiar.ultimatescrobbler.SpotifyReceiver;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionToken;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetStoredPlayedSongs;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionTokenUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetPlayedSongsUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SavePlayedSong;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.ScrobbleSongs;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SendNowPlaying;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.GetSongInformation;
 import com.github.niltsiar.ultimatescrobbler.domain.model.Credentials;
+import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
+import com.github.niltsiar.ultimatescrobbler.services.ScrobblePlayedSongsService;
+import com.github.niltsiar.ultimatescrobbler.services.SendNowPlayingService;
 import dagger.android.AndroidInjection;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
 import javax.inject.Inject;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
     @Inject
-    RequestMobileSessionToken requestMobileSessionTokenUseCase;
-
-    @Inject
-    SendNowPlaying sendNowPlayingUseCase;
+    RequestMobileSessionTokenUseCase requestMobileSessionTokenUseCase;
 
     @Inject
     SavePlayedSong savePlayedSongUseCase;
 
     @Inject
-    GetStoredPlayedSongs getStoredPlayedSongsUseCase;
+    GetPlayedSongsUseCase getStoredPlayedSongsUseCase;
 
     @Inject
-    ScrobbleSongs scrobbleSongsUseCase;
-
-    @Inject
-    GetSongInformation getSongInformationUseCase;
+    FirebaseJobDispatcher dispatcher;
 
     SpotifyReceiver spotifyReceiver;
     CompositeDisposable playedSongsDisposables;
@@ -59,29 +57,41 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        playedSongsDisposables.add(spotifyReceiver.getPlayedSongs()
-                                                  .subscribe(playedSong -> sendNowPlayingUseCase.execute(playedSong)
-                                                                                                .subscribe()));
-        playedSongsDisposables.add(spotifyReceiver.getPlayedSongs()
-                                                  .subscribe(playedSong -> savePlayedSongUseCase.execute(playedSong)
-                                                                                                .subscribe(count -> {
-                                                                                                    Timber.i("%d stored songs", count);
-                                                                                                })));
 
-        playedSongsDisposables.add(spotifyReceiver.getPlayedSongs()
-                                                  .subscribe(ignored -> {
-                                                      getStoredPlayedSongsUseCase.execute(null)
-                                                                                 .doOnSuccess(playedSongs -> {
-                                                                                     Observable.fromIterable(playedSongs)
-                                                                                               .subscribe(playedSong -> {
-                                                                                                   Timber.i(playedSong.toString());
-                                                                                               });
-                                                                                 })
-                                                                                 .subscribe(playedSongs -> {
-                                                                                     scrobbleSongsUseCase.execute(playedSongs)
-                                                                                                         .subscribe();
-                                                                                 });
-                                                  }));
+        DisposableObserver<Pair<Long, PlayedSong>> playedSongDisposable = new DisposableObserver<Pair<Long, PlayedSong>>() {
+
+            @Override
+            public void onNext(Pair<Long, PlayedSong> longPlayedSongPair) {
+                Long count = longPlayedSongPair.first;
+                PlayedSong playedSong = longPlayedSongPair.second;
+                Timber.i("%d stored songs", count);
+                Job sendNowPlayingJob = SendNowPlayingService.createJob(dispatcher, playedSong.getId());
+                dispatcher.mustSchedule(sendNowPlayingJob);
+                if (0 == count % 2) {
+                    Job scrobbledStoredSongs = ScrobblePlayedSongsService.createJob(dispatcher);
+                    dispatcher.mustSchedule(scrobbledStoredSongs);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+
+        playedSongsDisposables.add(playedSongDisposable);
+
+        spotifyReceiver.getPlayedSongs()
+                       .flatMap(playedSong -> savePlayedSongUseCase.execute(playedSong)
+                                                                   .flatMapObservable(countStoredSongs -> Observable.just(
+                                                                           new Pair<>(countStoredSongs, playedSong))))
+                       .subscribe(playedSongDisposable);
+
         registerReceiver(spotifyReceiver, SpotifyReceiver.getSpotifyIntents());
     }
 

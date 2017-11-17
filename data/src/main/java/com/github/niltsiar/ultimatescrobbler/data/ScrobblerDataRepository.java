@@ -1,12 +1,14 @@
 package com.github.niltsiar.ultimatescrobbler.data;
 
 import com.github.niltsiar.ultimatescrobbler.data.mapper.CredentialsMapper;
+import com.github.niltsiar.ultimatescrobbler.data.mapper.InfoSongMapper;
 import com.github.niltsiar.ultimatescrobbler.data.mapper.PlayedSongMapper;
 import com.github.niltsiar.ultimatescrobbler.data.mapper.ScrobbledSongMapper;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ConfigurationCache;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerRemote;
 import com.github.niltsiar.ultimatescrobbler.data.repository.SongsCache;
 import com.github.niltsiar.ultimatescrobbler.domain.model.Credentials;
+import com.github.niltsiar.ultimatescrobbler.domain.model.InfoSong;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.model.ScrobbledSong;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
@@ -25,18 +27,23 @@ public class ScrobblerDataRepository implements ScrobblerRepository {
     private CredentialsMapper credentialsMapper;
     private PlayedSongMapper playedSongMapper;
     private ScrobbledSongMapper scrobbledSongMapper;
+    private InfoSongMapper infoSongMapper;
 
     @Inject
-    public ScrobblerDataRepository(Provider<ScrobblerRemote> scrobblerRemote, ConfigurationCache configurationCache, SongsCache songsCache,
+    public ScrobblerDataRepository(Provider<ScrobblerRemote> scrobblerRemote,
+            ConfigurationCache configurationCache,
+            SongsCache songsCache,
             CredentialsMapper credentialsMapper,
             PlayedSongMapper playedSongMapper,
-            ScrobbledSongMapper scrobbledSongMapper) {
+            ScrobbledSongMapper scrobbledSongMapper,
+            InfoSongMapper infoSongMapper) {
         this.scrobblerRemote = scrobblerRemote;
         this.configurationCache = configurationCache;
         this.songsCache = songsCache;
         this.credentialsMapper = credentialsMapper;
         this.playedSongMapper = playedSongMapper;
         this.scrobbledSongMapper = scrobbledSongMapper;
+        this.infoSongMapper = infoSongMapper;
     }
 
     @Override
@@ -49,7 +56,8 @@ public class ScrobblerDataRepository implements ScrobblerRepository {
     @Override
     public Completable sendNowPlaying(PlayedSong nowPlayingSong) {
         return scrobblerRemote.get()
-                              .sendNowPlaying(playedSongMapper.mapToEntity(nowPlayingSong));
+                              .sendNowPlaying(playedSongMapper.mapToEntity(nowPlayingSong))
+                              .toCompletable();
     }
 
     @Override
@@ -63,6 +71,12 @@ public class ScrobblerDataRepository implements ScrobblerRepository {
     }
 
     @Override
+    public Single<PlayedSong> getStoredPlayedSong(String songId) {
+        return songsCache.getStoredPlayedSong(songId)
+                         .map(playedSongMapper::mapFromEntity);
+    }
+
+    @Override
     public Single<List<PlayedSong>> getStoredPlayedSongs() {
         return songsCache.getStoredPlayedSongs()
                          .flatMapObservable(Observable::fromIterable)
@@ -71,17 +85,19 @@ public class ScrobblerDataRepository implements ScrobblerRepository {
     }
 
     @Override
-    public Completable scrobblePlayedSongs(List<PlayedSong> playedSongs) {
+    public Observable<ScrobbledSong> scrobblePlayedSongs(List<PlayedSong> playedSongs) {
         return scrobblerRemote.get()
                               .scrobblePlayedSongs(Observable.fromIterable(playedSongs)
                                                              .map(song -> playedSongMapper.mapToEntity(song))
                                                              .toList()
-                                                             .blockingGet());
+                                                             .blockingGet())
+                              .map(scrobbledSongMapper::mapFromEntity);
     }
 
     @Override
-    public Completable getSongInformation(ScrobbledSong song, String username) {
+    public Single<InfoSong> getSongInformation(ScrobbledSong song) {
         return scrobblerRemote.get()
-                              .requestSongInformation(scrobbledSongMapper.mapToEntity(song), username);
+                              .requestSongInformation(scrobbledSongMapper.mapToEntity(song))
+                              .map(infoSongMapper::mapFromEntity);
     }
 }

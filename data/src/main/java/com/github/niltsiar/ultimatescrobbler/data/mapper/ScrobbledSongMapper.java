@@ -17,7 +17,7 @@ public class ScrobbledSongMapper implements Mapper<ScrobbledSongEntity, Scrobble
                             .setArtist(type.getArtist())
                             .setAlbum(type.getAlbum())
                             .setAlbumArtist(type.getAlbumArtist())
-                            .setTimeStamp(type.getTimeStamp())
+                            .setTimeStamp(type.getTimestamp())
                             .build();
     }
 
@@ -28,7 +28,7 @@ public class ScrobbledSongMapper implements Mapper<ScrobbledSongEntity, Scrobble
                                   .setArtist(type.getArtist())
                                   .setAlbum(type.getAlbum())
                                   .setAlbumArtist(type.getAlbumArtist())
-                                  .setTimeStamp(type.getTimeStamp())
+                                  .setTimestamp(type.getTimeStamp())
                                   .build();
     }
 }

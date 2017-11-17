@@ -11,5 +11,7 @@ public interface SongsCache {
 
     Single<Long> countStoredPlayedSongs();
 
+    Single<PlayedSongEntity> getStoredPlayedSong(String id);
+
     Single<List<PlayedSongEntity>> getStoredPlayedSongs();
 }

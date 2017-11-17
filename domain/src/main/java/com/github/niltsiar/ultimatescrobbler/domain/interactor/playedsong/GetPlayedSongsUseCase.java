@@ -6,19 +6,20 @@ import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerReposito
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import java.util.List;
+import javax.annotation.Nullable;
 
-public class GetStoredPlayedSongs extends SingleUseCase<List<PlayedSong>, Void> {
+public class GetPlayedSongsUseCase extends SingleUseCase<List<PlayedSong>, Void> {
 
     private ScrobblerRepository scrobblerRepository;
 
-    public GetStoredPlayedSongs(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
+    public GetPlayedSongsUseCase(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
         super(executionScheduler, postExecutionScheduler);
 
         this.scrobblerRepository = scrobblerRepository;
     }
 
     @Override
-    protected Single<List<PlayedSong>> buildUseCaseObservable(Void param) {
+    protected Single<List<PlayedSong>> buildUseCaseObservable(@Nullable Void param) {
         return scrobblerRepository.getStoredPlayedSongs();
     }
 }

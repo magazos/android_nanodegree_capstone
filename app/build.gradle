@@ -73,6 +73,7 @@ dependencies {
     implementation (libraries.app.threetenabp) {
         exclude module: 'threetenbp'
     }
+    implementation libraries.app.firebaseJobDispatcher
 
     debugImplementation libraries.debug.loggingInterceptor
     debugImplementation libraries.debug.oklog
