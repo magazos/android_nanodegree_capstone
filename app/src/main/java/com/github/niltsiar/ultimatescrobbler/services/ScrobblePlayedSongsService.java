@@ -45,7 +45,7 @@ public class ScrobblePlayedSongsService extends JobService {
         Disposable disposable = getStoredPlayedSongsUseCase.execute(null)
                                                            .flatMapObservable(scrobbleSongsUseCase::execute)
                                                            .zipWith(Observable.interval(500, TimeUnit.MILLISECONDS),
-                                                                    (scrobbledSong, aLong) -> scrobbledSong)
+                                                                    (scrobbledSong, ignored) -> scrobbledSong)
                                                            .flatMapSingle(getSongInformationUseCase::execute)
                                                            .subscribe(infoSong -> Timber.i(infoSong.toString()), Timber::e,
                                                                       () -> finishJob(job, false));

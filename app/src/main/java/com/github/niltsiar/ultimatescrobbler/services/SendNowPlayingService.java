@@ -10,11 +10,9 @@ import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetPlayedSongUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SendNowPlayingUseCase;
-import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import dagger.android.AndroidInjection;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.DisposableCompletableObserver;
-import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.disposables.Disposable;
 import javax.inject.Inject;
 import timber.log.Timber;
 
@@ -47,40 +45,10 @@ public class SendNowPlayingService extends JobService {
 
         String songId = extras.getString(NOW_PLAYING_ID);
 
-        DisposableCompletableObserver scrobblerObserver = new DisposableCompletableObserver() {
-
-            @Override
-            public void onComplete() {
-                finishJob(job, false);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Timber.e(e);
-            }
-        };
-
-        disposables.add(scrobblerObserver);
-
-        DisposableSingleObserver<PlayedSong> songObserver = new DisposableSingleObserver<PlayedSong>() {
-
-            @Override
-            public void onSuccess(PlayedSong playedSong) {
-                sendNowPlayingUseCase.execute(playedSong)
-                                     .subscribe(scrobblerObserver);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Timber.d(e);
-            }
-        };
-
-        disposables.add(songObserver);
-
-        getPlayedSongUseCase.execute(songId)
-                            .subscribe(songObserver);
-
+        Disposable disposable = getPlayedSongUseCase.execute(songId)
+                                                    .flatMapCompletable(sendNowPlayingUseCase::execute)
+                                                    .subscribe(() -> finishJob(job, false), Timber::e);
+        disposables.add(disposable);
         return true;
     }
 
