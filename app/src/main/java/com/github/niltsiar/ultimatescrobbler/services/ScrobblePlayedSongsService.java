@@ -12,8 +12,10 @@ import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetPla
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.ScrobbleSongsUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.GetSongInformationUseCase;
 import dagger.android.AndroidInjection;
+import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import timber.log.Timber;
 
@@ -42,10 +44,12 @@ public class ScrobblePlayedSongsService extends JobService {
 
         Disposable disposable = getStoredPlayedSongsUseCase.execute(null)
                                                            .flatMapObservable(scrobbleSongsUseCase::execute)
+                                                           .zipWith(Observable.interval(500, TimeUnit.MILLISECONDS),
+                                                                    (scrobbledSong, aLong) -> scrobbledSong)
                                                            .flatMapSingle(getSongInformationUseCase::execute)
-                                                           .subscribe(infoSong -> Timber.i(infoSong.toString()));
+                                                           .subscribe(infoSong -> Timber.i(infoSong.toString()), Timber::e,
+                                                                      () -> finishJob(job, false));
         disposables.add(disposable);
-        finishJob(job, false);
         return true;
     }
 
@@ -60,7 +64,7 @@ public class ScrobblePlayedSongsService extends JobService {
         jobFinished(job, needsReschedule);
     }
 
-    public static Job createJob(FirebaseJobDispatcher dispatcher, String nowPlayingId) {
+    public static Job createJob(FirebaseJobDispatcher dispatcher) {
         return dispatcher.newJobBuilder()
                          .setService(ScrobblePlayedSongsService.class)
                          .setTag(ScrobblePlayedSongsService.class.getName())
