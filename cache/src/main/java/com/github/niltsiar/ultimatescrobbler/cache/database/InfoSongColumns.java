@@ -31,6 +31,10 @@ public interface InfoSongColumns {
 
     @DataType(TEXT)
     @NotNull
+    String ALBUM_ART_URL = "album_art_url";
+
+    @DataType(TEXT)
+    @NotNull
     String TAGS = "tags";
 
     @DataType(TEXT)
@@ -38,7 +42,7 @@ public interface InfoSongColumns {
     String WIKI_CONTENT = "wiki_content";
 
     interface Query {
-        String[] PROJECTION = {ID, TRACK_NAME, ARTIST_NAME, ALBUM_NAME, ALBUM_ARTIST_NAME, TAGS, WIKI_CONTENT
+        String[] PROJECTION = {ID, TRACK_NAME, ARTIST_NAME, ALBUM_NAME, ALBUM_ARTIST_NAME, ALBUM_ART_URL, TAGS, WIKI_CONTENT
         };
 
         interface Index {
@@ -47,8 +51,9 @@ public interface InfoSongColumns {
             int ARTIST_NAME = 2;
             int ALBUM_NAME = 3;
             int ALBUM_ARTIST_NAME = 4;
-            int TAGS = 5;
-            int WIKI_CONTENT = 6;
+            int ALBUM_ART_URL = 5;
+            int TAGS = 6;
+            int WIKI_CONTENT = 7;
         }
     }
 }
