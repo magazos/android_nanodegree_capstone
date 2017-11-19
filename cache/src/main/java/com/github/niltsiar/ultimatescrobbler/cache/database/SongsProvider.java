@@ -22,6 +22,7 @@ public final class SongsProvider {
 
     interface Path {
         String PLAYED_SONGS = "played_songs";
+        String INFO_SONG = "info_song";
     }
 
     private static Uri buildUri(String... paths) {
@@ -48,5 +49,13 @@ public final class SongsProvider {
         public static Uri withId(String id) {
             return buildUri(Path.PLAYED_SONGS, id);
         }
+    }
+
+    @TableEndpoint(table = SongsDatabase.INFO_SONG)
+    public static class InfoSong {
+        @ContentUri(path = Path.INFO_SONG,
+                    type = "vnd.android.cursor.dir/info_song",
+                    defaultSort = InfoSongColumns.ID)
+        public static Uri INFO_SONG = buildUri(Path.INFO_SONG);
     }
 }
