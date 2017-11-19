@@ -6,9 +6,9 @@ import com.github.niltsiar.ultimatescrobbler.cache.database.PlayedSongColumns;
 import com.github.niltsiar.ultimatescrobbler.data.model.PlayedSongEntity;
 import org.threeten.bp.Instant;
 
-public class CacheSongMapper {
+public class PlayedSongEntityMapper {
 
-    private CacheSongMapper() {
+    private PlayedSongEntityMapper() {
         //Avoid instances
     }
 

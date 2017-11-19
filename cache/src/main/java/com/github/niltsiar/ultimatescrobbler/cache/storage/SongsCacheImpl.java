@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import com.github.niltsiar.ultimatescrobbler.cache.database.PlayedSongColumns;
 import com.github.niltsiar.ultimatescrobbler.cache.database.SongsProvider;
-import com.github.niltsiar.ultimatescrobbler.cache.mapper.CacheSongMapper;
+import com.github.niltsiar.ultimatescrobbler.cache.mapper.PlayedSongEntityMapper;
 import com.github.niltsiar.ultimatescrobbler.data.model.PlayedSongEntity;
 import com.github.niltsiar.ultimatescrobbler.data.repository.SongsCache;
 import io.reactivex.Completable;
@@ -30,7 +30,7 @@ public class SongsCacheImpl implements SongsCache {
     public Completable savePlayedSong(PlayedSongEntity playedSongEntity) {
         return Completable.fromAction(() -> {
             context.getContentResolver()
-                   .insert(SongsProvider.PlayedSongs.PLAYED_SONGS, CacheSongMapper.mapToCache(playedSongEntity));
+                   .insert(SongsProvider.PlayedSongs.PLAYED_SONGS, PlayedSongEntityMapper.mapToCache(playedSongEntity));
         });
     }
 
@@ -62,7 +62,7 @@ public class SongsCacheImpl implements SongsCache {
                 }
 
                 cursor.moveToFirst();
-                return CacheSongMapper.mapFromCache(cursor);
+                return PlayedSongEntityMapper.mapFromCache(cursor);
             }
         });
     }
@@ -85,7 +85,7 @@ public class SongsCacheImpl implements SongsCache {
 
                 for (int index = 0; index < count; index++) {
                     cursor.moveToPosition(index);
-                    list.add(CacheSongMapper.mapFromCache(cursor));
+                    list.add(PlayedSongEntityMapper.mapFromCache(cursor));
                 }
             }
             return list;
