@@ -26,4 +26,6 @@ public interface ScrobblerRepository {
     Observable<ScrobbledSong> scrobblePlayedSongs(List<PlayedSong> playedSongs);
 
     Single<InfoSong> getSongInformation(ScrobbledSong song);
+
+    Completable markSongAsScrobbled(PlayedSong playedSong);
 }

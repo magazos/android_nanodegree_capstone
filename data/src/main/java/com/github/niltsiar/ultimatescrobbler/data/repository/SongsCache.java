@@ -14,4 +14,6 @@ public interface SongsCache {
     Single<PlayedSongEntity> getStoredPlayedSong(String id);
 
     Single<List<PlayedSongEntity>> getStoredPlayedSongs();
+
+    Completable markSongAsScrobbled(PlayedSongEntity playedSongEntity);
 }

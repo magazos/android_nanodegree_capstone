@@ -1,5 +1,6 @@
 package com.github.niltsiar.ultimatescrobbler.cache.storage;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -13,6 +14,7 @@ import io.reactivex.Single;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import timber.log.Timber;
 
 public class SongsCacheImpl implements SongsCache {
 
@@ -31,7 +33,8 @@ public class SongsCacheImpl implements SongsCache {
         return Completable.fromAction(() -> {
             context.getContentResolver()
                    .insert(SongsProvider.PlayedSongs.PLAYED_SONGS, PlayedSongEntityMapper.mapToCache(playedSongEntity));
-        });
+        })
+                          .doOnError(Timber::e);
     }
 
     @Override
@@ -89,6 +92,16 @@ public class SongsCacheImpl implements SongsCache {
                 }
             }
             return list;
+        });
+    }
+
+    @Override
+    public Completable markSongAsScrobbled(PlayedSongEntity playedSongEntity) {
+        return Completable.fromAction(() -> {
+            ContentValues cv = new ContentValues();
+            cv.put(PlayedSongColumns.SCROBBLED, 1);
+            context.getContentResolver()
+                   .update(SongsProvider.PlayedSongs.withId(playedSongEntity.getId()), cv, null, null);
         });
     }
 }

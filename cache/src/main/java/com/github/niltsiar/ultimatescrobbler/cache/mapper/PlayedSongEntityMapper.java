@@ -32,6 +32,7 @@ public class PlayedSongEntityMapper {
         contentValues.put(PlayedSongColumns.LENGTH, playedSongEntity.getDuration());
         contentValues.put(PlayedSongColumns.TIMESTAMP, playedSongEntity.getTimestamp()
                                                                        .toEpochMilli());
+        contentValues.put(PlayedSongColumns.SCROBBLED, 0);
 
         return contentValues;
     }
