@@ -19,4 +19,6 @@ public interface SongsCache {
     Completable markSongAsScrobbled(PlayedSongEntity playedSongEntity);
 
     Completable saveSongInformation(InfoSongEntity infoSongEntity);
+
+    Completable deleteStoredPlayedSong(PlayedSongEntity playedSongEntity);
 }

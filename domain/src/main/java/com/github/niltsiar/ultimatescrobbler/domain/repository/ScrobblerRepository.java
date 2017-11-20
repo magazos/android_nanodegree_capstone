@@ -30,4 +30,6 @@ public interface ScrobblerRepository {
     Completable markSongAsScrobbled(PlayedSong playedSong);
 
     Completable saveSongInformation(InfoSong infoSong);
+
+    Completable deleteStoredPlayedSong(PlayedSong playedSong);
 }

@@ -6,6 +6,8 @@ import org.threeten.bp.Instant;
 @AutoValue
 public abstract class ScrobbledSongEntity {
 
+    public abstract String getId();
+
     public abstract String getTrackName();
 
     public abstract String getArtist();
@@ -22,6 +24,8 @@ public abstract class ScrobbledSongEntity {
 
     @AutoValue.Builder
     public abstract static class Builder {
+        public abstract Builder setId(String newId);
+
         public abstract Builder setTrackName(String newTrackName);
 
         public abstract Builder setArtist(String newArtist);

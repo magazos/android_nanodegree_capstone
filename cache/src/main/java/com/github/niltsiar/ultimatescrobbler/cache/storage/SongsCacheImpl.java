@@ -112,4 +112,10 @@ public class SongsCacheImpl implements SongsCache {
                                                    .insert(SongsProvider.InfoSong.INFO_SONG, InfoSongEntityMapper.mapToCache(infoSongEntity)))
                           .doOnError(Timber::e);
     }
+
+    @Override
+    public Completable deleteStoredPlayedSong(PlayedSongEntity playedSongEntity) {
+        return Completable.fromAction(() -> context.getContentResolver()
+                                                   .delete(SongsProvider.PlayedSongs.withId(playedSongEntity.getId()), null, null));
+    }
 }
