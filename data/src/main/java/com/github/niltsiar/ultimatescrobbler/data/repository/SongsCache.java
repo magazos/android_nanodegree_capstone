@@ -1,5 +1,6 @@
 package com.github.niltsiar.ultimatescrobbler.data.repository;
 
+import com.github.niltsiar.ultimatescrobbler.data.model.InfoSongEntity;
 import com.github.niltsiar.ultimatescrobbler.data.model.PlayedSongEntity;
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -16,4 +17,6 @@ public interface SongsCache {
     Single<List<PlayedSongEntity>> getStoredPlayedSongs();
 
     Completable markSongAsScrobbled(PlayedSongEntity playedSongEntity);
+
+    Completable saveSongInformation(InfoSongEntity infoSongEntity);
 }

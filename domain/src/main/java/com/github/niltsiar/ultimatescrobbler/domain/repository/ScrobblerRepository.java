@@ -28,4 +28,6 @@ public interface ScrobblerRepository {
     Single<InfoSong> getSongInformation(ScrobbledSong song);
 
     Completable markSongAsScrobbled(PlayedSong playedSong);
+
+    Completable saveSongInformation(InfoSong infoSong);
 }

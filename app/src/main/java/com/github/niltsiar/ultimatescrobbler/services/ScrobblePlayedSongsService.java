@@ -11,6 +11,7 @@ import com.firebase.jobdispatcher.Trigger;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetPlayedSongsUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.ScrobbleSongsUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.GetSongInformationUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.SaveSongInformationUseCase;
 import dagger.android.AndroidInjection;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -30,6 +31,9 @@ public class ScrobblePlayedSongsService extends JobService {
     @Inject
     GetSongInformationUseCase getSongInformationUseCase;
 
+    @Inject
+    SaveSongInformationUseCase saveSongInformationUseCase;
+
     private CompositeDisposable disposables;
 
     @Override
@@ -47,8 +51,9 @@ public class ScrobblePlayedSongsService extends JobService {
                                                            .zipWith(Observable.interval(500, TimeUnit.MILLISECONDS),
                                                                     (scrobbledSong, ignored) -> scrobbledSong)
                                                            .flatMapSingle(getSongInformationUseCase::execute)
-                                                           .subscribe(infoSong -> Timber.i(infoSong.toString()), Timber::e,
-                                                                      () -> finishJob(job, false));
+                                                           .doOnNext(infoSong -> Timber.i(infoSong.toString()))
+                                                           .flatMapCompletable(saveSongInformationUseCase::execute)
+                                                           .subscribe(() -> finishJob(job, false), Timber::e);
         disposables.add(disposable);
         return true;
     }

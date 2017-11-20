@@ -21,6 +21,7 @@ import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SavePl
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.ScrobbleSongsUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SendNowPlayingUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.GetSongInformationUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.SaveSongInformationUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerRemoteImpl;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerService;
@@ -146,5 +147,10 @@ public abstract class ApplicationModule {
     @Provides
     static GetPlayedSongUseCase provideGetPlayedSongUseCase(ScrobblerRepository repository) {
         return new GetPlayedSongUseCase(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    }
+
+    @Provides
+    static SaveSongInformationUseCase provideSaveSongInformationUseCase(ScrobblerRepository repository) {
+        return new SaveSongInformationUseCase(repository, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 }

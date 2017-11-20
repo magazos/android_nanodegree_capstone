@@ -105,4 +105,9 @@ public class ScrobblerDataRepository implements ScrobblerRepository {
     public Completable markSongAsScrobbled(PlayedSong playedSong) {
         return songsCache.markSongAsScrobbled(playedSongMapper.mapToEntity(playedSong));
     }
+
+    @Override
+    public Completable saveSongInformation(InfoSong infoSong) {
+        return songsCache.saveSongInformation(infoSongMapper.mapToEntity(infoSong));
+    }
 }

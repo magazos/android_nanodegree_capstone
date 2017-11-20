@@ -30,6 +30,11 @@ public abstract class InfoSongEntity {
                           .build();
     }
 
+    public InfoSongEntity withAlbum(String newAlbum) {
+        return toBuilder().setAlbum(newAlbum)
+                          .build();
+    }
+
     public static Builder builder() {
         return new AutoValue_InfoSongEntity.Builder();
     }
