@@ -33,8 +33,7 @@ public class SongsCacheImpl implements SongsCache {
     @Override
     public Completable savePlayedSong(PlayedSongEntity playedSongEntity) {
         return Completable.fromAction(() -> context.getContentResolver()
-                                                   .insert(SongsProvider.PlayedSongs.PLAYED_SONGS,
-                                                           PlayedSongEntityMapper.mapToCache(playedSongEntity)))
+                                                   .insert(SongsProvider.PlayedSongs.PLAYED_SONGS, PlayedSongEntityMapper.mapToCache(playedSongEntity)))
                           .doOnError(Timber::e);
     }
 

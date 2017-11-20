@@ -54,17 +54,10 @@ public class ScrobblePlayedSongsService extends JobService {
         Disposable disposable = getStoredPlayedSongsUseCase.execute(null)
                                                            .flatMapObservable(songs -> scrobbleSongsUseCase.execute(songs)
 
-                                                                                                           .zipWith(Observable.interval(500,
-                                                                                                                                        TimeUnit.MILLISECONDS),
-                                                                                                                    (scrobbledSong, index) -> new
-                                                                                                                            Pair<>(
-                                                                                                                            songs.get(
-                                                                                                                                    index.intValue()),
-                                                                                                                            scrobbledSong)))
-
+                                                                                                           .zipWith(Observable.interval(500, TimeUnit.MILLISECONDS),
+                                                                                                                    (scrobbledSong, index) -> new Pair<>(songs.get(index.intValue()), scrobbledSong)))
                                                            .flatMapSingle(pair -> getSongInformationUseCase.execute(pair.second)
-                                                                                                           .map(infoSong -> new Pair<>(pair.first,
-                                                                                                                                       infoSong)))
+                                                                                                           .map(infoSong -> new Pair<>(pair.first, infoSong)))
                                                            .doOnNext(pair -> Timber.i(pair.toString()))
                                                            .flatMap(pair -> saveSongInformationUseCase.execute(pair.second)
                                                                                                       .andThen(Observable.just(pair.first)))
