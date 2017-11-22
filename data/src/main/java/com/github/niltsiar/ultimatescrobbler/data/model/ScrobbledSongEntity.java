@@ -1,6 +1,7 @@
 package com.github.niltsiar.ultimatescrobbler.data.model;
 
 import com.google.auto.value.AutoValue;
+import java.util.UUID;
 import org.threeten.bp.Instant;
 
 @AutoValue
@@ -18,8 +19,16 @@ public abstract class ScrobbledSongEntity {
 
     public abstract Instant getTimestamp();
 
+    abstract Builder toBuilder();
+
+    public ScrobbledSongEntity withId(String newId) {
+        return toBuilder().setId(newId)
+                          .build();
+    }
+
     public static Builder builder() {
-        return new AutoValue_ScrobbledSongEntity.Builder();
+        return new AutoValue_ScrobbledSongEntity.Builder().setId(UUID.randomUUID()
+                                                                     .toString());
     }
 
     @AutoValue.Builder
