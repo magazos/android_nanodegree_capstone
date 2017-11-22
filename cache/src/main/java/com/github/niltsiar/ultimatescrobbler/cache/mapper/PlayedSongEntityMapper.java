@@ -6,9 +6,9 @@ import com.github.niltsiar.ultimatescrobbler.cache.database.PlayedSongColumns;
 import com.github.niltsiar.ultimatescrobbler.data.model.PlayedSongEntity;
 import org.threeten.bp.Instant;
 
-public class CacheSongMapper {
+public class PlayedSongEntityMapper {
 
-    private CacheSongMapper() {
+    private PlayedSongEntityMapper() {
         //Avoid instances
     }
 
@@ -32,6 +32,7 @@ public class CacheSongMapper {
         contentValues.put(PlayedSongColumns.LENGTH, playedSongEntity.getDuration());
         contentValues.put(PlayedSongColumns.TIMESTAMP, playedSongEntity.getTimestamp()
                                                                        .toEpochMilli());
+        contentValues.put(PlayedSongColumns.SCROBBLED, 0);
 
         return contentValues;
     }

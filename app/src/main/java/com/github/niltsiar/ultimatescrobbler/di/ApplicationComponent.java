@@ -10,8 +10,7 @@ import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.support.AndroidSupportInjectionModule;
 
-@Component(modules = {ApplicationModule.class, ActivityBindingModule.class, ServiceBindingModule.class, AndroidSupportInjectionModule.class,
-        NetworkModule.class})
+@Component(modules = {ApplicationModule.class, ActivityBindingModule.class, ServiceBindingModule.class, AndroidSupportInjectionModule.class, NetworkModule.class})
 public interface ApplicationComponent {
 
     @Component.Builder

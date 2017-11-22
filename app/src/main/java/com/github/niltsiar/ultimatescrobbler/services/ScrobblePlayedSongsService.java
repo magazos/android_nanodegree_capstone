@@ -1,5 +1,6 @@
 package com.github.niltsiar.ultimatescrobbler.services;
 
+import android.support.v4.util.Pair;
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.Job;
@@ -8,9 +9,11 @@ import com.firebase.jobdispatcher.JobService;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.DeletePlayedSongUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetPlayedSongsUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.ScrobbleSongsUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.GetSongInformationUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.SaveSongInformationUseCase;
 import dagger.android.AndroidInjection;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -30,6 +33,12 @@ public class ScrobblePlayedSongsService extends JobService {
     @Inject
     GetSongInformationUseCase getSongInformationUseCase;
 
+    @Inject
+    SaveSongInformationUseCase saveSongInformationUseCase;
+
+    @Inject
+    DeletePlayedSongUseCase deletePlayedSongUseCase;
+
     private CompositeDisposable disposables;
 
     @Override
@@ -43,12 +52,17 @@ public class ScrobblePlayedSongsService extends JobService {
     public boolean onStartJob(JobParameters job) {
 
         Disposable disposable = getStoredPlayedSongsUseCase.execute(null)
-                                                           .flatMapObservable(scrobbleSongsUseCase::execute)
-                                                           .zipWith(Observable.interval(500, TimeUnit.MILLISECONDS),
-                                                                    (scrobbledSong, ignored) -> scrobbledSong)
-                                                           .flatMapSingle(getSongInformationUseCase::execute)
-                                                           .subscribe(infoSong -> Timber.i(infoSong.toString()), Timber::e,
-                                                                      () -> finishJob(job, false));
+                                                           .flatMapObservable(songs -> scrobbleSongsUseCase.execute(songs)
+
+                                                                                                           .zipWith(Observable.interval(500, TimeUnit.MILLISECONDS),
+                                                                                                                    (scrobbledSong, index) -> new Pair<>(songs.get(index.intValue()), scrobbledSong)))
+                                                           .flatMapSingle(pair -> getSongInformationUseCase.execute(pair.second)
+                                                                                                           .map(infoSong -> new Pair<>(pair.first, infoSong)))
+                                                           .doOnNext(pair -> Timber.i(pair.toString()))
+                                                           .flatMap(pair -> saveSongInformationUseCase.execute(pair.second)
+                                                                                                      .andThen(Observable.just(pair.first)))
+                                                           .flatMapCompletable(deletePlayedSongUseCase::execute)
+                                                           .subscribe(() -> finishJob(job, false), Timber::e);
         disposables.add(disposable);
         return true;
     }

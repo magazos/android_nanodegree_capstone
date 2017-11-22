@@ -1,5 +1,6 @@
 package com.github.niltsiar.ultimatescrobbler.remote.mapper;
 
+import android.text.TextUtils;
 import com.github.niltsiar.ultimatescrobbler.data.model.InfoSongEntity;
 import com.github.niltsiar.ultimatescrobbler.data.model.ScrobbledSongEntity;
 import com.github.niltsiar.ultimatescrobbler.remote.model.InfoSongModel;
@@ -44,8 +45,12 @@ public class InfoSongMapper implements EntityMapper<InfoSongModel, InfoSongEntit
         return builder.build();
     }
 
-    public InfoSongEntity mapFromRemote(InfoSongModel infoSong, Instant timestamp) {
-        return mapFromRemote(infoSong).withTimestamp(timestamp);
+    public InfoSongEntity mapFromRemote(InfoSongModel infoSong, ScrobbledSongEntity scrobbledSongEntity) {
+        InfoSongEntity infoSongEntity = mapFromRemote(infoSong).withTimestamp(scrobbledSongEntity.getTimestamp());
+        if (TextUtils.isEmpty(infoSong.getAlbum())) {
+            infoSongEntity = infoSongEntity.withAlbum(scrobbledSongEntity.getAlbum());
+        }
+        return infoSongEntity;
     }
 
     public InfoSongEntity mapFromEntity(ScrobbledSongEntity scrobbledSongEntity) {

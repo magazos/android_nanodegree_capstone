@@ -85,7 +85,7 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
         params.put(API_SIGNATURE_PARAM_NAME, signature);
 
         return scrobblerService.updateNowPlaying(params, RESPONSE_FORMAT)
-                               .map(scrobbledSongMapper::mapFromRemote);
+                               .map(scrobbledSong -> scrobbledSongMapper.mapFromRemote(scrobbledSong, nowPlayingSong));
     }
 
     @Override
@@ -119,7 +119,7 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
         params.put(API_KEY_PARAM_NAME, apiKey);
 
         return scrobblerService.requestSongInformation(params, RESPONSE_FORMAT)
-                               .map(infoSong -> infoSongMapper.mapFromRemote(infoSong, scrobbledSong.getTimestamp()))
+                               .map(infoSong -> infoSongMapper.mapFromRemote(infoSong, scrobbledSong))
                                .onErrorReturnItem(infoSongMapper.mapFromEntity(scrobbledSong));
     }
 

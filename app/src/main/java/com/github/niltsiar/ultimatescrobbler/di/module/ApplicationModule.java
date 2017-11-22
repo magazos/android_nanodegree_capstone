@@ -15,12 +15,14 @@ import com.github.niltsiar.ultimatescrobbler.data.repository.ConfigurationCache;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerRemote;
 import com.github.niltsiar.ultimatescrobbler.data.repository.SongsCache;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionTokenUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.DeletePlayedSongUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetPlayedSongUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetPlayedSongsUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SavePlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.ScrobbleSongsUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SendNowPlayingUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.GetSongInformationUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.SaveSongInformationUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerRemoteImpl;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerService;
@@ -146,5 +148,15 @@ public abstract class ApplicationModule {
     @Provides
     static GetPlayedSongUseCase provideGetPlayedSongUseCase(ScrobblerRepository repository) {
         return new GetPlayedSongUseCase(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    }
+
+    @Provides
+    static SaveSongInformationUseCase provideSaveSongInformationUseCase(ScrobblerRepository repository) {
+        return new SaveSongInformationUseCase(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    }
+
+    @Provides
+    static DeletePlayedSongUseCase provideDeletePlayedSongUseCase(ScrobblerRepository repository) {
+        return new DeletePlayedSongUseCase(repository, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 }

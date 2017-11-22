@@ -88,8 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         spotifyReceiver.getPlayedSongs()
                        .flatMap(playedSong -> savePlayedSongUseCase.execute(playedSong)
-                                                                   .flatMapObservable(countStoredSongs -> Observable.just(
-                                                                           new Pair<>(countStoredSongs, playedSong))))
+                                                                   .flatMapObservable(countStoredSongs -> Observable.just(new Pair<>(countStoredSongs, playedSong))))
                        .subscribe(playedSongDisposable);
 
         registerReceiver(spotifyReceiver, SpotifyReceiver.getSpotifyIntents());

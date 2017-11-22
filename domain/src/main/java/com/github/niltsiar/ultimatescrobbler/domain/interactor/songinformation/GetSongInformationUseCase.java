@@ -12,9 +12,7 @@ public class GetSongInformationUseCase extends SingleUseCase<InfoSong, Scrobbled
 
     private ScrobblerRepository scrobblerRepository;
 
-    public GetSongInformationUseCase(ScrobblerRepository scrobblerRepository,
-            Scheduler executionScheduler,
-            Scheduler postExecutionScheduler) {
+    public GetSongInformationUseCase(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
         super(executionScheduler, postExecutionScheduler);
 
         this.scrobblerRepository = scrobblerRepository;

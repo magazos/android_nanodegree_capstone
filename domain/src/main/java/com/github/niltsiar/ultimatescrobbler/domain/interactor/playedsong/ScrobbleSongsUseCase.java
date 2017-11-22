@@ -21,6 +21,8 @@ public class ScrobbleSongsUseCase extends ObservableUseCase<ScrobbledSong, List<
 
     @Override
     protected Observable<ScrobbledSong> buildUseCaseObservable(@Nonnull List<PlayedSong> playedSongs) {
-        return scrobblerRepository.scrobblePlayedSongs(playedSongs);
+        return Observable.fromIterable(playedSongs)
+                         .flatMapCompletable(scrobblerRepository::markSongAsScrobbled)
+                         .andThen(scrobblerRepository.scrobblePlayedSongs(playedSongs));
     }
 }

@@ -7,9 +7,9 @@ import net.simonvt.schematic.annotation.PrimaryKey;
 import static net.simonvt.schematic.annotation.DataType.Type.INTEGER;
 import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
 
-public interface PlayedSongColumns {
+public interface InfoSongColumns {
 
-    @DataType(TEXT)
+    @DataType(INTEGER)
     @PrimaryKey
     String ID = "_id";
 
@@ -25,20 +25,24 @@ public interface PlayedSongColumns {
     @NotNull
     String ALBUM_NAME = "album_name";
 
-    @DataType(INTEGER)
+    @DataType(TEXT)
     @NotNull
-    String LENGTH = "length";
+    String ALBUM_ARTIST_NAME = "album_artist_name";
 
-    @DataType(INTEGER)
+    @DataType(TEXT)
     @NotNull
-    String TIMESTAMP = "played_instant";
+    String ALBUM_ART_URL = "album_art_url";
 
-    @DataType(INTEGER)
+    @DataType(TEXT)
     @NotNull
-    String SCROBBLED = "scrobbled";
+    String TAGS = "tags";
+
+    @DataType(TEXT)
+    @NotNull
+    String WIKI_CONTENT = "wiki_content";
 
     interface Query {
-        String[] PROJECTION = {ID, TRACK_NAME, ARTIST_NAME, ALBUM_NAME, LENGTH, TIMESTAMP,
+        String[] PROJECTION = {ID, TRACK_NAME, ARTIST_NAME, ALBUM_NAME, ALBUM_ARTIST_NAME, ALBUM_ART_URL, TAGS, WIKI_CONTENT
         };
 
         interface Index {
@@ -46,8 +50,10 @@ public interface PlayedSongColumns {
             int TRACK_NAME = 1;
             int ARTIST_NAME = 2;
             int ALBUM_NAME = 3;
-            int LENGTH = 4;
-            int TIMESTAMP = 5;
+            int ALBUM_ARTIST_NAME = 4;
+            int ALBUM_ART_URL = 5;
+            int TAGS = 6;
+            int WIKI_CONTENT = 7;
         }
     }
 }
