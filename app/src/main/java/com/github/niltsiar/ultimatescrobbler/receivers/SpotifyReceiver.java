@@ -1,4 +1,4 @@
-package com.github.niltsiar.ultimatescrobbler;
+package com.github.niltsiar.ultimatescrobbler.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import com.jakewharton.rxrelay2.PublishRelay;
 import io.reactivex.Observable;
+import javax.inject.Inject;
 import org.threeten.bp.Instant;
 import timber.log.Timber;
 
@@ -31,6 +32,7 @@ public class SpotifyReceiver extends BroadcastReceiver {
         return spotifyIntents;
     }
 
+    @Inject
     public SpotifyReceiver() {
         playedSongs = PublishRelay.create();
     }
