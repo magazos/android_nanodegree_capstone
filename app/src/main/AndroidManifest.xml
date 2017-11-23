@@ -18,6 +18,9 @@
     </activity>
 
     <service
+      android:name=".services.ScrobblerService"
+      android:exported="false" />
+    <service
       android:name=".services.SendNowPlayingService"
       android:exported="false">
       <intent-filter>
