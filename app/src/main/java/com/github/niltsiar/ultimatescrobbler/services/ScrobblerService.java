@@ -1,14 +1,15 @@
 package com.github.niltsiar.ultimatescrobbler.services;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.util.Pair;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.Job;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetPlayedSongsUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SavePlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import com.github.niltsiar.ultimatescrobbler.receivers.SpotifyReceiver;
@@ -21,14 +22,13 @@ import timber.log.Timber;
 
 public class ScrobblerService extends Service {
 
+    public static final String NOTIFICATION_CHANNEL = "SCROBBLER_SERVICE_NOTIFICATION_CHANNEL";
+
     @Inject
     SpotifyReceiver spotifyReceiver;
 
     @Inject
     SavePlayedSong savePlayedSongUseCase;
-
-    @Inject
-    GetPlayedSongsUseCase getStoredPlayedSongsUseCase;
 
     @Inject
     FirebaseJobDispatcher dispatcher;
@@ -37,6 +37,7 @@ public class ScrobblerService extends Service {
 
     private static final String START_ACTION = "START_SCROBBLER_SERVICE";
     private static final String STOP_ACTION = "STOP_SCROBBLER_SERVICE";
+    private static final int SERVICE_NOTIFICATION_ID = 101010;
 
     public static Intent createStartIntent(Context context) {
         Intent startIntent = new Intent(context, ScrobblerService.class);
@@ -111,11 +112,12 @@ public class ScrobblerService extends Service {
 
         spotifyReceiver.getPlayedSongs()
                        .flatMap(playedSong -> savePlayedSongUseCase.execute(playedSong)
-                                                                   .flatMapObservable(countStoredSongs -> Observable.just(
-                                                                           new Pair<>(countStoredSongs, playedSong))))
+                                                                   .flatMapObservable(countStoredSongs -> Observable.just(new Pair<>(countStoredSongs, playedSong))))
                        .subscribe(playedSongDisposable);
 
         registerReceiver(spotifyReceiver, SpotifyReceiver.getSpotifyIntents());
+
+        startForeground(SERVICE_NOTIFICATION_ID, createServiceNotification());
     }
 
     private void stop() {
@@ -123,5 +125,12 @@ public class ScrobblerService extends Service {
         unregisterReceiver(spotifyReceiver);
         stopForeground(true);
         stopSelf();
+    }
+
+    private Notification createServiceNotification() {
+        return new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL).setCategory(NotificationCompat.CATEGORY_SERVICE)
+                                                                         .setPriority(NotificationCompat.PRIORITY_MIN)
+                                                                         .setOngoing(true)
+                                                                         .build();
     }
 }
