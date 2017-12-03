@@ -75,6 +75,8 @@ dependencies {
     }
     implementation libraries.app.firebaseJobDispatcher
 
+    implementation libraries.app.constraintLayout
+
     debugImplementation libraries.debug.loggingInterceptor
     debugImplementation libraries.debug.oklog
     debugImplementation libraries.debug.chuck
