@@ -54,6 +54,7 @@ dependencies {
 
     implementation libraries.app.appCompat
     implementation libraries.app.design
+    implementation libraries.app.recyclerView
 
     implementation libraries.app.rxjava2
     implementation libraries.app.rxandroid

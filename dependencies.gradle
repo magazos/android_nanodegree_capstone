@@ -51,6 +51,7 @@ ext {
                     appCompat                : "com.android.support:appcompat-v7:${versions.support}",
                     design                   : "com.android.support:design:${versions.support}",
                     constraintLayout         : "com.android.support.constraint:constraint-layout:${versions.constraint_layout}",
+                    recyclerView             : "com.android.support:recyclerview-v7:${versions.support}",
                     autoValue                : "com.google.auto.value:auto-value:${versions.auto_value}",
                     javaxAnnotations         : "com.google.code.findbugs:jsr305:${versions.javax_annotations}",
                     javaxInject              : "javax.inject:javax.inject:${versions.javax_inject}",
