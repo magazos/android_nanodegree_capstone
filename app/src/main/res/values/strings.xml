@@ -7,4 +7,6 @@
   <string name="navigation_drawer_configuration">Configuration</string>
 
   <string name="action_settings">Settings</string>
+
+  <string name="scrobbled_songs_title">Scrobbled songs</string>
 </resources>

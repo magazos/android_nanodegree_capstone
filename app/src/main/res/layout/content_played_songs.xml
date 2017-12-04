@@ -8,4 +8,23 @@
   tools:context="com.github.niltsiar.ultimatescrobbler.ui.playedsongs.PlayedSongsActivity"
   tools:showIn="@layout/app_bar_played_songs">
 
+  <TextView
+    android:id="@+id/scrobbled_songs_title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/scrobbled_songs_title"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    android:textSize="30sp" />
+
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/scrobbler_songs_recyclerview"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    app:layout_constraintTop_toBottomOf="@id/scrobbled_songs_title"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
