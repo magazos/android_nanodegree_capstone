@@ -55,6 +55,8 @@ dependencies {
     implementation libraries.app.appCompat
     implementation libraries.app.design
     implementation libraries.app.recyclerView
+    implementation libraries.app.constraintLayout
+    implementation libraries.app.materialDimens
 
     implementation libraries.app.rxjava2
     implementation libraries.app.rxandroid
@@ -78,8 +80,6 @@ dependencies {
         exclude module: 'threetenbp'
     }
     implementation libraries.app.firebaseJobDispatcher
-
-    implementation libraries.app.constraintLayout
 
     debugImplementation libraries.debug.loggingInterceptor
     debugImplementation libraries.debug.oklog

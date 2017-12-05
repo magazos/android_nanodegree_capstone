@@ -37,6 +37,7 @@ ext {
             schematic             : '0.7.0',
             threetenbp            : '1.3.6',
             threetenabp           : '1.0.5',
+            materialDimens        : '1.4',
     ]
 
     libraries = [
@@ -73,6 +74,7 @@ ext {
                     schematic                : "net.simonvt.schematic:schematic:${versions.schematic}",
                     threetenbp               : "org.threeten:threetenbp:${versions.threetenbp}:no-tzdb",
                     threetenabp              : "com.jakewharton.threetenabp:threetenabp:${versions.threetenabp}",
+                    materialDimens           : "com.dmitrymalkovich.android:material-design-dimens:${versions.materialDimens}",
             ],
             debug: [
                     loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
