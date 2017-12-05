@@ -13,15 +13,18 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/scrobbled_songs_title"
-    app:layout_constraintHorizontal_bias="0.5"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
-    android:textSize="30sp" />
+    android:textSize="@dimen/material_typography_display1" />
 
   <android.support.v7.widget.RecyclerView
     android:id="@+id/scrobbler_songs_recyclerview"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
+    android:layout_width="@dimen/zero"
+    android:layout_height="@dimen/zero"
+    android:paddingTop="@dimen/material_layout_vertical_spacing_between_content_areas"
+    android:paddingBottom="@dimen/material_layout_vertical_spacing_between_content_areas"
+    android:paddingLeft="@dimen/material_layout_keylines_horizontal_mobile_margin"
+    android:paddingRight="@dimen/material_layout_keylines_horizontal_mobile_margin"
     app:layout_constraintTop_toBottomOf="@id/scrobbled_songs_title"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
