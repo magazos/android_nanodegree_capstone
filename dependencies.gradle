@@ -7,7 +7,6 @@ ext {
             apt                   : '0.13',
             androidSdk            : [
                     compile   : 27,
-                    buildTools: '27.0.0',
                     min       : 19,
                     target    : 27,
             ],

@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion versions.androidSdk.compile
-    buildToolsVersion versions.androidSdk.buildTools
     compileOptions {
         sourceCompatibility versions.sourceCompatibility
         targetCompatibility versions.targetCompatibility
