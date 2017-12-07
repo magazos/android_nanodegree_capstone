@@ -21,13 +21,10 @@
     android:id="@+id/scrobbler_songs_recyclerview"
     android:layout_width="@dimen/zero"
     android:layout_height="@dimen/zero"
-    android:paddingTop="@dimen/material_layout_vertical_spacing_between_content_areas"
-    android:paddingBottom="@dimen/material_layout_vertical_spacing_between_content_areas"
-    android:paddingLeft="@dimen/material_layout_keylines_horizontal_mobile_margin"
-    android:paddingRight="@dimen/material_layout_keylines_horizontal_mobile_margin"
     app:layout_constraintTop_toBottomOf="@id/scrobbled_songs_title"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent" />
+    app:layout_constraintBottom_toBottomOf="parent"
+    tools:listitem="@layout/item_scrobbled_song" />
 
 </android.support.constraint.ConstraintLayout>
