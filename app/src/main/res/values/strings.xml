@@ -3,6 +3,7 @@
 
   <string name="navigation_drawer_open">Open navigation drawer</string>
   <string name="navigation_drawer_close">Close navigation drawer</string>
+  <string name="navigation_drawer_scrobbled_songs">Scrobbled songs</string>
   <string name="navigation_drawer_queue_to_scrobble">Queue to scrobble</string>
   <string name="navigation_drawer_configuration">Configuration</string>
 
