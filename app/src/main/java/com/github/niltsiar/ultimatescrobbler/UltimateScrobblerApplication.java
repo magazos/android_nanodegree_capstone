@@ -32,7 +32,7 @@ public class UltimateScrobblerApplication extends CustomApplication implements H
                                   .build()
                                   .inject(this);
 
-        if (Build.VERSION_CODES.O >= Build.VERSION.SDK_INT) {
+        if (Build.VERSION_CODES.O <= Build.VERSION.SDK_INT) {
             createNotificationChannels();
         }
         ContextCompat.startForegroundService(this, ScrobblerService.createStartIntent(this));
