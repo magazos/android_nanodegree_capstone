@@ -1,4 +1,4 @@
-package com.github.niltsiar.ultimatescrobbler.ui.playedsongs;
+package com.github.niltsiar.ultimatescrobbler.ui.scrobbledsongs;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -13,7 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.github.niltsiar.ultimatescrobbler.R;
 
-public class PlayedSongsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ScrobbledSongsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -25,7 +25,7 @@ public class PlayedSongsActivity extends AppCompatActivity implements Navigation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_played_songs);
+        setContentView(R.layout.activity_scrobbled_songs);
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);

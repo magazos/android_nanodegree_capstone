@@ -5,8 +5,8 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   app:layout_behavior="@string/appbar_scrolling_view_behavior"
-  tools:context="com.github.niltsiar.ultimatescrobbler.ui.playedsongs.PlayedSongsActivity"
-  tools:showIn="@layout/app_bar_played_songs">
+  tools:context="com.github.niltsiar.ultimatescrobbler.ui.scrobbledsongs.ScrobbledSongsActivity"
+  tools:showIn="@layout/app_bar_scrobbled_songs">
 
   <TextView
     android:id="@+id/scrobbled_songs_title"
