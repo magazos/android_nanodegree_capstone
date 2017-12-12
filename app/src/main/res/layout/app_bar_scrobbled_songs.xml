@@ -20,6 +20,12 @@
 
   </android.support.design.widget.AppBarLayout>
 
-  <include layout="@layout/content_scrobbled_songs" />
+  <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment"
+    android:name="com.github.niltsiar.ultimatescrobbler.ui.songs.scrobbledsongs.ScrobbledSongsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout="@layout/fragment_scrobbled_songs" />
 
 </android.support.design.widget.CoordinatorLayout>
