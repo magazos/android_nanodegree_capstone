@@ -1,7 +1,9 @@
 package com.github.niltsiar.ultimatescrobbler.ui.songs;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,6 +14,8 @@ import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.github.niltsiar.ultimatescrobbler.R;
+import com.github.niltsiar.ultimatescrobbler.ui.songs.playedsongs.PlayedSongsFragment;
+import com.github.niltsiar.ultimatescrobbler.ui.songs.scrobbledsongs.ScrobbledSongsFragment;
 
 public class SongsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -35,6 +39,10 @@ public class SongsActivity extends AppCompatActivity implements NavigationView.O
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        getSupportFragmentManager().beginTransaction()
+                                   .add(R.id.fragment, new ScrobbledSongsFragment())
+                                   .commit();
     }
 
     @Override
@@ -69,13 +77,22 @@ public class SongsActivity extends AppCompatActivity implements NavigationView.O
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (item.isChecked()) {
+            return true;
+        }
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_queue) {
-
-        } else if (id == R.id.nav_settings) {
+        if (R.id.nav_scrobbled == id) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment, new ScrobbledSongsFragment());
+            transaction.commit();
+        } else if (R.id.nav_queue == id) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment, new PlayedSongsFragment());
+            transaction.commit();
+        } else if (R.id.nav_settings == id) {
 
         }
 
