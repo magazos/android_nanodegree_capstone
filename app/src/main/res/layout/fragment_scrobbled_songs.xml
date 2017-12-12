@@ -4,9 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  app:layout_behavior="@string/appbar_scrolling_view_behavior"
-  tools:context="com.github.niltsiar.ultimatescrobbler.ui.songs.SongsActivity"
-  tools:showIn="@layout/app_bar_scrobbled_songs">
+  tools:context="com.github.niltsiar.ultimatescrobbler.ui.songs.SongsActivity">
 
   <TextView
     android:id="@+id/scrobbled_songs_title"
@@ -18,7 +16,7 @@
     android:textSize="@dimen/material_typography_display1" />
 
   <android.support.v7.widget.RecyclerView
-    android:id="@+id/scrobbler_songs_recyclerview"
+    android:id="@+id/scrobbled_songs_recyclerview"
     android:layout_width="@dimen/zero"
     android:layout_height="@dimen/zero"
     app:layout_constraintTop_toBottomOf="@id/scrobbled_songs_title"

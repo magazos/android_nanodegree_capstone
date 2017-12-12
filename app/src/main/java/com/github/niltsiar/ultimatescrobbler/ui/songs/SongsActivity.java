@@ -29,7 +29,7 @@ public class SongsActivity extends AppCompatActivity implements NavigationView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scrobbled_songs);
+        setContentView(R.layout.activity_songs);
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);

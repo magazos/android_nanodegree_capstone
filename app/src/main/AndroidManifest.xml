@@ -13,7 +13,6 @@
     <activity android:name=".ui.MainActivity" />
     <activity
       android:name=".ui.songs.SongsActivity"
-      android:label="@string/scrobbled_songs_title"
       android:theme="@style/AppTheme.NoActionBar">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
