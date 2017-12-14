@@ -55,6 +55,7 @@ dependencies {
     implementation libraries.app.design
     implementation libraries.app.recyclerView
     implementation libraries.app.constraintLayout
+    implementation libraries.app.lifecycleExtensions
     implementation libraries.app.materialDimens
 
     implementation libraries.app.rxjava2
