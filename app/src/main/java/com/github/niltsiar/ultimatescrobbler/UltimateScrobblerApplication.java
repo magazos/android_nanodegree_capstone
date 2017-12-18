@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import com.github.niltsiar.ultimatescrobbler.di.DaggerApplicationComponent;
 import com.github.niltsiar.ultimatescrobbler.services.ScrobblerService;
@@ -14,15 +15,19 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import dagger.android.HasServiceInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 import javax.inject.Inject;
 
-public class UltimateScrobblerApplication extends CustomApplication implements HasActivityInjector, HasServiceInjector {
+public class UltimateScrobblerApplication extends CustomApplication implements HasActivityInjector, HasServiceInjector, HasSupportFragmentInjector {
 
     @Inject
     DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
 
     @Inject
     DispatchingAndroidInjector<Service> serviceDispatchingAndroidInjector;
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
     @Override
     public void onCreate() {
@@ -46,6 +51,11 @@ public class UltimateScrobblerApplication extends CustomApplication implements H
     @Override
     public AndroidInjector<Service> serviceInjector() {
         return serviceDispatchingAndroidInjector;
+    }
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentDispatchingAndroidInjector;
     }
 
     @TargetApi(Build.VERSION_CODES.O)
