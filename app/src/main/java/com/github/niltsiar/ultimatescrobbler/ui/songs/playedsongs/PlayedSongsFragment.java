@@ -65,9 +65,9 @@ public class PlayedSongsFragment extends Fragment {
                                          .subscribe(playedSongsAdapter -> {
                                              recyclerView.setAdapter(playedSongsAdapter);
                                              recyclerView.setHasFixedSize(true);
-                                             LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                                             LinearLayoutManager manager = new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false);
                                              recyclerView.setLayoutManager(manager);
-                                             recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), manager.getOrientation()));
+                                             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), manager.getOrientation()));
                                          });
         disposables.add(disposable);
     }
