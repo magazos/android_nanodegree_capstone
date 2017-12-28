@@ -11,6 +11,8 @@ public class PlayedSongItemViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.played_song_title)
     TextView playedSongTitle;
+    @BindView(R.id.played_song_artist)
+    TextView playedSongArtist;
     @BindView(R.id.played_song_date)
     TextView playedSongDate;
 
@@ -20,8 +22,9 @@ public class PlayedSongItemViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(String title, String date) {
+    public void bind(String title, String artist, String date) {
         playedSongTitle.setText(title);
+        playedSongArtist.setText(artist);
         playedSongDate.setText(date);
     }
 }

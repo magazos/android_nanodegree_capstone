@@ -27,8 +27,9 @@ public class PlayedSongsAdapter extends RecyclerView.Adapter<PlayedSongItemViewH
     public void onBindViewHolder(PlayedSongItemViewHolder holder, int position) {
         cursor.moveToPosition(position);
         String title = cursor.getString(PlayedSongColumns.Query.Index.TRACK_NAME);
+        String artist = cursor.getString(PlayedSongColumns.Query.Index.ARTIST_NAME);
         String date = cursor.getString(PlayedSongColumns.Query.Index.TIMESTAMP);
-        holder.bind(title, date);
+        holder.bind(title, artist, date);
     }
 
     @Override
