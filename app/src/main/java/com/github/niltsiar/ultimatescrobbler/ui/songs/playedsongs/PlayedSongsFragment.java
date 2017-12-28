@@ -77,4 +77,10 @@ public class PlayedSongsFragment extends Fragment {
         disposables.clear();
         super.onPause();
     }
+
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        super.onDestroyView();
+    }
 }
