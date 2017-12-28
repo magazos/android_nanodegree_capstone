@@ -19,6 +19,10 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+    <activity
+      android:name=".ui.configuration.ConfigurationActivity"
+      android:label="@string/configuration_activity_name"
+      android:theme="@style/AppTheme.NoActionBar" />
 
     <service
       android:name=".services.ScrobblerService"
