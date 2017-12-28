@@ -2,6 +2,7 @@ package com.github.niltsiar.ultimatescrobbler.utils;
 
 import android.content.Context;
 import android.support.v4.content.CursorLoader;
+import com.github.niltsiar.ultimatescrobbler.cache.database.PlayedSongColumns;
 import com.github.niltsiar.ultimatescrobbler.cache.database.SongsProvider;
 import javax.inject.Inject;
 
@@ -15,7 +16,7 @@ public class LoaderProvider {
     }
 
     public CursorLoader createPlayedSongsLoader() {
-        return new CursorLoader(context, SongsProvider.PlayedSongs.PLAYED_SONGS, null, null, null, null);
+        return new CursorLoader(context, SongsProvider.PlayedSongs.PLAYED_SONGS, PlayedSongColumns.Query.PROJECTION, null, null, null);
     }
 
     public CursorLoader createScrobbledSongsLoader() {
