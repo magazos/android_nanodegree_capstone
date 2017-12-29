@@ -1,5 +1,6 @@
 package com.github.niltsiar.ultimatescrobbler.ui.songs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.github.niltsiar.ultimatescrobbler.R;
+import com.github.niltsiar.ultimatescrobbler.ui.configuration.ConfigurationActivity;
 import com.github.niltsiar.ultimatescrobbler.ui.songs.playedsongs.PlayedSongsFragment;
 import com.github.niltsiar.ultimatescrobbler.ui.songs.scrobbledsongs.ScrobbledSongsFragment;
 
@@ -71,7 +73,8 @@ public class SongsActivity extends AppCompatActivity implements NavigationView.O
             transaction.replace(R.id.fragment, new PlayedSongsFragment());
             transaction.commit();
         } else if (R.id.nav_settings == id) {
-
+            Intent configurationIntent = ConfigurationActivity.createCallingIntent(getApplicationContext());
+            startActivity(configurationIntent);
         }
 
         drawer.closeDrawer(GravityCompat.START);

@@ -34,9 +34,9 @@
     android:layout_width="@dimen/zero"
     android:layout_height="wrap_content"
     android:text="@string/configuration_batches"
-    app:layout_constraintLeft_toLeftOf="@id/guide_left"
+    app:layout_constraintLeft_toRightOf="@id/guide_left"
     app:layout_constraintRight_toLeftOf="@+id/send_songs_batches_slider"
-    app:layout_constraintTop_toTopOf="@id/guide_top" />
+    app:layout_constraintTop_toBottomOf="@id/guide_top" />
 
   <com.warkiz.widget.IndicatorSeekBar
     android:id="@+id/send_songs_batches_slider"
@@ -50,7 +50,7 @@
     app:isb_thumb_progress_stay="true"
     app:layout_constraintLeft_toRightOf="@id/send_songs_batches"
     app:layout_constraintRight_toLeftOf="@id/guide_right"
-    app:layout_constraintTop_toTopOf="@id/guide_top" />
+    app:layout_constraintTop_toBottomOf="@id/guide_top" />
 
   <TextView
     android:id="@+id/lastfm_credentials"
@@ -58,7 +58,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/material_layout_vertical_spacing_between_content_areas"
     android:text="@string/configuration_lastfm_credentials"
-    app:layout_constraintLeft_toLeftOf="@id/guide_left"
+    app:layout_constraintLeft_toRightOf="@id/guide_left"
     app:layout_constraintTop_toBottomOf="@id/send_songs_batches_slider" />
 
   <android.support.design.widget.TextInputLayout
@@ -81,6 +81,7 @@
   </android.support.design.widget.TextInputLayout>
 
   <android.support.design.widget.TextInputLayout
+    android:id="@+id/lastfm_password_inputlayout"
     android:layout_width="@dimen/zero"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/material_layout_vertical_spacing_between_content_areas"
@@ -90,7 +91,7 @@
     app:passwordToggleEnabled="true">
 
     <android.support.design.widget.TextInputEditText
-      android:id="@+id/number_of_songs_per_batch"
+      android:id="@+id/lastfm_password"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:hint="@string/configuration_lastfm_password"
@@ -98,5 +99,25 @@
       android:maxLines="1"
       tools:text="Test password" />
   </android.support.design.widget.TextInputLayout>
+
+  <Button
+    android:id="@+id/lastfm_test_credentials"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/configuration_lastfm_test_credentials"
+    android:layout_marginTop="@dimen/material_layout_vertical_spacing_between_content_areas"
+    app:layout_constraintRight_toLeftOf="@id/guide_right"
+    app:layout_constraintTop_toBottomOf="@id/lastfm_password_inputlayout" />
+
+  <Switch
+    android:id="@+id/send_now_playing"
+    android:layout_width="@dimen/zero"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/material_layout_vertical_spacing_between_content_areas"
+    android:text="@string/configuration_send_now_playing"
+    app:layout_constraintLeft_toRightOf="@id/guide_left"
+    app:layout_constraintRight_toLeftOf="@id/guide_right"
+    app:layout_constraintTop_toBottomOf="@id/lastfm_test_credentials"
+    tools:checked="true" />
 
 </android.support.constraint.ConstraintLayout>
