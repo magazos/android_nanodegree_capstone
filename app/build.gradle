@@ -57,6 +57,7 @@ dependencies {
     implementation libraries.app.constraintLayout
     implementation libraries.app.lifecycleExtensions
     implementation libraries.app.materialDimens
+    implementation libraries.app.indicatorSeekBar
 
     implementation libraries.app.rxjava2
     implementation libraries.app.rxandroid
