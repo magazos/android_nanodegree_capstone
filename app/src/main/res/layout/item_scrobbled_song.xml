@@ -43,19 +43,30 @@
     app:layout_constraintLeft_toRightOf="@id/guide_text_left"
     app:layout_constraintRight_toLeftOf="@id/guide_right"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toTopOf="@+id/scrobbled_song_date"
+    app:layout_constraintBottom_toTopOf="@+id/scrobbled_song_artist"
     app:layout_constraintVertical_chainStyle="packed"
     tools:text="Scrobbled Song" />
 
   <TextView
-    android:id="@+id/scrobbled_song_date"
+    android:id="@+id/scrobbled_song_artist"
     android:layout_width="@dimen/zero"
     android:layout_height="wrap_content"
     android:textSize="@dimen/material_component_lists_two_line_secondary_text_size"
     app:layout_constraintLeft_toRightOf="@id/guide_text_left"
+    app:layout_constraintRight_toLeftOf="@+id/scrobbled_song_date"
+    app:layout_constraintTop_toBottomOf="@+id/scrobbled_song_title"
+    app:layout_constraintBottom_toBottomOf="parent"
+    tools:text="The great artist" />
+
+  <TextView
+    android:id="@+id/scrobbled_song_date"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/material_component_lists_two_line_secondary_text_size"
+    app:layout_constraintLeft_toRightOf="@id/scrobbled_song_artist"
     app:layout_constraintRight_toLeftOf="@id/guide_right"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/scrobbled_song_title"
+    app:layout_constraintBaseline_toBaselineOf="@id/scrobbled_song_artist"
     tools:text="00:00:00 00/00/0000" />
 
 </android.support.constraint.ConstraintLayout>

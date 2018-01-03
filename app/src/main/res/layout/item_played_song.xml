@@ -44,10 +44,9 @@
 
   <TextView
     android:id="@+id/played_song_date"
-    android:layout_width="@dimen/zero"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:textSize="@dimen/material_component_lists_two_line_secondary_text_size"
-    android:gravity="end"
     app:layout_constraintLeft_toRightOf="@id/played_song_artist"
     app:layout_constraintRight_toLeftOf="@id/guide_right"
     app:layout_constraintBaseline_toBaselineOf="@id/played_song_artist"
