@@ -11,9 +11,12 @@ import com.github.niltsiar.ultimatescrobbler.BuildConfig;
 import com.github.niltsiar.ultimatescrobbler.cache.preferences.ConfigurationCacheImpl;
 import com.github.niltsiar.ultimatescrobbler.cache.storage.SongsCacheImpl;
 import com.github.niltsiar.ultimatescrobbler.data.ScrobblerDataRepository;
+import com.github.niltsiar.ultimatescrobbler.data.UserConfigurationDataRepository;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ConfigurationCache;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerRemote;
 import com.github.niltsiar.ultimatescrobbler.data.repository.SongsCache;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.configuration.RetrieveUserConfigurationUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.configuration.SaveUserConfigurationUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionTokenUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.DeletePlayedSongUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetPlayedSongUseCase;
@@ -23,6 +26,7 @@ import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.Scrobb
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SendNowPlayingUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.GetSongInformationUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.songinformation.SaveSongInformationUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.repository.ConfigurationRepository;
 import com.github.niltsiar.ultimatescrobbler.domain.repository.ScrobblerRepository;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerRemoteImpl;
 import com.github.niltsiar.ultimatescrobbler.remote.ScrobblerService;
@@ -158,5 +162,20 @@ public abstract class ApplicationModule {
     @Provides
     static DeletePlayedSongUseCase provideDeletePlayedSongUseCase(ScrobblerRepository repository) {
         return new DeletePlayedSongUseCase(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    }
+
+    @Provides
+    static RetrieveUserConfigurationUseCase provideRetrieveUserConfigurationUseCase(ConfigurationRepository repository) {
+        return new RetrieveUserConfigurationUseCase(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    }
+
+    @Provides
+    static SaveUserConfigurationUseCase provideSaveUserConfigurationUseCase(ConfigurationRepository repository) {
+        return new SaveUserConfigurationUseCase(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    }
+
+    @Provides
+    static ConfigurationRepository provideConfigurationRepository(UserConfigurationDataRepository repository) {
+        return repository;
     }
 }

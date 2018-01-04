@@ -81,6 +81,7 @@ dependencies {
         exclude module: 'threetenbp'
     }
     implementation libraries.app.firebaseJobDispatcher
+    implementation libraries.app.autoValue
 
     debugImplementation libraries.debug.loggingInterceptor
     debugImplementation libraries.debug.oklog
@@ -97,6 +98,7 @@ dependencies {
     annotationProcessor libraries.apt.daggerCompiler
     annotationProcessor libraries.apt.daggerProcessor
     annotationProcessor libraries.apt.butterknife
+    annotationProcessor libraries.apt.autoValue
 }
 
 android.applicationVariants.all { variant ->
