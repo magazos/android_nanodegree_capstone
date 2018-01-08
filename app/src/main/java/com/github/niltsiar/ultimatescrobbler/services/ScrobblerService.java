@@ -61,8 +61,8 @@ public class ScrobblerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (null == intent.getAction()) {
-            throw new IllegalArgumentException("intent.getAction() cannot be null");
+        if (null == intent || null == intent.getAction()) {
+            throw new IllegalArgumentException("intent or intent.getAction() cannot be null");
         }
         switch (intent.getAction()) {
             case START_ACTION:
@@ -72,7 +72,7 @@ public class ScrobblerService extends Service {
                 stop();
                 break;
         }
-        return Service.START_STICKY;
+        return Service.START_REDELIVER_INTENT;
     }
 
     @Nullable
