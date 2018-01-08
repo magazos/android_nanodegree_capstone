@@ -21,7 +21,8 @@ public class ConfigurationViewModel extends ViewModel {
     private UserConfiguration userConfiguration;
 
     public ConfigurationViewModel(RetrieveUserConfigurationUseCase retrieveUserConfigurationUseCase,
-            SaveUserConfigurationUseCase saveUserConfigurationUseCase, RequestMobileSessionTokenUseCase requestMobileSessionTokenUseCase) {
+            SaveUserConfigurationUseCase saveUserConfigurationUseCase,
+            RequestMobileSessionTokenUseCase requestMobileSessionTokenUseCase) {
         this.retrieveUserConfigurationUseCase = retrieveUserConfigurationUseCase;
         this.saveUserConfigurationUseCase = saveUserConfigurationUseCase;
         this.requestMobileSessionTokenUseCase = requestMobileSessionTokenUseCase;
@@ -30,10 +31,10 @@ public class ConfigurationViewModel extends ViewModel {
 
         Disposable disposable = retrieveUserConfigurationUseCase.execute(null)
                                                                 .subscribe(userConfiguration -> {
-                                            this.userConfiguration = userConfiguration;
+                                                                    this.userConfiguration = userConfiguration;
                                                                     configurationViewState = ConfigurationViewStateMapper.mapFromUserConfiguration(userConfiguration);
-                                            configurationViewStateBehaviorRelay.accept(configurationViewState);
-                                        });
+                                                                    configurationViewStateBehaviorRelay.accept(configurationViewState);
+                                                                });
         disposables.add(disposable);
     }
 
@@ -44,14 +45,38 @@ public class ConfigurationViewModel extends ViewModel {
     public void setUsername(String username) {
         UserConfiguration newUserConfiguration = userConfiguration.withUserCredentials(userConfiguration.getUserCredentials()
                                                                                                         .withUsername(username));
-        Disposable disposable = saveUserConfigurationUseCase.execute(newUserConfiguration)
-                                                            .subscribe(() -> userConfiguration = newUserConfiguration);
-        disposables.add(disposable);
+        updateUserConfiguration(newUserConfiguration);
+    }
+
+    public void setPassword(String password) {
+        UserConfiguration newUserConfiguration = userConfiguration.withUserCredentials(userConfiguration.getUserCredentials()
+                                                                                                        .withPassword(password));
+        updateUserConfiguration(newUserConfiguration);
+    }
+
+    public void setNumberOfSongsPerBatch(int numberOfSongsPerBatch) {
+        UserConfiguration newUserConfiguration = userConfiguration.withNumberOfSongsPerBatch(numberOfSongsPerBatch);
+        updateUserConfiguration(newUserConfiguration);
+    }
+
+    public void setSendNowPlaying(boolean sendNowPlaying) {
+        UserConfiguration newUserConfiguration = userConfiguration.withSendNowPlaying(sendNowPlaying);
+        updateUserConfiguration(newUserConfiguration);
+    }
+
+    public void testUserCredentials() {
+        requestMobileSessionTokenUseCase.execute(userConfiguration.getUserCredentials())
+                                        .subscribe();
     }
 
     @Override
     protected void onCleared() {
         disposables.clear();
         super.onCleared();
+    }
+
+    private void updateUserConfiguration(UserConfiguration newUserConfiguration) {
+        saveUserConfigurationUseCase.execute(newUserConfiguration)
+                                    .subscribe(() -> userConfiguration = newUserConfiguration);
     }
 }
