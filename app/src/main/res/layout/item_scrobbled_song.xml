@@ -27,7 +27,7 @@
     app:layout_constraintGuide_begin="@dimen/material_component_lists_text_left_padding" />
 
   <ImageView
-    android:id="@+id/album_art"
+    android:id="@+id/scrobbled_song_album_art"
     android:layout_width="@dimen/zero"
     android:layout_height="match_parent"
     app:layout_constraintLeft_toRightOf="@id/guide_icon_left"
