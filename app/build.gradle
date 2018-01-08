@@ -83,6 +83,7 @@ dependencies {
     }
     implementation libraries.app.firebaseJobDispatcher
     implementation libraries.app.autoValue
+    implementation libraries.app.picasso
 
     debugImplementation libraries.debug.loggingInterceptor
     debugImplementation libraries.debug.oklog
