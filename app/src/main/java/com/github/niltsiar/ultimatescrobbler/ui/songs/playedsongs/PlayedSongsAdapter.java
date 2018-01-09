@@ -2,6 +2,7 @@ package com.github.niltsiar.ultimatescrobbler.ui.songs.playedsongs;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,8 @@ public class PlayedSongsAdapter extends RecyclerView.Adapter<PlayedSongItemViewH
         String title = cursor.getString(PlayedSongColumns.Query.Index.TRACK_NAME);
         String artist = cursor.getString(PlayedSongColumns.Query.Index.ARTIST_NAME);
         String date = cursor.getString(PlayedSongColumns.Query.Index.TIMESTAMP);
-        holder.bind(title, artist, date);
+        holder.bind(title, artist, DateUtils.getRelativeTimeSpanString(Long.parseLong(date))
+                                            .toString());
     }
 
     @Override
