@@ -29,7 +29,7 @@ public class ScrobbledSongsAdapter extends RecyclerView.Adapter<ScrobbledSongIte
         String title = cursor.getString(InfoSongColumns.Query.Index.TRACK_NAME);
         String artist = cursor.getString(InfoSongColumns.Query.Index.ARTIST_NAME);
         String albumArt = cursor.getString(InfoSongColumns.Query.Index.ALBUM_ART_URL);
-        holder.bind(title, artist, "00/00/0000 00:00", albumArt);
+        holder.bind(title, artist, albumArt);
     }
 
     @Override

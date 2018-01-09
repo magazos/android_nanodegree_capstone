@@ -17,8 +17,6 @@ public class ScrobbledSongItemViewHolder extends RecyclerView.ViewHolder {
     TextView scrobbledSongTitle;
     @BindView(R.id.scrobbled_song_artist)
     TextView scrobbledSongArtist;
-    @BindView(R.id.scrobbled_song_date)
-    TextView scrobbledSongDate;
     @BindView(R.id.scrobbled_song_album_art)
     ImageView scrobbledSongAlbumArt;
 
@@ -28,10 +26,9 @@ public class ScrobbledSongItemViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(String title, String artist, String date, String albumArt) {
+    public void bind(String title, String artist, String albumArt) {
         scrobbledSongTitle.setText(title);
         scrobbledSongArtist.setText(artist);
-        scrobbledSongDate.setText(date);
         Picasso picasso = Picasso.with(scrobbledSongAlbumArt.getContext());
         RequestCreator request;
         if (!TextUtils.isEmpty(albumArt)) {
