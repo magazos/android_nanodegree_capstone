@@ -15,7 +15,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.github.niltsiar.ultimatescrobbler.R;
+import com.github.niltsiar.ultimatescrobbler.services.ScrobblerService;
 import com.github.niltsiar.ultimatescrobbler.ui.configuration.ConfigurationActivity;
 import com.github.niltsiar.ultimatescrobbler.ui.songs.playedsongs.PlayedSongsFragment;
 import com.github.niltsiar.ultimatescrobbler.ui.songs.scrobbledsongs.ScrobbledSongsFragment;
@@ -84,5 +86,11 @@ public class SongsActivity extends AppCompatActivity implements NavigationView.O
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @OnClick(R.id.scrobble_songs_fab)
+    void scrobbleFabClick() {
+        Intent scrobbleNowIntent = ScrobblerService.createScrobbleNowIntent(this);
+        startService(scrobbleNowIntent);
     }
 }

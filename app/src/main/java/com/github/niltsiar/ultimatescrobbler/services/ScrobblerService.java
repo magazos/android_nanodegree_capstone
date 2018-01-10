@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.util.Pair;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.Job;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.configuration.RetrieveUserConfigurationUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SavePlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import com.github.niltsiar.ultimatescrobbler.receivers.SpotifyReceiver;
@@ -31,12 +32,16 @@ public class ScrobblerService extends Service {
     SavePlayedSong savePlayedSongUseCase;
 
     @Inject
+    RetrieveUserConfigurationUseCase retrieveUserConfigurationUseCase;
+
+    @Inject
     FirebaseJobDispatcher dispatcher;
 
     CompositeDisposable playedSongsDisposables;
 
     private static final String START_ACTION = "START_SCROBBLER_SERVICE";
     private static final String STOP_ACTION = "STOP_SCROBBLER_SERVICE";
+    private static final String SCROBBLE_NOW_ACTION = "SCROBBLE_NOW_SERVICE";
     private static final int SERVICE_NOTIFICATION_ID = 101010;
 
     public static Intent createStartIntent(Context context) {
@@ -51,6 +56,12 @@ public class ScrobblerService extends Service {
         return stopIntent;
     }
 
+    public static Intent createScrobbleNowIntent(Context context) {
+        Intent scrobbleNowIntent = new Intent(context, ScrobblerService.class);
+        scrobbleNowIntent.setAction(SCROBBLE_NOW_ACTION);
+        return scrobbleNowIntent;
+    }
+
     @Override
     public void onCreate() {
         AndroidInjection.inject(this);
@@ -62,17 +73,21 @@ public class ScrobblerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (null == intent || null == intent.getAction()) {
-            throw new IllegalArgumentException("intent or intent.getAction() cannot be null");
+            initialize();
+        } else {
+            switch (intent.getAction()) {
+                case START_ACTION:
+                    initialize();
+                    break;
+                case STOP_ACTION:
+                    stop();
+                    break;
+                case SCROBBLE_NOW_ACTION:
+                    scrobbleNow();
+                    break;
+            }
         }
-        switch (intent.getAction()) {
-            case START_ACTION:
-                initialize();
-                break;
-            case STOP_ACTION:
-                stop();
-                break;
-        }
-        return Service.START_REDELIVER_INTENT;
+        return Service.START_STICKY;
     }
 
     @Nullable
@@ -89,12 +104,16 @@ public class ScrobblerService extends Service {
                 Long count = longPlayedSongPair.first;
                 PlayedSong playedSong = longPlayedSongPair.second;
                 Timber.i("%d stored songs", count);
-                Job sendNowPlayingJob = SendNowPlayingService.createJob(dispatcher, playedSong.getId());
-                dispatcher.mustSchedule(sendNowPlayingJob);
-                if (0 == count % 2) {
-                    Job scrobbledStoredSongs = ScrobblePlayedSongsService.createJob(dispatcher);
-                    dispatcher.mustSchedule(scrobbledStoredSongs);
-                }
+                retrieveUserConfigurationUseCase.execute(null)
+                                                .subscribe(userConfiguration -> {
+                                                    if (userConfiguration.getSendNowPlaying()) {
+                                                        Job sendNowPlayingJob = SendNowPlayingService.createJob(dispatcher, playedSong.getId());
+                                                        dispatcher.mustSchedule(sendNowPlayingJob);
+                                                    }
+                                                    if (userConfiguration.getNumberOfSongsPerBatch() <= count) {
+                                                        scrobbleNow();
+                                                    }
+                                                });
             }
 
             @Override
@@ -125,6 +144,11 @@ public class ScrobblerService extends Service {
         unregisterReceiver(spotifyReceiver);
         stopForeground(true);
         stopSelf();
+    }
+
+    private void scrobbleNow() {
+        Job scrobbledStoredSongs = ScrobblePlayedSongsService.createJob(dispatcher);
+        dispatcher.mustSchedule(scrobbledStoredSongs);
     }
 
     private Notification createServiceNotification() {
