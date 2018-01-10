@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -27,6 +28,8 @@ public class SongsActivity extends AppCompatActivity implements NavigationView.O
     DrawerLayout drawer;
     @BindView(R.id.nav_view)
     NavigationView navigationView;
+    @BindView(R.id.scrobble_songs_fab)
+    FloatingActionButton scrobbleFab;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,10 +71,12 @@ public class SongsActivity extends AppCompatActivity implements NavigationView.O
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment, new ScrobbledSongsFragment());
             transaction.commit();
+            scrobbleFab.hide();
         } else if (R.id.nav_queue == id) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment, new PlayedSongsFragment());
             transaction.commit();
+            scrobbleFab.show();
         } else if (R.id.nav_settings == id) {
             Intent configurationIntent = ConfigurationActivity.createCallingIntent(getApplicationContext());
             startActivity(configurationIntent);
