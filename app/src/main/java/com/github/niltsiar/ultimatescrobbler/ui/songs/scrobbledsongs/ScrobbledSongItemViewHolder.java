@@ -9,7 +9,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.github.niltsiar.ultimatescrobbler.R;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
 
 public class ScrobbledSongItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -29,15 +28,12 @@ public class ScrobbledSongItemViewHolder extends RecyclerView.ViewHolder {
     public void bind(String title, String artist, String albumArt) {
         scrobbledSongTitle.setText(title);
         scrobbledSongArtist.setText(artist);
-        Picasso picasso = Picasso.with(scrobbledSongAlbumArt.getContext());
-        RequestCreator request;
         if (!TextUtils.isEmpty(albumArt)) {
-            request = picasso.load(albumArt);
-        } else {
-            request = picasso.load(R.drawable.ic_note);
+            Picasso.with(scrobbledSongAlbumArt.getContext())
+                   .load(albumArt)
+                   .placeholder(R.drawable.ic_note)
+                   .error(R.drawable.ic_note)
+                   .into(scrobbledSongAlbumArt);
         }
-        request.placeholder(R.drawable.ic_note)
-               .error(R.drawable.ic_note)
-               .into(scrobbledSongAlbumArt);
     }
 }

@@ -30,10 +30,10 @@
     android:id="@+id/scrobbled_song_album_art"
     android:layout_width="@dimen/zero"
     android:layout_height="match_parent"
+    app:srcCompat="@drawable/ic_note"
     app:layout_constraintLeft_toRightOf="@id/guide_icon_left"
     app:layout_constraintRight_toLeftOf="@id/guide_text_left"
-    app:layout_constraintDimensionRatio="1:1"
-    tools:src="@drawable/ic_note" />
+    app:layout_constraintDimensionRatio="1:1" />
 
   <TextView
     android:id="@+id/scrobbled_song_title"
@@ -55,7 +55,7 @@
     android:textSize="@dimen/material_component_lists_two_line_secondary_text_size"
     android:layout_marginStart="@dimen/material_layout_keylines_horizontal_mobile_margin"
     app:layout_constraintLeft_toRightOf="@id/guide_text_left"
-    app:layout_constraintRight_toLeftOf="@+id/scrobbled_song_date"
+    app:layout_constraintRight_toLeftOf="@id/guide_right"
     app:layout_constraintTop_toBottomOf="@+id/scrobbled_song_title"
     app:layout_constraintBottom_toBottomOf="parent"
     tools:text="The great artist" />
