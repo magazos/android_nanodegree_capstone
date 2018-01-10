@@ -61,6 +61,7 @@ public class ScrobbledSongsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().setTitle(R.string.scrobbled_songs_title);
         Disposable disposable = viewModel.getAdapter()
                                          .subscribe(scrobbledSongsAdapter -> {
                                              recyclerView.setAdapter(scrobbledSongsAdapter);

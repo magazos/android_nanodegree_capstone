@@ -27,20 +27,11 @@
     android:orientation="horizontal"
     app:layout_constraintGuide_begin="@dimen/material_layout_vertical_spacing_between_content_areas" />
 
-  <TextView
-    android:id="@+id/played_songs_title"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:text="@string/played_songs_title"
-    android:textSize="@dimen/material_typography_display1"
-    app:layout_constraintStart_toStartOf="@id/guide_left" />
-
   <android.support.v7.widget.RecyclerView
     android:id="@+id/played_songs_recyclerview"
     android:layout_width="@dimen/zero"
     android:layout_height="@dimen/zero"
-    app:layout_constraintTop_toBottomOf="@id/played_songs_title"
+    app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"

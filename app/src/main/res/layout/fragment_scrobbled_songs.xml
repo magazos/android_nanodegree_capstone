@@ -6,20 +6,12 @@
   android:layout_height="match_parent"
   tools:context="com.github.niltsiar.ultimatescrobbler.ui.songs.SongsActivity">
 
-  <TextView
-    android:id="@+id/scrobbled_songs_title"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/scrobbled_songs_title"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    android:textSize="@dimen/material_typography_display1" />
 
   <android.support.v7.widget.RecyclerView
     android:id="@+id/scrobbled_songs_recyclerview"
     android:layout_width="@dimen/zero"
     android:layout_height="@dimen/zero"
-    app:layout_constraintTop_toBottomOf="@id/scrobbled_songs_title"
+    app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"

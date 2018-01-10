@@ -61,6 +61,7 @@ public class PlayedSongsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().setTitle(R.string.played_songs_title);
         Disposable disposable = viewModel.getAdapter()
                                          .subscribe(playedSongsAdapter -> {
                                              recyclerView.setAdapter(playedSongsAdapter);
