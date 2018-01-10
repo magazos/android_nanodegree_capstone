@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.util.Pair;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.Job;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.configuration.RetrieveUserConfigurationUseCase;
@@ -97,20 +96,14 @@ public class ScrobblerService extends Service {
     }
 
     private void initialize() {
-        DisposableObserver<Pair<Long, PlayedSong>> playedSongDisposable = new DisposableObserver<Pair<Long, PlayedSong>>() {
+        DisposableObserver<Long> countDisposable = new DisposableObserver<Long>() {
 
             @Override
-            public void onNext(Pair<Long, PlayedSong> longPlayedSongPair) {
-                Long count = longPlayedSongPair.first;
-                PlayedSong playedSong = longPlayedSongPair.second;
-                Timber.i("%d stored songs", count);
+            public void onNext(Long numberOfSongsToScrobble) {
+                Timber.i("%d stored songs", numberOfSongsToScrobble);
                 retrieveUserConfigurationUseCase.execute(null)
                                                 .subscribe(userConfiguration -> {
-                                                    if (userConfiguration.getSendNowPlaying()) {
-                                                        Job sendNowPlayingJob = SendNowPlayingService.createJob(dispatcher, playedSong.getId());
-                                                        dispatcher.mustSchedule(sendNowPlayingJob);
-                                                    }
-                                                    if (userConfiguration.getNumberOfSongsPerBatch() <= count) {
+                                                    if (userConfiguration.getNumberOfSongsPerBatch() <= numberOfSongsToScrobble) {
                                                         scrobbleNow();
                                                     }
                                                 });
@@ -127,21 +120,45 @@ public class ScrobblerService extends Service {
             }
         };
 
-        playedSongsDisposables.add(playedSongDisposable);
+        DisposableObserver<PlayedSong> nowPlayingDisposable = new DisposableObserver<PlayedSong>() {
+            @Override
+            public void onNext(PlayedSong nowPlaying) {
+                retrieveUserConfigurationUseCase.execute(null)
+                                                .subscribe(userConfiguration -> {
+                                                    if (userConfiguration.getSendNowPlaying()) {
+                                                        Job sendNowPlayingJob = SendNowPlayingService.createJob(dispatcher, nowPlaying.getId());
+                                                        dispatcher.mustSchedule(sendNowPlayingJob);
+                                                    }
+                                                });
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+
+        playedSongsDisposables.add(countDisposable);
+        playedSongsDisposables.add(nowPlayingDisposable);
+
+        spotifyReceiver.getNowPlayingSong()
+                       .subscribe(nowPlayingDisposable);
 
         spotifyReceiver.getPlayedSongs()
                        .flatMap(playedSong -> savePlayedSongUseCase.execute(playedSong)
-                                                                   .flatMapObservable(countStoredSongs -> Observable.just(new Pair<>(countStoredSongs, playedSong))))
-                       .subscribe(playedSongDisposable);
-
-        registerReceiver(spotifyReceiver, SpotifyReceiver.getSpotifyIntents());
+                                                                   .flatMapObservable(Observable::just))
+                       .subscribe(countDisposable);
 
         startForeground(SERVICE_NOTIFICATION_ID, createServiceNotification());
+        registerReceiver(spotifyReceiver, SpotifyReceiver.getSpotifyIntents());
     }
 
     private void stop() {
-        playedSongsDisposables.clear();
-        unregisterReceiver(spotifyReceiver);
         stopForeground(true);
         stopSelf();
     }
@@ -156,5 +173,12 @@ public class ScrobblerService extends Service {
                                                                          .setPriority(NotificationCompat.PRIORITY_MIN)
                                                                          .setOngoing(true)
                                                                          .build();
+    }
+
+    @Override
+    public void onDestroy() {
+        playedSongsDisposables.clear();
+        unregisterReceiver(spotifyReceiver);
+        super.onDestroy();
     }
 }
