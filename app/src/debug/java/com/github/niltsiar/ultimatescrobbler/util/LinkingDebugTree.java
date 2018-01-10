@@ -17,9 +17,15 @@ public class LinkingDebugTree extends Timber.DebugTree {
         if (stackTrace.length <= CALL_STACK_INDEX) {
             throw new IllegalStateException("Synthetic stacktrace didn't have enough elements: are you using proguard?");
         }
-        String clazz = extractClassName(stackTrace[CALL_STACK_INDEX]);
-        int lineNumber = stackTrace[CALL_STACK_INDEX].getLineNumber();
-        String newMessage = clazz + ".java:" + lineNumber + " - " + message;
+        String newMessage = message;
+        for (int initialCallStackIndex = CALL_STACK_INDEX; initialCallStackIndex < stackTrace.length; initialCallStackIndex++) {
+            String clazz = extractClassName(stackTrace[initialCallStackIndex]);
+            if (!"Timber".equals(clazz)) {
+                int lineNumber = stackTrace[initialCallStackIndex].getLineNumber();
+                newMessage = clazz + ".java:" + lineNumber + " - " + message;
+                break;
+            }
+        }
         super.log(priority, tag, newMessage, t);
     }
 
