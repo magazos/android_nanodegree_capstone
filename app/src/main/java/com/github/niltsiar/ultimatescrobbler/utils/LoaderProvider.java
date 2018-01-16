@@ -23,4 +23,8 @@ public class LoaderProvider {
     public CursorLoader createScrobbledSongsLoader() {
         return new CursorLoader(context, SongsProvider.InfoSong.INFO_SONG, InfoSongColumns.Query.PROJECTION, null, null, null);
     }
+
+    public CursorLoader createInfoSongLoader(String songId) {
+        return new CursorLoader(context, SongsProvider.InfoSong.withId(songId), InfoSongColumns.Query.PROJECTION, null, null, null);
+    }
 }
