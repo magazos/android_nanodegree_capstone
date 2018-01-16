@@ -50,6 +50,15 @@ public final class SongsProvider {
         public static Uri withId(String id) {
             return buildUri(Path.PLAYED_SONGS, id);
         }
+
+        @InexactContentUri(path = Path.PLAYED_SONGS + "/*/*/*/*",
+                           name = "EXISTING_SONG",
+                           type = "vnd.android.cursor.item/played_song",
+                           whereColumn = {PlayedSongColumns.ARTIST_NAME, PlayedSongColumns.TRACK_NAME, PlayedSongColumns.ALBUM_NAME, PlayedSongColumns.TIMESTAMP},
+                           pathSegment = {1, 2, 3, 4})
+        public static Uri exists(String artistName, String trackName, String albumName, String timestamp) {
+            return buildUri(Path.PLAYED_SONGS, artistName, trackName, albumName, timestamp);
+        }
     }
 
     @TableEndpoint(table = SongsDatabase.INFO_SONG)
