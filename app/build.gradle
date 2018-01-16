@@ -31,8 +31,6 @@ android {
 
         buildConfigField "String", "LAST_FM_API_KEY", LAST_FM_API_KEY
         buildConfigField "String", "LAST_FM_API_SECRET", LAST_FM_API_SECRET
-        buildConfigField "String", "TEST_USERNAME", LAST_FM_TEST_USER
-        buildConfigField "String", "TEST_PASSWORD", LAST_FM_TEST_PASSWORD
     }
     buildTypes {
         debug {
