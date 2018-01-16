@@ -22,6 +22,10 @@
       android:name=".ui.configuration.ConfigurationActivity"
       android:label="@string/configuration_activity_name"
       android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+      android:name=".ui.songdetails.SongDetailsActivity"
+      android:label="@string/details_activity_name"
+      android:theme="@style/AppTheme.NoActionBar" />
 
     <service
       android:name=".services.ScrobblerService"
