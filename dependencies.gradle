@@ -13,7 +13,7 @@ ext {
             sourceCompatibility   : JavaVersion.VERSION_1_8,
             targetCompatibility   : JavaVersion.VERSION_1_8,
             support               : '27.0.2',
-            constraint_layout     : '1.1.0-beta3',
+            constraint_layout     : '1.1.0-beta4',
             arch_lifecycle        : '1.0.0',
             auto_value            : '1.5.3',
             javax_annotations     : '3.0.2',
