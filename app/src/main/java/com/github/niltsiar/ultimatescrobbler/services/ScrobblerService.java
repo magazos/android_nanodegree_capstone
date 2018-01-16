@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.Job;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.configuration.RetrieveUserConfigurationUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SaveCurrentSongUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SavePlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import com.github.niltsiar.ultimatescrobbler.receivers.SpotifyReceiver;
@@ -26,6 +27,9 @@ public class ScrobblerService extends Service {
 
     @Inject
     SpotifyReceiver spotifyReceiver;
+
+    @Inject
+    SaveCurrentSongUseCase saveCurrentSongUseCase;
 
     @Inject
     SavePlayedSong savePlayedSongUseCase;
@@ -126,8 +130,11 @@ public class ScrobblerService extends Service {
                 retrieveUserConfigurationUseCase.execute(null)
                                                 .subscribe(userConfiguration -> {
                                                     if (userConfiguration.getSendNowPlaying()) {
-                                                        Job sendNowPlayingJob = SendNowPlayingService.createJob(dispatcher, nowPlaying.getId());
-                                                        dispatcher.mustSchedule(sendNowPlayingJob);
+                                                        saveCurrentSongUseCase.execute(nowPlaying)
+                                                                              .subscribe(() -> {
+                                                                                  Job sendNowPlayingJob = SendNowPlayingService.createJob(dispatcher, nowPlaying.getId());
+                                                                                  dispatcher.mustSchedule(sendNowPlayingJob);
+                                                                              });
                                                     }
                                                 });
             }

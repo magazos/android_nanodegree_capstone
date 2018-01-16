@@ -23,6 +23,7 @@ public final class SongsProvider {
     interface Path {
         String PLAYED_SONGS = "played_songs";
         String INFO_SONG = "info_song";
+        String CURRENT_SONG = "current_song";
     }
 
     private static Uri buildUri(String... paths) {
@@ -57,5 +58,22 @@ public final class SongsProvider {
                     type = "vnd.android.cursor.dir/info_song",
                     defaultSort = InfoSongColumns.ID)
         public static Uri INFO_SONG = buildUri(Path.INFO_SONG);
+    }
+
+    @TableEndpoint(table = SongsDatabase.CURRENT_SONG)
+    public static class CurrentSong {
+        @ContentUri(path = Path.CURRENT_SONG,
+                    type = "vnd.android.cursor.dir/current_song",
+                    defaultSort = PlayedSongColumns.ID)
+        public static Uri CURRENT_SONG = buildUri(Path.CURRENT_SONG);
+
+        @InexactContentUri(path = Path.CURRENT_SONG + "/*",
+                           name = "SONG_ID",
+                           type = "vnd.android.cursor.item/current_song",
+                           whereColumn = PlayedSongColumns.ID,
+                           pathSegment = 1)
+        public static Uri withId(String id) {
+            return buildUri(Path.CURRENT_SONG, id);
+        }
     }
 }

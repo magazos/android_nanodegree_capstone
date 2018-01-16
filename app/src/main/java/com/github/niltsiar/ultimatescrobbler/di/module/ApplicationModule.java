@@ -19,8 +19,10 @@ import com.github.niltsiar.ultimatescrobbler.domain.interactor.configuration.Ret
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.configuration.SaveUserConfigurationUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.mobilesession.RequestMobileSessionTokenUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.DeletePlayedSongUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetCurrentSongUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetPlayedSongUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetPlayedSongsUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SaveCurrentSongUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SavePlayedSong;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.ScrobbleSongsUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SendNowPlayingUseCase;
@@ -177,5 +179,15 @@ public abstract class ApplicationModule {
     @Provides
     static ConfigurationRepository provideConfigurationRepository(UserConfigurationDataRepository repository) {
         return repository;
+    }
+
+    @Provides
+    static SaveCurrentSongUseCase provideSaveCurrentSongUseCase(ScrobblerRepository repository) {
+        return new SaveCurrentSongUseCase(repository, Schedulers.io(), AndroidSchedulers.mainThread());
+    }
+
+    @Provides
+    static GetCurrentSongUseCase provideGetCurrentsongUseCase(ScrobblerRepository repository) {
+        return new GetCurrentSongUseCase(repository, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 }

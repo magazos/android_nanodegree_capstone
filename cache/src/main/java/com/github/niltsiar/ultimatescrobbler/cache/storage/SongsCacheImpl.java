@@ -117,4 +117,27 @@ public class SongsCacheImpl implements SongsCache {
         return Completable.fromAction(() -> context.getContentResolver()
                                                    .delete(SongsProvider.PlayedSongs.withId(playedSongEntity.getId()), null, null));
     }
+
+    @Override
+    public Completable saveCurrentSong(PlayedSongEntity currentSongEntity) {
+        return Completable.fromAction(() -> context.getContentResolver()
+                                                   .insert(SongsProvider.CurrentSong.CURRENT_SONG, PlayedSongEntityMapper.mapToCache(currentSongEntity)))
+                          .doOnError(Timber::e);
+    }
+
+    @Override
+    public Single<PlayedSongEntity> getCurrentSong(String id) {
+        return Single.fromCallable(() -> {
+            try (Cursor cursor = context.getContentResolver()
+                                        .query(SongsProvider.CurrentSong.withId(id), PlayedSongColumns.Query.PROJECTION, null, null, null, null)) {
+
+                if (0 == cursor.getCount()) {
+                    throw new Resources.NotFoundException();
+                }
+
+                cursor.moveToFirst();
+                return PlayedSongEntityMapper.mapFromCache(cursor);
+            }
+        });
+    }
 }
