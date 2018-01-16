@@ -20,6 +20,7 @@ public class SpotifyReceiver extends BroadcastReceiver {
     private PublishRelay<PlayedSong> newSong;
 
     private static int SONG_DEBOUNCE_MS = 10000;
+    private static float PERCENTAGE_TO_SCROBBLE = 0.5f;
 
     private final class BroadcastTypes {
         static final String SPOTIFY_PACKAGE = "com.spotify.music";
@@ -44,7 +45,7 @@ public class SpotifyReceiver extends BroadcastReceiver {
 
         getNewSong().subscribe(nowPlaying);
         getNewSong().switchMap(playedSong -> Observable.just(playedSong)
-                                                       .delay(playedSong.getLength() / 2, TimeUnit.MILLISECONDS))
+                                                       .delay((int) Math.ceil(playedSong.getLength() * PERCENTAGE_TO_SCROBBLE), TimeUnit.MILLISECONDS))
                     .subscribe(playedSongs);
     }
 
