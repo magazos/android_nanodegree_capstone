@@ -7,6 +7,7 @@ import com.github.niltsiar.ultimatescrobbler.data.model.ScrobbledSongEntity;
 import com.github.niltsiar.ultimatescrobbler.data.repository.ScrobblerRemote;
 import com.github.niltsiar.ultimatescrobbler.remote.mapper.InfoSongMapper;
 import com.github.niltsiar.ultimatescrobbler.remote.mapper.ScrobbledSongMapper;
+import com.github.niltsiar.ultimatescrobbler.remote.model.ScrobbledSongModel;
 import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.ApiKey;
 import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.ApiSecret;
 import com.github.niltsiar.ultimatescrobbler.remote.qualifiers.MobileSessionToken;
@@ -104,10 +105,14 @@ public class ScrobblerRemoteImpl implements ScrobblerRemote {
         String signature = getSignature(params);
         params.put(API_SIGNATURE_PARAM_NAME, signature);
 
-        return scrobblerService.scrobble(params, RESPONSE_FORMAT)
-                               .flatMap(Observable::fromIterable)
-                               .map(scrobbledSongMapper::mapFromRemote);
-
+        Observable<ScrobbledSongModel> scrobblesObservable;
+        if (1 == listSize) {
+            scrobblesObservable = scrobblerService.scrobbleSingle(params, RESPONSE_FORMAT);
+        } else {
+            scrobblesObservable = scrobblerService.scrobbleMultiple(params, RESPONSE_FORMAT)
+                                                  .flatMap(Observable::fromIterable);
+        }
+        return scrobblesObservable.map(scrobbledSongMapper::mapFromRemote);
     }
 
     @Override

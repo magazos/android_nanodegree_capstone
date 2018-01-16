@@ -32,7 +32,12 @@ public interface ScrobblerService {
     @FormUrlEncoded
     @POST(WS_PATH)
     @Wrapped(path = {"scrobbles", "scrobble"})
-    Observable<List<ScrobbledSongModel>> scrobble(@FieldMap Map<String, String> parameters, @Query(QUERY_FORMAT_PARAMETER) String format);
+    Observable<List<ScrobbledSongModel>> scrobbleMultiple(@FieldMap Map<String, String> parameters, @Query(QUERY_FORMAT_PARAMETER) String format);
+
+    @FormUrlEncoded
+    @POST(WS_PATH)
+    @Wrapped(path = {"scrobbles", "scrobble"})
+    Observable<ScrobbledSongModel> scrobbleSingle(@FieldMap Map<String, String> parameters, @Query(QUERY_FORMAT_PARAMETER) String format);
 
     @FormUrlEncoded
     @POST(WS_PATH)
