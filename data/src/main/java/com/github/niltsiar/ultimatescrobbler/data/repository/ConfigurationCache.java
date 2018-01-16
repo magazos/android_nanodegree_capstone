@@ -10,4 +10,28 @@ public interface ConfigurationCache {
     Consumer<? super String> saveMobileSessionToken();
 
     void removeMobileSessionToken();
+
+    Single<String> getUsername();
+
+    Consumer<? super String> saveUsername();
+
+    void removeUsername();
+
+    Single<String> getPassword();
+
+    Consumer<? super String> savePassword();
+
+    void removePassword();
+
+    Single<Integer> getNumberOfSongsPerBatch();
+
+    Consumer<? super Integer> saveNumberOfSongsPerBatch();
+
+    void removeNumberOfSongsPerBatch();
+
+    Single<Boolean> getSendNowPlaying();
+
+    Consumer<? super Boolean> saveSendNowPlaying();
+
+    void removeSendNowPlaying();
 }

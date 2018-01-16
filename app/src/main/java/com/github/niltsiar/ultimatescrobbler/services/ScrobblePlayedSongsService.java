@@ -53,7 +53,6 @@ public class ScrobblePlayedSongsService extends JobService {
 
         Disposable disposable = getStoredPlayedSongsUseCase.execute(null)
                                                            .flatMapObservable(songs -> scrobbleSongsUseCase.execute(songs)
-
                                                                                                            .zipWith(Observable.interval(500, TimeUnit.MILLISECONDS),
                                                                                                                     (scrobbledSong, index) -> new Pair<>(songs.get(index.intValue()), scrobbledSong)))
                                                            .flatMapSingle(pair -> getSongInformationUseCase.execute(pair.second)

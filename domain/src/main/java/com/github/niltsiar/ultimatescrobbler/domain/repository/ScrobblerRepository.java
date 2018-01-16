@@ -32,4 +32,8 @@ public interface ScrobblerRepository {
     Completable saveSongInformation(InfoSong infoSong);
 
     Completable deleteStoredPlayedSong(PlayedSong playedSong);
+
+    Completable saveCurrentSong(PlayedSong currentSong);
+
+    Single<PlayedSong> getCurrentSong(String songId);
 }

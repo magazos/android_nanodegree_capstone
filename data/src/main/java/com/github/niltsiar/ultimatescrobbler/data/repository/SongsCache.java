@@ -21,4 +21,8 @@ public interface SongsCache {
     Completable saveSongInformation(InfoSongEntity infoSongEntity);
 
     Completable deleteStoredPlayedSong(PlayedSongEntity playedSongEntity);
+
+    Completable saveCurrentSong(PlayedSongEntity currentSongEntity);
+
+    Single<PlayedSongEntity> getCurrentSong(String id);
 }

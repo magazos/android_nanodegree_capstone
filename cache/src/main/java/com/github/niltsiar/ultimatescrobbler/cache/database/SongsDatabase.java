@@ -18,4 +18,7 @@ public class SongsDatabase {
 
     @Table(InfoSongColumns.class)
     public static final String INFO_SONG = "info_song";
+
+    @Table(PlayedSongColumns.class)
+    public static final String CURRENT_SONG = "current_song";
 }

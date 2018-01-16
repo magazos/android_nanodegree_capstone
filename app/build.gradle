@@ -27,10 +27,10 @@ android {
         versionCode appVersionCode
         versionName appVersionName
 
+        vectorDrawables.useSupportLibrary = true
+
         buildConfigField "String", "LAST_FM_API_KEY", LAST_FM_API_KEY
         buildConfigField "String", "LAST_FM_API_SECRET", LAST_FM_API_SECRET
-        buildConfigField "String", "TEST_USERNAME", LAST_FM_TEST_USER
-        buildConfigField "String", "TEST_PASSWORD", LAST_FM_TEST_PASSWORD
     }
     buildTypes {
         debug {
@@ -50,9 +50,16 @@ dependencies {
     implementation project(':cache')
 
     implementation libraries.app.appCompat
+    implementation libraries.app.design
+    implementation libraries.app.recyclerView
+    implementation libraries.app.constraintLayout
+    implementation libraries.app.lifecycleExtensions
+    implementation libraries.app.materialDimens
+    implementation libraries.app.indicatorSeekBar
 
     implementation libraries.app.rxjava2
     implementation libraries.app.rxandroid
+    implementation libraries.app.rxbinding
     implementation libraries.app.rxrelay
     implementation libraries.app.butterknife
     implementation libraries.app.timber
@@ -73,6 +80,8 @@ dependencies {
         exclude module: 'threetenbp'
     }
     implementation libraries.app.firebaseJobDispatcher
+    implementation libraries.app.autoValue
+    implementation libraries.app.picasso
 
     debugImplementation libraries.debug.loggingInterceptor
     debugImplementation libraries.debug.oklog
@@ -89,6 +98,7 @@ dependencies {
     annotationProcessor libraries.apt.daggerCompiler
     annotationProcessor libraries.apt.daggerProcessor
     annotationProcessor libraries.apt.butterknife
+    annotationProcessor libraries.apt.autoValue
 }
 
 android.applicationVariants.all { variant ->

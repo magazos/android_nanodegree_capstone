@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <integer name="default_number_of_songs_per_batch">10</integer>
+  <integer name="min_number_of_songs_per_batch">1</integer>
+  <integer name="max_number_of_songs_per_batch">50</integer>
+</resources>

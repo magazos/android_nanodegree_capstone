@@ -1,5 +1,6 @@
 package com.github.niltsiar.ultimatescrobbler.cache.database;
 
+import net.simonvt.schematic.annotation.ConflictResolutionType;
 import net.simonvt.schematic.annotation.DataType;
 import net.simonvt.schematic.annotation.NotNull;
 import net.simonvt.schematic.annotation.PrimaryKey;
@@ -10,7 +11,7 @@ import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
 public interface InfoSongColumns {
 
     @DataType(INTEGER)
-    @PrimaryKey
+    @PrimaryKey(onConflict = ConflictResolutionType.REPLACE)
     String ID = "_id";
 
     @DataType(TEXT)

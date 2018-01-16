@@ -1,4 +1,4 @@
-package com.github.niltsiar.ultimatescrobbler;
+package com.github.niltsiar.ultimatescrobbler.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.content.IntentFilter;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import com.jakewharton.rxrelay2.PublishRelay;
 import io.reactivex.Observable;
+import java.util.concurrent.TimeUnit;
+import javax.inject.Inject;
 import org.threeten.bp.Instant;
 import timber.log.Timber;
 
@@ -14,6 +16,11 @@ public class SpotifyReceiver extends BroadcastReceiver {
 
     private static IntentFilter spotifyIntents;
     private PublishRelay<PlayedSong> playedSongs;
+    private PublishRelay<PlayedSong> nowPlaying;
+    private PublishRelay<PlayedSong> newSong;
+
+    private static int SONG_DEBOUNCE_MS = 10000;
+    private static float PERCENTAGE_TO_SCROBBLE = 0.5f;
 
     private final class BroadcastTypes {
         static final String SPOTIFY_PACKAGE = "com.spotify.music";
@@ -25,14 +32,21 @@ public class SpotifyReceiver extends BroadcastReceiver {
     public static IntentFilter getSpotifyIntents() {
         if (null == spotifyIntents) {
             spotifyIntents = new IntentFilter();
-            spotifyIntents.addAction(BroadcastTypes.PLAYBACK_STATE_CHANGED);
             spotifyIntents.addAction(BroadcastTypes.METADATA_CHANGED);
         }
         return spotifyIntents;
     }
 
+    @Inject
     public SpotifyReceiver() {
         playedSongs = PublishRelay.create();
+        nowPlaying = PublishRelay.create();
+        newSong = PublishRelay.create();
+
+        getNewSong().subscribe(nowPlaying);
+        getNewSong().switchMap(playedSong -> Observable.just(playedSong)
+                                                       .delay((int) Math.ceil(playedSong.getLength() * PERCENTAGE_TO_SCROBBLE), TimeUnit.MILLISECONDS))
+                    .subscribe(playedSongs);
     }
 
     @Override
@@ -61,7 +75,7 @@ public class SpotifyReceiver extends BroadcastReceiver {
                                                   .setTimestamp(Instant.ofEpochMilli(timeSent))
                                                   .build();
 
-                playedSongs.accept(playedSong);
+                newSong.accept(playedSong);
             } catch (NullPointerException ex) {
                 Timber.d("Ignoring malformed song");
             }
@@ -73,5 +87,13 @@ public class SpotifyReceiver extends BroadcastReceiver {
 
     public Observable<PlayedSong> getPlayedSongs() {
         return playedSongs;
+    }
+
+    public Observable<PlayedSong> getNowPlayingSong() {
+        return nowPlaying;
+    }
+
+    private Observable<PlayedSong> getNewSong() {
+        return newSong.debounce(SONG_DEBOUNCE_MS, TimeUnit.MILLISECONDS);
     }
 }

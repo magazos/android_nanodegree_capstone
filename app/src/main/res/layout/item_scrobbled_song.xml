@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="@dimen/material_component_lists_three_line_height"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <android.support.constraint.Guideline
+    android:id="@+id/guide_icon_left"
+    android:layout_width="@dimen/zero"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_constraintGuide_begin="@dimen/material_component_lists_icon_left_padding" />
+
+  <android.support.constraint.Guideline
+    android:id="@+id/guide_right"
+    android:layout_width="@dimen/zero"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_constraintGuide_end="@dimen/material_component_lists_right_padding" />
+
+  <android.support.constraint.Guideline
+    android:id="@+id/guide_text_left"
+    android:layout_width="@dimen/zero"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_constraintGuide_begin="@dimen/material_component_lists_text_left_padding" />
+
+  <ImageView
+    android:id="@+id/scrobbled_song_album_art"
+    android:layout_width="@dimen/zero"
+    android:layout_height="match_parent"
+    app:srcCompat="@drawable/ic_note"
+    app:layout_constraintLeft_toRightOf="@id/guide_icon_left"
+    app:layout_constraintRight_toLeftOf="@id/guide_text_left"
+    app:layout_constraintDimensionRatio="1:1" />
+
+  <TextView
+    android:id="@+id/scrobbled_song_title"
+    android:layout_width="@dimen/zero"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/material_component_lists_two_line_text_size"
+    android:layout_marginStart="@dimen/material_layout_keylines_horizontal_mobile_margin"
+    app:layout_constraintLeft_toRightOf="@id/guide_text_left"
+    app:layout_constraintRight_toLeftOf="@id/guide_right"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toTopOf="@+id/scrobbled_song_artist"
+    app:layout_constraintVertical_chainStyle="packed"
+    tools:text="Scrobbled Song" />
+
+  <TextView
+    android:id="@+id/scrobbled_song_artist"
+    android:layout_width="@dimen/zero"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/material_component_lists_two_line_secondary_text_size"
+    android:layout_marginStart="@dimen/material_layout_keylines_horizontal_mobile_margin"
+    app:layout_constraintLeft_toRightOf="@id/guide_text_left"
+    app:layout_constraintRight_toLeftOf="@id/guide_right"
+    app:layout_constraintTop_toBottomOf="@+id/scrobbled_song_title"
+    app:layout_constraintBottom_toBottomOf="parent"
+    tools:text="The great artist" />
+
+</android.support.constraint.ConstraintLayout>

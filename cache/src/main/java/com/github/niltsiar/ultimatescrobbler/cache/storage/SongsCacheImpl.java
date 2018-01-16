@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.net.Uri;
 import com.github.niltsiar.ultimatescrobbler.cache.database.PlayedSongColumns;
 import com.github.niltsiar.ultimatescrobbler.cache.database.SongsProvider;
 import com.github.niltsiar.ultimatescrobbler.cache.mapper.InfoSongEntityMapper;
@@ -32,8 +33,14 @@ public class SongsCacheImpl implements SongsCache {
 
     @Override
     public Completable savePlayedSong(PlayedSongEntity playedSongEntity) {
-        return Completable.fromAction(() -> context.getContentResolver()
-                                                   .insert(SongsProvider.PlayedSongs.PLAYED_SONGS, PlayedSongEntityMapper.mapToCache(playedSongEntity)))
+        return Completable.fromAction(() -> {
+            if (!isAlreadyStored(playedSongEntity)) {
+                context.getContentResolver()
+                       .insert(SongsProvider.PlayedSongs.PLAYED_SONGS, PlayedSongEntityMapper.mapToCache(playedSongEntity));
+            } else {
+                Timber.i("Song already stored");
+            }
+        })
                           .doOnError(Timber::e);
     }
 
@@ -116,5 +123,38 @@ public class SongsCacheImpl implements SongsCache {
     public Completable deleteStoredPlayedSong(PlayedSongEntity playedSongEntity) {
         return Completable.fromAction(() -> context.getContentResolver()
                                                    .delete(SongsProvider.PlayedSongs.withId(playedSongEntity.getId()), null, null));
+    }
+
+    @Override
+    public Completable saveCurrentSong(PlayedSongEntity currentSongEntity) {
+        return Completable.fromAction(() -> context.getContentResolver()
+                                                   .insert(SongsProvider.CurrentSong.CURRENT_SONG, PlayedSongEntityMapper.mapToCache(currentSongEntity)))
+                          .doOnError(Timber::e);
+    }
+
+    @Override
+    public Single<PlayedSongEntity> getCurrentSong(String id) {
+        return Single.fromCallable(() -> {
+            try (Cursor cursor = context.getContentResolver()
+                                        .query(SongsProvider.CurrentSong.withId(id), PlayedSongColumns.Query.PROJECTION, null, null, null, null)) {
+
+                if (0 == cursor.getCount()) {
+                    throw new Resources.NotFoundException();
+                }
+
+                cursor.moveToFirst();
+                return PlayedSongEntityMapper.mapFromCache(cursor);
+            }
+        });
+    }
+
+    private boolean isAlreadyStored(PlayedSongEntity playedSongEntity) {
+        Uri existingSongUri = SongsProvider.PlayedSongs.exists(playedSongEntity.getArtistName(), playedSongEntity.getTrackName(), playedSongEntity.getAlbumName(), String.valueOf(
+                playedSongEntity.getTimestamp()
+                                .toEpochMilli()));
+        try (Cursor cursor = context.getContentResolver()
+                                    .query(existingSongUri, PlayedSongColumns.Query.PROJECTION, null, null, null)) {
+            return 0 != cursor.getCount();
+        }
     }
 }

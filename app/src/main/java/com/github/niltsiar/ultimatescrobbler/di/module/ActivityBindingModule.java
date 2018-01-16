@@ -1,6 +1,6 @@
 package com.github.niltsiar.ultimatescrobbler.di.module;
 
-import com.github.niltsiar.ultimatescrobbler.ui.MainActivity;
+import com.github.niltsiar.ultimatescrobbler.ui.configuration.ConfigurationActivity;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
@@ -8,5 +8,5 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class ActivityBindingModule {
 
     @ContributesAndroidInjector
-    abstract MainActivity contributeMainActivityInjector();
+    abstract ConfigurationActivity contributeConfigurationActivityInjector();
 }

@@ -7,19 +7,18 @@ import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import javax.annotation.Nonnull;
 
-public class SavePlayedSong extends SingleUseCase<Long, PlayedSong> {
+public class GetCurrentSongUseCase extends SingleUseCase<PlayedSong, String> {
 
     private ScrobblerRepository scrobblerRepository;
 
-    public SavePlayedSong(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
+    public GetCurrentSongUseCase(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
         super(executionScheduler, postExecutionScheduler);
 
         this.scrobblerRepository = scrobblerRepository;
     }
 
     @Override
-    protected Single<Long> buildUseCaseObservable(@Nonnull PlayedSong currentSong) {
-        return scrobblerRepository.savePlayedSong(currentSong)
-                                  .andThen(scrobblerRepository.countStoredPlayedSongs());
+    protected Single<PlayedSong> buildUseCaseObservable(@Nonnull String id) {
+        return scrobblerRepository.getCurrentSong(id);
     }
 }

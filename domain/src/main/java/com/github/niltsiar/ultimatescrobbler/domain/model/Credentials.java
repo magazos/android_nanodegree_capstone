@@ -13,6 +13,18 @@ public abstract class Credentials {
         return new AutoValue_Credentials.Builder();
     }
 
+    abstract Builder toBuilder();
+
+    public Credentials withUsername(String newUsername) {
+        return toBuilder().setUsername(newUsername)
+                          .build();
+    }
+
+    public Credentials withPassword(String newPassword) {
+        return toBuilder().setPassword(newPassword)
+                          .build();
+    }
+
     @AutoValue.Builder
     public abstract static class Builder {
         public abstract Builder setUsername(String newUsername);

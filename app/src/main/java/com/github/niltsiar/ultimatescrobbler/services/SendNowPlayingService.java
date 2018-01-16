@@ -8,7 +8,7 @@ import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetPlayedSongUseCase;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.GetCurrentSongUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SendNowPlayingUseCase;
 import dagger.android.AndroidInjection;
 import io.reactivex.disposables.CompositeDisposable;
@@ -22,7 +22,7 @@ public class SendNowPlayingService extends JobService {
     SendNowPlayingUseCase sendNowPlayingUseCase;
 
     @Inject
-    GetPlayedSongUseCase getPlayedSongUseCase;
+    GetCurrentSongUseCase getCurrentSongUseCase;
 
     private CompositeDisposable disposables;
 
@@ -45,9 +45,9 @@ public class SendNowPlayingService extends JobService {
 
         String songId = extras.getString(NOW_PLAYING_ID);
 
-        Disposable disposable = getPlayedSongUseCase.execute(songId)
-                                                    .flatMapCompletable(sendNowPlayingUseCase::execute)
-                                                    .subscribe(() -> finishJob(job, false), Timber::e);
+        Disposable disposable = getCurrentSongUseCase.execute(songId)
+                                                     .flatMapCompletable(sendNowPlayingUseCase::execute)
+                                                     .subscribe(() -> finishJob(job, false), Timber::e);
         disposables.add(disposable);
         return true;
     }
