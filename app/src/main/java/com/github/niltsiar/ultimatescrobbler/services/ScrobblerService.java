@@ -11,7 +11,7 @@ import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.Job;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.configuration.RetrieveUserConfigurationUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SaveCurrentSongUseCase;
-import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SavePlayedSong;
+import com.github.niltsiar.ultimatescrobbler.domain.interactor.playedsong.SavePlayedSongUseCase;
 import com.github.niltsiar.ultimatescrobbler.domain.model.PlayedSong;
 import com.github.niltsiar.ultimatescrobbler.receivers.SpotifyReceiver;
 import dagger.android.AndroidInjection;
@@ -32,7 +32,7 @@ public class ScrobblerService extends Service {
     SaveCurrentSongUseCase saveCurrentSongUseCase;
 
     @Inject
-    SavePlayedSong savePlayedSongUseCase;
+    SavePlayedSongUseCase savePlayedSongUseCase;
 
     @Inject
     RetrieveUserConfigurationUseCase retrieveUserConfigurationUseCase;

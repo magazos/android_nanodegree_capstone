@@ -7,11 +7,11 @@ import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import javax.annotation.Nonnull;
 
-public class SavePlayedSong extends SingleUseCase<Long, PlayedSong> {
+public class SavePlayedSongUseCase extends SingleUseCase<Long, PlayedSong> {
 
     private ScrobblerRepository scrobblerRepository;
 
-    public SavePlayedSong(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
+    public SavePlayedSongUseCase(ScrobblerRepository scrobblerRepository, Scheduler executionScheduler, Scheduler postExecutionScheduler) {
         super(executionScheduler, postExecutionScheduler);
 
         this.scrobblerRepository = scrobblerRepository;
