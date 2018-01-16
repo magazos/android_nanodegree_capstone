@@ -28,7 +28,7 @@ ext {
             rxrelay               : '2.0.0',
             butterknife           : '8.8.1',
             timber                : '4.5.1',
-            dagger                : '2.13',
+            dagger                : '2.14.1',
             oklog                 : '2.3.0',
             chuck                 : '1.1.0',
             stetho                : '1.5.0',
