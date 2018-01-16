@@ -6,30 +6,38 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.github.niltsiar.ultimatescrobbler.R;
-import com.github.niltsiar.ultimatescrobbler.cache.database.InfoSongColumns;
+import com.github.niltsiar.ultimatescrobbler.cache.mapper.InfoSongEntityMapper;
+import com.github.niltsiar.ultimatescrobbler.data.mapper.InfoSongMapper;
+import com.github.niltsiar.ultimatescrobbler.domain.model.InfoSong;
 
 public class ScrobbledSongsAdapter extends RecyclerView.Adapter<ScrobbledSongItemViewHolder> {
 
     private Cursor cursor;
+    private InfoSong infoSong;
+    private OnItemClickListener listener;
 
-    public ScrobbledSongsAdapter(Cursor cursor) {
+    public interface OnItemClickListener {
+        void onClickedItem(InfoSong infoSong);
+    }
+
+    public ScrobbledSongsAdapter(Cursor cursor, OnItemClickListener listener) {
         this.cursor = cursor;
+        this.listener = listener;
     }
 
     @Override
     public ScrobbledSongItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                                   .inflate(R.layout.item_scrobbled_song, parent, false);
-        return new ScrobbledSongItemViewHolder(view);
+        return new ScrobbledSongItemViewHolder(view, listener);
     }
 
     @Override
     public void onBindViewHolder(ScrobbledSongItemViewHolder holder, int position) {
         cursor.moveToPosition(position);
-        String title = cursor.getString(InfoSongColumns.Query.Index.TRACK_NAME);
-        String artist = cursor.getString(InfoSongColumns.Query.Index.ARTIST_NAME);
-        String albumArt = cursor.getString(InfoSongColumns.Query.Index.ALBUM_ART_URL);
-        holder.bind(title, artist, albumArt);
+        InfoSongMapper mapper = new InfoSongMapper();
+        infoSong = mapper.mapFromEntity(InfoSongEntityMapper.mapFromCache(cursor));
+        holder.bind(infoSong);
     }
 
     @Override
