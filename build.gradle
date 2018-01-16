@@ -1,5 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'org.gradle.android.cache-fix'
 
 buildscript {
     apply from: "$rootProject.projectDir/dependencies.gradle"
@@ -7,12 +8,16 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath libraries.build.gradleAndroid
         classpath libraries.build.gradleVersions
         classpath libraries.build.gradleGit
         classpath libraries.build.gradleDexcount
+        classpath libraries.build.gradleAndroidFixCache
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
