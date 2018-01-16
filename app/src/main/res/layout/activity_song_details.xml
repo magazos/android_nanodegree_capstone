@@ -35,7 +35,8 @@
           android:adjustViewBounds="true"
           android:contentDescription="@string/song_details_album_art"
           android:scaleType="centerCrop"
-          app:srcCompat="@drawable/ic_note" />
+          app:srcCompat="@drawable/ic_note"
+          android:transitionName="test" />
 
       </FrameLayout>
 

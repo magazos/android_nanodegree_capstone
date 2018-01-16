@@ -17,7 +17,7 @@ public class ScrobbledSongsAdapter extends RecyclerView.Adapter<ScrobbledSongIte
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onClickedItem(InfoSong infoSong);
+        void onClickedItem(InfoSong infoSong, View albumView);
     }
 
     public ScrobbledSongsAdapter(Cursor cursor, OnItemClickListener listener) {

@@ -1,9 +1,12 @@
 package com.github.niltsiar.ultimatescrobbler.ui.songs.scrobbledsongs;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,12 +17,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.github.niltsiar.ultimatescrobbler.R;
+import com.github.niltsiar.ultimatescrobbler.cache.database.SongsProvider;
+import com.github.niltsiar.ultimatescrobbler.domain.model.InfoSong;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import javax.inject.Inject;
 
-public class ScrobbledSongsFragment extends Fragment {
+public class ScrobbledSongsFragment extends Fragment implements ScrobbledSongsAdapter.OnItemClickListener {
 
     @Inject
     ScrobbledSongsViewModelFactory scrobbledSongsViewModelFactory;
@@ -40,6 +45,7 @@ public class ScrobbledSongsFragment extends Fragment {
         AndroidSupportInjection.inject(this);
         super.onCreate(savedInstanceState);
 
+        scrobbledSongsViewModelFactory.setSongItemClickListener(this);
         viewModel = ViewModelProviders.of(this, scrobbledSongsViewModelFactory)
                                       .get(ScrobbledSongsViewModel.class);
         disposables = new CompositeDisposable();
@@ -83,5 +89,13 @@ public class ScrobbledSongsFragment extends Fragment {
     public void onDestroyView() {
         unbinder.unbind();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onClickedItem(InfoSong infoSong, View albumView) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, SongsProvider.InfoSong.withId(String.valueOf(infoSong.getTimestamp()
+                                                                                                            .toEpochMilli())));
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), albumView, ViewCompat.getTransitionName(albumView));
+        startActivity(intent, options.toBundle());
     }
 }

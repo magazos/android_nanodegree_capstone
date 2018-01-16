@@ -8,11 +8,14 @@ import javax.inject.Inject;
 public class ScrobbledSongsViewModelFactory implements ViewModelProvider.Factory {
 
     private LoaderProvider loaderProvider;
-    private ScrobbledSongItemClickListener listener;
+    private ScrobbledSongsAdapter.OnItemClickListener listener;
 
     @Inject
-    public ScrobbledSongsViewModelFactory(LoaderProvider loaderProvider, ScrobbledSongItemClickListener listener) {
+    public ScrobbledSongsViewModelFactory(LoaderProvider loaderProvider) {
         this.loaderProvider = loaderProvider;
+    }
+
+    public void setSongItemClickListener(ScrobbledSongsAdapter.OnItemClickListener listener) {
         this.listener = listener;
     }
 

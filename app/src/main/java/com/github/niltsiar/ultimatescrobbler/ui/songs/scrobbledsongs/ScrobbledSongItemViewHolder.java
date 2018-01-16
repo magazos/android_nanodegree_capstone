@@ -1,5 +1,6 @@
 package com.github.niltsiar.ultimatescrobbler.ui.songs.scrobbledsongs;
 
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -32,7 +33,6 @@ public class ScrobbledSongItemViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(InfoSong infoSong) {
         this.infoSong = infoSong;
-        this.listener = listener;
         scrobbledSongTitle.setText(infoSong.getTrackName());
         scrobbledSongArtist.setText(infoSong.getArtist());
         if (!TextUtils.isEmpty(infoSong.getAlbumArtUrl())) {
@@ -42,10 +42,12 @@ public class ScrobbledSongItemViewHolder extends RecyclerView.ViewHolder {
                    .error(R.drawable.ic_note)
                    .into(scrobbledSongAlbumArt);
         }
+        ViewCompat.setTransitionName(scrobbledSongAlbumArt, String.valueOf(infoSong.getTimestamp()
+                                                                                   .toEpochMilli()));
     }
 
     @OnClick(R.id.scrobbled_song_item)
     public void onClick() {
-        listener.onClickedItem(infoSong);
+        listener.onClickedItem(infoSong, scrobbledSongAlbumArt);
     }
 }
