@@ -66,6 +66,11 @@ public class SpotifyReceiver extends BroadcastReceiver {
             String trackName = intent.getStringExtra("track");
             int length = intent.getIntExtra("length", 0);
 
+            //Discard if it is an old notification
+            if (System.currentTimeMillis() - timeSent > length) {
+                return;
+            }
+
             try {
                 PlayedSong playedSong = PlayedSong.builder()
                                                   .setArtistName(artistName)
