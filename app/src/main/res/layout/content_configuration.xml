@@ -48,6 +48,10 @@
     app:isb_progress="@integer/default_number_of_songs_per_batch"
     app:isb_seek_bar_type="continuous"
     app:isb_thumb_progress_stay="true"
+    app:isb_indicator_color="@color/colorAccent"
+    app:isb_thumb_color="@color/colorAccent"
+    app:isb_text_color="@color/colorAccent"
+    app:isb_track_progress_bar_color="@color/colorAccent"
     app:layout_constraintLeft_toRightOf="@id/send_songs_batches"
     app:layout_constraintRight_toLeftOf="@id/guide_right"
     app:layout_constraintTop_toBottomOf="@id/guide_top" />
