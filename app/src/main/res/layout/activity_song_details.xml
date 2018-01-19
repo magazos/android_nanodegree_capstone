@@ -35,8 +35,7 @@
           android:adjustViewBounds="true"
           android:contentDescription="@string/song_details_album_art"
           android:scaleType="centerCrop"
-          app:srcCompat="@drawable/ic_note"
-          android:transitionName="test" />
+          app:srcCompat="@drawable/ic_note" />
 
       </FrameLayout>
 
@@ -50,5 +49,67 @@
     </android.support.design.widget.CollapsingToolbarLayout>
 
   </android.support.design.widget.AppBarLayout>
+
+  <android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <TextView
+      android:id="@+id/song_title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textSize="@dimen/material_typography_title"
+      tools:text="Song title" />
+
+    <TextView
+      android:id="@+id/song_album"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textSize="@dimen/material_typography_subheading"
+      app:layout_constraintTop_toBottomOf="@id/song_title"
+      tools:text="Song album" />
+
+    <TextView
+      android:id="@+id/song_author"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textSize="@dimen/material_typography_subheading"
+      app:layout_constraintTop_toBottomOf="@id/song_title"
+      app:layout_constraintRight_toRightOf="parent"
+      tools:text="Song author" />
+
+    <com.google.android.flexbox.FlexboxLayout
+      android:id="@+id/tags_layout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:alignContent="space_around"
+      app:alignItems="flex_start"
+      app:flexWrap="wrap"
+      app:showDivider="middle"
+      app:layout_constraintTop_toBottomOf="@id/song_author">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tags: " />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <android.support.v4.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toBottomOf="@id/tags_layout">
+
+      <TextView
+        android:id="@+id/song_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@tools:sample/lorem/random" />
+
+    </android.support.v4.widget.NestedScrollView>
+
+  </android.support.constraint.ConstraintLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>
