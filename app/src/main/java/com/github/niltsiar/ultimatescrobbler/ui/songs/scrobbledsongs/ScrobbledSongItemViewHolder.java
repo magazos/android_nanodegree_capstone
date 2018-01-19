@@ -41,6 +41,8 @@ public class ScrobbledSongItemViewHolder extends RecyclerView.ViewHolder {
                    .placeholder(R.drawable.ic_note)
                    .error(R.drawable.ic_note)
                    .into(scrobbledSongAlbumArt);
+        } else {
+            scrobbledSongAlbumArt.setImageResource(R.drawable.ic_note);
         }
         ViewCompat.setTransitionName(scrobbledSongAlbumArt, String.valueOf(infoSong.getTimestamp()
                                                                                    .toEpochMilli()));
