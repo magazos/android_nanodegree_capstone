@@ -17,6 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.github.niltsiar.ultimatescrobbler.R;
 import com.github.niltsiar.ultimatescrobbler.domain.model.InfoSong;
+import com.github.niltsiar.ultimatescrobbler.utils.Utils;
 import com.google.android.flexbox.FlexboxLayout;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -77,7 +78,9 @@ public class SongDetailsActivity extends AppCompatActivity {
         if (null == savedInstanceState && null != getIntent() && null != getIntent().getData()) {
             String songId = getIntent().getData()
                                        .getLastPathSegment();
-            ViewCompat.setTransitionName(albumArt, songId);
+            ViewCompat.setTransitionName(songTitle, Utils.getTransitionNameForSongTitle(songId));
+            ViewCompat.setTransitionName(songAuthor, Utils.getTransitionNameForSongArtist(songId));
+            ViewCompat.setTransitionName(albumArt, Utils.getTransitionNameForSongAlbumArt(songId));
             getSupportLoaderManager().initLoader(0, SongDetailsViewModel.createLoaderBundle(songId), songDetailsViewModel);
         }
     }

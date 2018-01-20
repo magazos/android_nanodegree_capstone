@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -92,10 +93,13 @@ public class ScrobbledSongsFragment extends Fragment implements ScrobbledSongsAd
     }
 
     @Override
-    public void onClickedItem(InfoSong infoSong, View albumView) {
+    public void onClickedItem(InfoSong infoSong, View songTitleView, View songArtistView, View albumArtView) {
         Intent intent = new Intent(Intent.ACTION_VIEW, SongsProvider.InfoSong.withId(String.valueOf(infoSong.getTimestamp()
                                                                                                             .toEpochMilli())));
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), albumView, ViewCompat.getTransitionName(albumView));
+        Pair<View, String> sharedElement1 = new Pair<>(songTitleView, ViewCompat.getTransitionName(songTitleView));
+        Pair<View, String> sharedElement2 = new Pair<>(songArtistView, ViewCompat.getTransitionName(songArtistView));
+        Pair<View, String> sharedElement3 = new Pair<>(albumArtView, ViewCompat.getTransitionName(albumArtView));
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), sharedElement1, sharedElement2, sharedElement3);
         startActivity(intent, options.toBundle());
     }
 }

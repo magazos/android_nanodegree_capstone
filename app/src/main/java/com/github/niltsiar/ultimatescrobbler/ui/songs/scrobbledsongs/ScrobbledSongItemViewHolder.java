@@ -11,6 +11,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.niltsiar.ultimatescrobbler.R;
 import com.github.niltsiar.ultimatescrobbler.domain.model.InfoSong;
+import com.github.niltsiar.ultimatescrobbler.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 public class ScrobbledSongItemViewHolder extends RecyclerView.ViewHolder {
@@ -44,12 +45,15 @@ public class ScrobbledSongItemViewHolder extends RecyclerView.ViewHolder {
         } else {
             scrobbledSongAlbumArt.setImageResource(R.drawable.ic_note);
         }
-        ViewCompat.setTransitionName(scrobbledSongAlbumArt, String.valueOf(infoSong.getTimestamp()
-                                                                                   .toEpochMilli()));
+        String transitionName = String.valueOf(infoSong.getTimestamp()
+                                                       .toEpochMilli());
+        ViewCompat.setTransitionName(scrobbledSongTitle, Utils.getTransitionNameForSongTitle(transitionName));
+        ViewCompat.setTransitionName(scrobbledSongArtist, Utils.getTransitionNameForSongTitle(transitionName));
+        ViewCompat.setTransitionName(scrobbledSongAlbumArt, Utils.getTransitionNameForSongAlbumArt(transitionName));
     }
 
     @OnClick(R.id.scrobbled_song_item)
     public void onClick() {
-        listener.onClickedItem(infoSong, scrobbledSongAlbumArt);
+        listener.onClickedItem(infoSong, scrobbledSongTitle, scrobbledSongArtist, scrobbledSongAlbumArt);
     }
 }
