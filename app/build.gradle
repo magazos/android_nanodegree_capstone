@@ -4,6 +4,7 @@ import org.eclipse.jgit.errors.RepositoryNotFoundException
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'io.fabric'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 //Version information
 def versionMajor = VERSION_MAJOR.toInteger()
@@ -90,6 +91,7 @@ dependencies {
     implementation (libraries.app.crashlytics) {
         transitive = true
     }
+    implementation libraries.app.firebasePerf
 
     debugImplementation libraries.debug.loggingInterceptor
     debugImplementation libraries.debug.oklog
