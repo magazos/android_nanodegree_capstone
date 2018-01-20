@@ -85,6 +85,7 @@ public class SongDetailsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        tagsLayout.removeAllViews();
         Disposable songInfoDisposable = songDetailsViewModel.getInfoSong()
                                                             .subscribe(this::render);
         disposables.add(songInfoDisposable);
@@ -112,12 +113,17 @@ public class SongDetailsActivity extends AppCompatActivity {
         songAlbum.setText(infoSong.getAlbum());
         songAuthor.setText(infoSong.getArtist());
 
-        ChipCloudConfig config = new ChipCloudConfig().selectMode(ChipCloud.SelectMode.none)
-                                                      .uncheckedChipColor(accentColor)
-                                                      .uncheckedTextColor(whiteColor)
-                                                      .useInsetPadding(true);
-        ChipCloud chipCloud = new ChipCloud(this, tagsLayout, config);
-        chipCloud.addChips(infoSong.getTags());
+        boolean emptyTags = (1 == infoSong.getTags()
+                                          .size() && TextUtils.isEmpty(infoSong.getTags()
+                                                                               .get(0)));
+        if (!emptyTags) {
+            ChipCloudConfig config = new ChipCloudConfig().selectMode(ChipCloud.SelectMode.none)
+                                                          .uncheckedChipColor(accentColor)
+                                                          .uncheckedTextColor(whiteColor)
+                                                          .useInsetPadding(true);
+            ChipCloud chipCloud = new ChipCloud(this, tagsLayout, config);
+            chipCloud.addChips(infoSong.getTags());
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             songInfo.setText(Html.fromHtml(infoSong.getWikiContent(), Html.FROM_HTML_MODE_COMPACT));
