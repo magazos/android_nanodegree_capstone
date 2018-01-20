@@ -41,8 +41,8 @@
 
   <ImageView
     android:id="@+id/album_art"
-    android:layout_width="200dp"
-    android:layout_height="200dp"
+    android:layout_width="@dimen/song_details_album_art_size"
+    android:layout_height="@dimen/song_details_album_art_size"
     android:adjustViewBounds="true"
     android:contentDescription="@string/song_details_album_art"
     android:scaleType="centerCrop"

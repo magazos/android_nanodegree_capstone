@@ -8,4 +8,5 @@
   <dimen name="zero">0dp</dimen>
   <dimen name="toolbar_layout_height">320dp</dimen>
   <dimen name="toolbar_layout_margin_bottom">40dp</dimen>
+  <dimen name="song_details_album_art_size">200dp</dimen>
 </resources>
