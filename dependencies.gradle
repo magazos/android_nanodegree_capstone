@@ -45,6 +45,7 @@ ext {
             indicatorSeekBar        : '1.2.5',
             picasso                 : '2.5.2',
             chipcloud               : '3.0.5',
+            firebase                : '11.8.0',
     ]
 
     libraries = [
@@ -91,6 +92,7 @@ ext {
                     indicatorSeekBar         : "com.github.warkiz.widget:indicatorseekbar:${versions.indicatorSeekBar}",
                     picasso                  : "com.squareup.picasso:picasso:${versions.picasso}",
                     chipcloud                : "com.github.fiskurgit:ChipCloud:${versions.chipcloud}",
+                    firebaseCore             : "com.google.firebase:firebase-core:${versions.firebase}",
             ],
             debug: [
                     loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
