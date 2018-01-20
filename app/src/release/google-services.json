@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "461356818322",
+    "firebase_url": "https://android-nanodegree-capst-53c72.firebaseio.com",
+    "project_id": "android-nanodegree-capst-53c72",
+    "storage_bucket": "android-nanodegree-capst-53c72.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:461356818322:android:c10123ab7c651a6b",
+        "android_client_info": {
+          "package_name": "com.github.niltsiar.ultimatescrobbler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "461356818322-l2r6u0uf7jckf9ccue64rntcv06k5cot.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDptElbBejYHWech68tnedqlgQeZGOmLxw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
