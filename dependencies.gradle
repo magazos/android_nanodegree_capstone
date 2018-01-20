@@ -6,7 +6,7 @@ ext {
             dexcount                : '0.8.2',
             apt                     : '0.13',
             android_cache_fix_gradle: '0.2.8',
-            google_services         : '3.1.0',
+            google_services         : '3.1.2',
             androidSdk              : [
                     compile: 27,
                     min    : 19,
@@ -46,6 +46,8 @@ ext {
             picasso                 : '2.5.2',
             chipcloud               : '3.0.5',
             firebase                : '11.8.0',
+            crashlytics_gradle      : '1.25.1',
+            crashlytics             : '2.7.1',
     ]
 
     libraries = [
@@ -57,6 +59,7 @@ ext {
                     apt                  : "net.ltgt.gradle:gradle-apt-plugin:${versions.apt}",
                     gradleAndroidFixCache: "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin:${versions.android_cache_fix_gradle}",
                     googleServices       : "com.google.gms:google-services:${versions.google_services}",
+                    crashlytics          : "io.fabric.tools:gradle:${versions.crashlytics_gradle}"
             ],
             app  : [
                     appCompat                : "com.android.support:appcompat-v7:${versions.support}",
@@ -93,6 +96,7 @@ ext {
                     picasso                  : "com.squareup.picasso:picasso:${versions.picasso}",
                     chipcloud                : "com.github.fiskurgit:ChipCloud:${versions.chipcloud}",
                     firebaseCore             : "com.google.firebase:firebase-core:${versions.firebase}",
+                    crashlytics              : "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}@aar",
             ],
             debug: [
                     loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",

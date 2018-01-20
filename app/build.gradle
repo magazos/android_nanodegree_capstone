@@ -3,6 +3,7 @@ import org.eclipse.jgit.errors.RepositoryNotFoundException
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'io.fabric'
 
 //Version information
 def versionMajor = VERSION_MAJOR.toInteger()
@@ -86,6 +87,9 @@ dependencies {
     implementation libraries.app.picasso
     implementation libraries.app.chipcloud
     implementation libraries.app.firebaseCore
+    implementation (libraries.app.crashlytics) {
+        transitive = true
+    }
 
     debugImplementation libraries.debug.loggingInterceptor
     debugImplementation libraries.debug.oklog
