@@ -71,11 +71,13 @@ public class ScrobbledSongsFragment extends Fragment implements ScrobbledSongsAd
         getActivity().setTitle(R.string.scrobbled_songs_title);
         Disposable disposable = viewModel.getAdapter()
                                          .subscribe(scrobbledSongsAdapter -> {
-                                             recyclerView.setAdapter(scrobbledSongsAdapter);
-                                             recyclerView.setHasFixedSize(true);
-                                             LinearLayoutManager manager = new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false);
-                                             recyclerView.setLayoutManager(manager);
-                                             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), manager.getOrientation()));
+                                             if (scrobbledSongsAdapter != recyclerView.getAdapter()) {
+                                                 recyclerView.setAdapter(scrobbledSongsAdapter);
+                                                 recyclerView.setHasFixedSize(true);
+                                                 LinearLayoutManager manager = new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false);
+                                                 recyclerView.setLayoutManager(manager);
+                                                 recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), manager.getOrientation()));
+                                             }
                                          });
         disposables.add(disposable);
     }
