@@ -6,6 +6,7 @@ ext {
             dexcount                : '0.8.2',
             apt                     : '0.13',
             android_cache_fix_gradle: '0.2.8',
+            google_services         : '3.1.0',
             androidSdk              : [
                     compile: 27,
                     min    : 19,
@@ -54,6 +55,7 @@ ext {
                     gradleDexcount       : "com.getkeepsafe.dexcount:dexcount-gradle-plugin:${versions.dexcount}",
                     apt                  : "net.ltgt.gradle:gradle-apt-plugin:${versions.apt}",
                     gradleAndroidFixCache: "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin:${versions.android_cache_fix_gradle}",
+                    googleServices       : "com.google.gms:google-services:${versions.google_services}",
             ],
             app  : [
                     appCompat                : "com.android.support:appcompat-v7:${versions.support}",

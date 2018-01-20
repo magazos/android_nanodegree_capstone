@@ -104,6 +104,8 @@ dependencies {
     annotationProcessor libraries.apt.autoValue
 }
 
+apply plugin: 'com.google.gms.google-services'
+
 android.applicationVariants.all { variant ->
     if (variant.buildType.name == "debug") {
         variant.mergedFlavor.versionName += "-${versionRevision}"
