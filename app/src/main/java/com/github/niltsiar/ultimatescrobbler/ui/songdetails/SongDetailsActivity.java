@@ -1,11 +1,15 @@
 package com.github.niltsiar.ultimatescrobbler.ui.songdetails;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
@@ -19,8 +23,8 @@ import com.github.niltsiar.ultimatescrobbler.R;
 import com.github.niltsiar.ultimatescrobbler.domain.model.InfoSong;
 import com.github.niltsiar.ultimatescrobbler.utils.Utils;
 import com.google.android.flexbox.FlexboxLayout;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import dagger.android.AndroidInjection;
 import fisk.chipcloud.ChipCloud;
 import fisk.chipcloud.ChipCloudConfig;
@@ -112,34 +116,12 @@ public class SongDetailsActivity extends AppCompatActivity {
     }
 
     private void render(InfoSong infoSong) {
-        songTitle.setText(infoSong.getTrackName());
-        songAlbum.setText(infoSong.getAlbum());
-        songAuthor.setText(infoSong.getArtist());
-
-        boolean emptyTags = (1 == infoSong.getTags()
-                                          .size() && TextUtils.isEmpty(infoSong.getTags()
-                                                                               .get(0)));
-        if (!emptyTags) {
-            ChipCloudConfig config = new ChipCloudConfig().selectMode(ChipCloud.SelectMode.none)
-                                                          .uncheckedChipColor(accentColor)
-                                                          .uncheckedTextColor(whiteColor)
-                                                          .useInsetPadding(true);
-            ChipCloud chipCloud = new ChipCloud(this, tagsLayout, config);
-            chipCloud.addChips(infoSong.getTags());
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            songInfo.setText(Html.fromHtml(infoSong.getWikiContent(), Html.FROM_HTML_MODE_COMPACT));
-        } else {
-            songInfo.setText(Html.fromHtml(infoSong.getWikiContent()));
-        }
-
         if (!TextUtils.isEmpty(infoSong.getAlbumArtUrl())) {
             Picasso.with(albumArt.getContext())
                    .load(infoSong.getAlbumArtUrl())
                    .placeholder(R.drawable.ic_note)
                    .error(R.drawable.ic_note)
-                   .into(albumArt, new Callback() {
+                   /*.into(albumArt, new Callback() {
                        @Override
                        public void onSuccess() {
                            supportStartPostponedEnterTransition();
@@ -149,9 +131,74 @@ public class SongDetailsActivity extends AppCompatActivity {
                        public void onError() {
                            supportStartPostponedEnterTransition();
                        }
+                   });*/
+                   .into(new Target() {
+                       @Override
+                       public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                           finishRendering(infoSong, bitmap);
+                           supportStartPostponedEnterTransition();
+                       }
+
+                       @Override
+                       public void onBitmapFailed(Drawable errorDrawable) {
+                           fillViews(infoSong, createChipCloudConfig(whiteColor, accentColor));
+                           supportStartPostponedEnterTransition();
+                       }
+
+                       @Override
+                       public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                       }
                    });
         } else {
+            fillViews(infoSong, createChipCloudConfig(whiteColor, accentColor));
             supportStartPostponedEnterTransition();
         }
+    }
+
+    private void finishRendering(InfoSong infoSong, Bitmap bitmap) {
+        Palette.from(bitmap)
+               .generate(palette -> {
+                   Palette.Swatch swatch = palette.getDominantSwatch();
+                   if (null != swatch) {
+                       toolbar.setBackgroundColor(swatch.getRgb());
+                       toolbar.setTitleTextColor(swatch.getTitleTextColor());
+                       DrawableCompat.setTint(toolbar.getNavigationIcon(), swatch.getTitleTextColor());
+                       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                           getWindow().setStatusBarColor(palette.getDarkMutedColor(0xFFF));
+                       }
+                       fillViews(infoSong, createChipCloudConfig(swatch.getBodyTextColor(), swatch.getRgb()));
+                   } else {
+                       fillViews(infoSong, createChipCloudConfig(whiteColor, accentColor));
+                   }
+                   albumArt.setImageBitmap(bitmap);
+               });
+    }
+
+    private void fillViews(InfoSong infoSong, ChipCloudConfig chipCloudConfig) {
+        songTitle.setText(infoSong.getTrackName());
+        songAlbum.setText(infoSong.getAlbum());
+        songAuthor.setText(infoSong.getArtist());
+
+        boolean emptyTags = (1 == infoSong.getTags()
+                                          .size() && TextUtils.isEmpty(infoSong.getTags()
+                                                                               .get(0)));
+        if (!emptyTags) {
+            ChipCloud chipCloud = new ChipCloud(this, tagsLayout, chipCloudConfig);
+            chipCloud.addChips(infoSong.getTags());
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            songInfo.setText(Html.fromHtml(infoSong.getWikiContent(), Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            songInfo.setText(Html.fromHtml(infoSong.getWikiContent()));
+        }
+    }
+
+    private ChipCloudConfig createChipCloudConfig(int chipTextColor, int chipColor) {
+        return new ChipCloudConfig().selectMode(ChipCloud.SelectMode.none)
+                                    .uncheckedChipColor(chipColor)
+                                    .uncheckedTextColor(chipTextColor)
+                                    .useInsetPadding(true);
     }
 }

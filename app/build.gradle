@@ -51,6 +51,7 @@ dependencies {
 
     implementation libraries.app.appCompat
     implementation libraries.app.design
+    implementation libraries.app.palette
     implementation libraries.app.recyclerView
     implementation libraries.app.constraintLayout
     implementation libraries.app.flexbox

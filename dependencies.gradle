@@ -58,6 +58,7 @@ ext {
             app  : [
                     appCompat                : "com.android.support:appcompat-v7:${versions.support}",
                     design                   : "com.android.support:design:${versions.support}",
+                    palette                  : "com.android.support:palette-v7:${versions.support}",
                     constraintLayout         : "com.android.support.constraint:constraint-layout:${versions.constraint_layout}",
                     flexbox                  : "com.google.android:flexbox:${versions.flexbox}",
                     recyclerView             : "com.android.support:recyclerview-v7:${versions.support}",
