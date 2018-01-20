@@ -51,8 +51,10 @@ dependencies {
 
     implementation libraries.app.appCompat
     implementation libraries.app.design
+    implementation libraries.app.palette
     implementation libraries.app.recyclerView
     implementation libraries.app.constraintLayout
+    implementation libraries.app.flexbox
     implementation libraries.app.lifecycleExtensions
     implementation libraries.app.materialDimens
     implementation libraries.app.indicatorSeekBar
@@ -82,6 +84,7 @@ dependencies {
     implementation libraries.app.firebaseJobDispatcher
     implementation libraries.app.autoValue
     implementation libraries.app.picasso
+    implementation libraries.app.chipcloud
 
     debugImplementation libraries.debug.loggingInterceptor
     debugImplementation libraries.debug.oklog

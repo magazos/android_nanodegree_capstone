@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:layout_marginTop="@dimen/material_layout_app_bar_height"
+  tools:context=".ui.songdetails.SongDetailsActivity"
+  tools:showIn="@layout/activity_song_details">
+
+  <android.support.constraint.Guideline
+    android:id="@+id/guide_left"
+    android:layout_width="@dimen/zero"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_constraintGuide_begin="@dimen/material_layout_keylines_screen_edge_margin" />
+
+  <android.support.constraint.Guideline
+    android:id="@+id/guide_right"
+    android:layout_width="@dimen/zero"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_constraintGuide_end="@dimen/material_layout_keylines_screen_edge_margin" />
+
+  <android.support.constraint.Guideline
+    android:id="@+id/guide_top"
+    android:layout_width="@dimen/zero"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    app:layout_constraintGuide_begin="@dimen/material_layout_keylines_screen_edge_margin" />
+
+  <TextView
+    android:id="@+id/song_title"
+    android:layout_width="@dimen/zero"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/material_typography_title"
+    app:layout_constraintTop_toBottomOf="@id/guide_top"
+    app:layout_constraintLeft_toRightOf="@id/guide_left"
+    app:layout_constraintRight_toLeftOf="@id/guide_right"
+    tools:text="Song title" />
+
+  <ImageView
+    android:id="@+id/album_art"
+    android:layout_width="@dimen/song_details_album_art_size"
+    android:layout_height="@dimen/song_details_album_art_size"
+    android:adjustViewBounds="true"
+    android:contentDescription="@string/song_details_album_art"
+    android:scaleType="centerCrop"
+    android:layout_marginTop="@dimen/material_layout_vertical_spacing_between_content_areas"
+    app:layout_constraintTop_toBottomOf="@id/song_title"
+    app:layout_constraintRight_toLeftOf="@id/guide_right"
+    app:srcCompat="@drawable/ic_note" />
+
+  <TextView
+    android:id="@+id/song_album"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/material_typography_subheading"
+    android:layout_marginTop="@dimen/material_layout_vertical_spacing_between_content_areas"
+    app:layout_constraintTop_toBottomOf="@id/song_title"
+    app:layout_constraintLeft_toRightOf="@id/guide_left"
+    tools:text="Song album" />
+
+  <TextView
+    android:id="@+id/song_author"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/material_typography_caption"
+    android:layout_marginTop="@dimen/material_layout_vertical_spacing_between_content_areas"
+    app:layout_constraintLeft_toRightOf="@id/guide_left"
+    app:layout_constraintTop_toBottomOf="@id/song_album"
+    tools:text="Song author" />
+
+  <com.google.android.flexbox.FlexboxLayout
+    android:id="@+id/tags_layout"
+    android:layout_width="@dimen/zero"
+    android:layout_height="wrap_content"
+    app:alignContent="space_around"
+    app:alignItems="flex_start"
+    app:flexWrap="wrap"
+    android:layout_marginTop="@dimen/material_layout_vertical_spacing_between_content_areas"
+    app:layout_constraintTop_toBottomOf="@id/song_author"
+    app:layout_constraintLeft_toRightOf="@id/guide_left"
+    app:layout_constraintRight_toLeftOf="@id/album_art"
+    app:showDivider="middle" />
+
+  <android.support.constraint.Barrier
+    android:id="@+id/barrier"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:barrierDirection="bottom"
+    app:constraint_referenced_ids="album_art,tags_layout" />
+
+  <android.support.v4.widget.NestedScrollView
+    android:layout_width="@dimen/zero"
+    android:layout_height="@dimen/zero"
+    android:layout_marginTop="@dimen/material_layout_vertical_spacing_between_content_areas"
+    android:layout_marginBottom="@dimen/material_layout_vertical_spacing_between_content_areas"
+    app:layout_constraintTop_toBottomOf="@id/barrier"
+    app:layout_constraintLeft_toRightOf="@id/guide_left"
+    app:layout_constraintRight_toLeftOf="@id/guide_right"
+    app:layout_constraintBottom_toBottomOf="parent">
+
+    <TextView
+      android:id="@+id/song_info"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      tools:text="@tools:sample/lorem/random" />
+
+  </android.support.v4.widget.NestedScrollView>
+
+</android.support.constraint.ConstraintLayout>
+

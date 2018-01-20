@@ -15,6 +15,7 @@ ext {
             targetCompatibility     : JavaVersion.VERSION_1_8,
             support                 : '27.0.2',
             constraint_layout       : '1.1.0-beta4',
+            flexbox                 : '0.3.2',
             arch_lifecycle          : '1.0.0',
             auto_value              : '1.5.3',
             javax_annotations       : '3.0.2',
@@ -42,6 +43,7 @@ ext {
             materialDimens          : '1.4',
             indicatorSeekBar        : '1.2.5',
             picasso                 : '2.5.2',
+            chipcloud               : '3.0.5',
     ]
 
     libraries = [
@@ -56,7 +58,9 @@ ext {
             app  : [
                     appCompat                : "com.android.support:appcompat-v7:${versions.support}",
                     design                   : "com.android.support:design:${versions.support}",
+                    palette                  : "com.android.support:palette-v7:${versions.support}",
                     constraintLayout         : "com.android.support.constraint:constraint-layout:${versions.constraint_layout}",
+                    flexbox                  : "com.google.android:flexbox:${versions.flexbox}",
                     recyclerView             : "com.android.support:recyclerview-v7:${versions.support}",
                     lifecycleExtensions      : "android.arch.lifecycle:extensions:${versions.arch_lifecycle}",
                     autoValue                : "com.google.auto.value:auto-value:${versions.auto_value}",
@@ -84,6 +88,7 @@ ext {
                     materialDimens           : "com.dmitrymalkovich.android:material-design-dimens:${versions.materialDimens}",
                     indicatorSeekBar         : "com.github.warkiz.widget:indicatorseekbar:${versions.indicatorSeekBar}",
                     picasso                  : "com.squareup.picasso:picasso:${versions.picasso}",
+                    chipcloud                : "com.github.fiskurgit:ChipCloud:${versions.chipcloud}",
             ],
             debug: [
                     loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",

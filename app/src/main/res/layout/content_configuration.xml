@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  app:layout_behavior="@string/appbar_scrolling_view_behavior"
+  android:layout_marginTop="@dimen/material_layout_app_bar_height"
   tools:context="com.github.niltsiar.ultimatescrobbler.ui.configuration.ConfigurationActivity"
   tools:showIn="@layout/activity_configuration">
 

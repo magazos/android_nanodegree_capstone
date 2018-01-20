@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/scrobbled_song_item"
   android:layout_width="match_parent"
-  android:layout_height="@dimen/material_component_lists_three_line_height"
-  xmlns:tools="http://schemas.android.com/tools">
+  android:layout_height="@dimen/material_component_lists_three_line_height">
 
   <android.support.constraint.Guideline
     android:id="@+id/guide_icon_left"

@@ -64,11 +64,13 @@ public class PlayedSongsFragment extends Fragment {
         getActivity().setTitle(R.string.played_songs_title);
         Disposable disposable = viewModel.getAdapter()
                                          .subscribe(playedSongsAdapter -> {
-                                             recyclerView.setAdapter(playedSongsAdapter);
-                                             recyclerView.setHasFixedSize(true);
-                                             LinearLayoutManager manager = new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false);
-                                             recyclerView.setLayoutManager(manager);
-                                             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), manager.getOrientation()));
+                                             if (playedSongsAdapter != recyclerView.getAdapter()) {
+                                                 recyclerView.setAdapter(playedSongsAdapter);
+                                                 recyclerView.setHasFixedSize(true);
+                                                 LinearLayoutManager manager = new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false);
+                                                 recyclerView.setLayoutManager(manager);
+                                                 recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), manager.getOrientation()));
+                                             }
                                          });
         disposables.add(disposable);
     }

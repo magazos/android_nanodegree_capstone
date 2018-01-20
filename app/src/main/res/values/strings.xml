@@ -19,6 +19,7 @@
   <string name="configuration_lastfm_test_credentials">Test credentials</string>
   <string name="configuration_send_now_playing">Send now playing information</string>
   <string name="configuration_clear_credentials">Clear</string>
-
+  <string name="song_details_album_art">Album art</string>
+  <string name="details_activity_name">Song details</string>
 
 </resources>

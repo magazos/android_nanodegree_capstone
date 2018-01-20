@@ -67,6 +67,15 @@ public final class SongsProvider {
                     type = "vnd.android.cursor.dir/info_song",
                     defaultSort = InfoSongColumns.ID)
         public static Uri INFO_SONG = buildUri(Path.INFO_SONG);
+
+        @InexactContentUri(path = Path.INFO_SONG + "/*",
+                           name = "SONG_ID",
+                           type = "vnd.android.cursor.item/info_song",
+                           whereColumn = InfoSongColumns.ID,
+                           pathSegment = 1)
+        public static Uri withId(String id) {
+            return buildUri(Path.INFO_SONG, id);
+        }
     }
 
     @TableEndpoint(table = SongsDatabase.CURRENT_SONG)

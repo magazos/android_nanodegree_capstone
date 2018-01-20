@@ -12,10 +12,12 @@ import io.reactivex.Observable;
 public class ScrobbledSongsViewModel extends ViewModel implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private LoaderProvider loaderProvider;
+    private ScrobbledSongsAdapter.OnItemClickListener listener;
     private BehaviorRelay<ScrobbledSongsAdapter> adapterRelay;
 
-    public ScrobbledSongsViewModel(LoaderProvider loaderProvider) {
+    public ScrobbledSongsViewModel(LoaderProvider loaderProvider, ScrobbledSongsAdapter.OnItemClickListener listener) {
         this.loaderProvider = loaderProvider;
+        this.listener = listener;
         adapterRelay = BehaviorRelay.create();
     }
 
@@ -26,7 +28,7 @@ public class ScrobbledSongsViewModel extends ViewModel implements LoaderManager.
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        ScrobbledSongsAdapter adapter = new ScrobbledSongsAdapter(data);
+        ScrobbledSongsAdapter adapter = new ScrobbledSongsAdapter(data, listener);
         adapterRelay.accept(adapter);
     }
 

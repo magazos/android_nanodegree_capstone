@@ -1,9 +1,13 @@
 package com.github.niltsiar.ultimatescrobbler.ui.songs.scrobbledsongs;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,12 +18,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.github.niltsiar.ultimatescrobbler.R;
+import com.github.niltsiar.ultimatescrobbler.cache.database.SongsProvider;
+import com.github.niltsiar.ultimatescrobbler.domain.model.InfoSong;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import javax.inject.Inject;
 
-public class ScrobbledSongsFragment extends Fragment {
+public class ScrobbledSongsFragment extends Fragment implements ScrobbledSongsAdapter.OnItemClickListener {
 
     @Inject
     ScrobbledSongsViewModelFactory scrobbledSongsViewModelFactory;
@@ -40,6 +46,7 @@ public class ScrobbledSongsFragment extends Fragment {
         AndroidSupportInjection.inject(this);
         super.onCreate(savedInstanceState);
 
+        scrobbledSongsViewModelFactory.setSongItemClickListener(this);
         viewModel = ViewModelProviders.of(this, scrobbledSongsViewModelFactory)
                                       .get(ScrobbledSongsViewModel.class);
         disposables = new CompositeDisposable();
@@ -64,11 +71,13 @@ public class ScrobbledSongsFragment extends Fragment {
         getActivity().setTitle(R.string.scrobbled_songs_title);
         Disposable disposable = viewModel.getAdapter()
                                          .subscribe(scrobbledSongsAdapter -> {
-                                             recyclerView.setAdapter(scrobbledSongsAdapter);
-                                             recyclerView.setHasFixedSize(true);
-                                             LinearLayoutManager manager = new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false);
-                                             recyclerView.setLayoutManager(manager);
-                                             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), manager.getOrientation()));
+                                             if (scrobbledSongsAdapter != recyclerView.getAdapter()) {
+                                                 recyclerView.setAdapter(scrobbledSongsAdapter);
+                                                 recyclerView.setHasFixedSize(true);
+                                                 LinearLayoutManager manager = new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false);
+                                                 recyclerView.setLayoutManager(manager);
+                                                 recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), manager.getOrientation()));
+                                             }
                                          });
         disposables.add(disposable);
     }
@@ -83,5 +92,16 @@ public class ScrobbledSongsFragment extends Fragment {
     public void onDestroyView() {
         unbinder.unbind();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onClickedItem(InfoSong infoSong, View songTitleView, View songArtistView, View albumArtView) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, SongsProvider.InfoSong.withId(String.valueOf(infoSong.getTimestamp()
+                                                                                                            .toEpochMilli())));
+        Pair<View, String> sharedElement1 = new Pair<>(songTitleView, ViewCompat.getTransitionName(songTitleView));
+        Pair<View, String> sharedElement2 = new Pair<>(songArtistView, ViewCompat.getTransitionName(songArtistView));
+        Pair<View, String> sharedElement3 = new Pair<>(albumArtView, ViewCompat.getTransitionName(albumArtView));
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), sharedElement1, sharedElement2, sharedElement3);
+        startActivity(intent, options.toBundle());
     }
 }
