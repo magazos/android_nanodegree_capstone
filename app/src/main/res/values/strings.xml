@@ -21,5 +21,7 @@
   <string name="configuration_clear_credentials">Clear</string>
   <string name="song_details_album_art">Album art</string>
   <string name="details_activity_name">Song details</string>
+  <string name="song_album_art_content_description">Song album art</string>
+  <string name="logo_app_content_description">Logo of the application</string>
 
 </resources>

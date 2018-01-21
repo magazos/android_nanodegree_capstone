@@ -15,12 +15,13 @@
   <ImageView
     android:layout_width="80dp"
     android:layout_height="80dp"
+    android:contentDescription="@string/logo_app_content_description"
     android:paddingTop="@dimen/nav_header_vertical_spacing"
-    app:srcCompat="@drawable/ic_note"
     android:tint="@color/material_light_white"
     app:layout_constraintBottom_toTopOf="@id/appname"
     app:layout_constraintLeft_toLeftOf="@id/appname"
-    app:layout_constraintRight_toRightOf="@id/appname" />
+    app:layout_constraintRight_toRightOf="@id/appname"
+    app:srcCompat="@drawable/ic_note" />
 
   <TextView
     android:id="@+id/appname"

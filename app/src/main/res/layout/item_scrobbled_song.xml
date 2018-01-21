@@ -31,21 +31,22 @@
     android:id="@+id/scrobbled_song_album_art"
     android:layout_width="@dimen/zero"
     android:layout_height="match_parent"
-    app:srcCompat="@drawable/ic_note"
+    android:contentDescription="@string/song_album_art_content_description"
+    app:layout_constraintDimensionRatio="1:1"
     app:layout_constraintLeft_toRightOf="@id/guide_icon_left"
     app:layout_constraintRight_toLeftOf="@id/guide_text_left"
-    app:layout_constraintDimensionRatio="1:1" />
+    app:srcCompat="@drawable/ic_note" />
 
   <TextView
     android:id="@+id/scrobbled_song_title"
     android:layout_width="@dimen/zero"
     android:layout_height="wrap_content"
-    android:textSize="@dimen/material_component_lists_two_line_text_size"
     android:layout_marginStart="@dimen/material_layout_keylines_horizontal_mobile_margin"
+    android:textSize="@dimen/material_component_lists_two_line_text_size"
+    app:layout_constraintBottom_toTopOf="@+id/scrobbled_song_artist"
     app:layout_constraintLeft_toRightOf="@id/guide_text_left"
     app:layout_constraintRight_toLeftOf="@id/guide_right"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toTopOf="@+id/scrobbled_song_artist"
     app:layout_constraintVertical_chainStyle="packed"
     tools:text="Scrobbled Song" />
 
@@ -53,12 +54,12 @@
     android:id="@+id/scrobbled_song_artist"
     android:layout_width="@dimen/zero"
     android:layout_height="wrap_content"
-    android:textSize="@dimen/material_component_lists_two_line_secondary_text_size"
     android:layout_marginStart="@dimen/material_layout_keylines_horizontal_mobile_margin"
+    android:textSize="@dimen/material_component_lists_two_line_secondary_text_size"
+    app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintLeft_toRightOf="@id/guide_text_left"
     app:layout_constraintRight_toLeftOf="@id/guide_right"
     app:layout_constraintTop_toBottomOf="@+id/scrobbled_song_title"
-    app:layout_constraintBottom_toBottomOf="parent"
     tools:text="The great artist" />
 
 </android.support.constraint.ConstraintLayout>
