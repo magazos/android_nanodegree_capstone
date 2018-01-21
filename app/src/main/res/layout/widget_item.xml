@@ -5,8 +5,7 @@
   android:layout_height="?android:attr/listPreferredItemHeight"
   android:gravity="center_vertical"
   android:orientation="horizontal"
-  android:paddingStart="@dimen/material_layout_keylines_screen_edge_margin"
-  android:paddingEnd="@dimen/material_layout_keylines_screen_edge_margin">
+  android:background="?android:colorBackground">
 
   <ImageView
     android:id="@+id/album_art"
@@ -20,5 +19,6 @@
     android:layout_height="match_parent"
     android:gravity="start|center_vertical"
     android:textSize="@dimen/material_typography_subheading"
+    android:layout_marginStart="@dimen/material_layout_keylines_horizontal_mobile_margin"
     tools:text="Nice Song" />
 </LinearLayout>
