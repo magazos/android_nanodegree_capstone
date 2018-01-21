@@ -121,17 +121,6 @@ public class SongDetailsActivity extends AppCompatActivity {
                    .load(infoSong.getAlbumArtUrl())
                    .placeholder(R.drawable.ic_note)
                    .error(R.drawable.ic_note)
-                   /*.into(albumArt, new Callback() {
-                       @Override
-                       public void onSuccess() {
-                           supportStartPostponedEnterTransition();
-                       }
-
-                       @Override
-                       public void onError() {
-                           supportStartPostponedEnterTransition();
-                       }
-                   });*/
                    .into(new Target() {
                        @Override
                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
