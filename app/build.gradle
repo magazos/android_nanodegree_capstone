@@ -109,8 +109,6 @@ dependencies {
     implementation(libraries.app.threetenabp) {
         exclude module: 'threetenbp'
     }
-    implementation libraries.app.firebaseJobDispatcher
-    implementation libraries.app.autoValue
     implementation libraries.app.picasso
     implementation libraries.app.chipcloud
     implementation libraries.app.firebaseCore
@@ -130,6 +128,7 @@ dependencies {
     debugImplementation libraries.debug.leakCanary
 
     compileOnly libraries.app.javaxAnnotations
+    compileOnly libraries.app.autoValue
 
     annotationProcessor libraries.apt.daggerCompiler
     annotationProcessor libraries.apt.daggerProcessor
