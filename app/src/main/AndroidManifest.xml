@@ -51,6 +51,19 @@
         <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
       </intent-filter>
     </service>
+
+    <service
+      android:name=".widget.UltimateScrobblerWidgetService"
+      android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+    <receiver android:name=".widget.UltimateScrobblerWidget">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/widget_info" />
+    </receiver>
   </application>
 
 </manifest>
