@@ -1,3 +1,27 @@
 <resources>
   <string name="app_name">Ultimate Scrobbler</string>
+  <string name="configuration_activity_name">Configuration</string>
+
+  <string name="navigation_drawer_open">Open navigation drawer</string>
+  <string name="navigation_drawer_close">Close navigation drawer</string>
+  <string name="navigation_drawer_scrobbled_songs">Scrobbled songs</string>
+  <string name="navigation_drawer_queue_to_scrobble">Queue to scrobble</string>
+  <string name="navigation_drawer_configuration">Configuration</string>
+
+  <string name="scrobbled_songs_title">Scrobbled songs</string>
+
+  <string name="played_songs_title">Played songs</string>
+
+  <string name="configuration_batches">Number of songs per batch</string>
+  <string name="configuration_lastfm_credentials">Last.fm credentials</string>
+  <string name="configuration_lastfm_username">Username</string>
+  <string name="configuration_lastfm_password">Password</string>
+  <string name="configuration_lastfm_test_credentials">Test credentials</string>
+  <string name="configuration_send_now_playing">Send now playing information</string>
+  <string name="configuration_clear_credentials">Clear</string>
+  <string name="song_details_album_art">Album art</string>
+  <string name="details_activity_name">Song details</string>
+  <string name="song_album_art_content_description">Song album art</string>
+  <string name="logo_app_content_description">Logo of the application</string>
+
 </resources>

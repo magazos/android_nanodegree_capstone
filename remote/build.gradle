@@ -1,0 +1,43 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion versions.androidSdk.compile
+    compileOptions {
+        sourceCompatibility versions.sourceCompatibility
+        targetCompatibility versions.targetCompatibility
+    }
+    defaultConfig {
+        minSdkVersion versions.androidSdk.min
+        targetSdkVersion versions.androidSdk.target
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation project(':data')
+
+    implementation libraries.app.javaxInject
+    implementation libraries.app.rxjava2
+    implementation(libraries.app.retrofit) {
+        exclude module: 'okhttp'
+    }
+    implementation libraries.app.moshiLazyAdapters
+    implementation libraries.app.timber
+    implementation libraries.app.dagger
+    implementation libraries.app.daggerSupport
+    implementation libraries.app.threetenbp
+
+    compileOnly libraries.app.javaxAnnotations
+    compileOnly libraries.app.autoValue
+    compileOnly libraries.app.autoValueMoshiAnnotations
+
+    annotationProcessor libraries.apt.autoValue
+    annotationProcessor libraries.apt.autoValueMoshi
+    annotationProcessor libraries.apt.daggerCompiler
+    annotationProcessor libraries.apt.daggerProcessor
+}

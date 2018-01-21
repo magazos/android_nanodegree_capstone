@@ -1,29 +1,160 @@
+import org.ajoberstar.grgit.Grgit
+import org.eclipse.jgit.errors.RepositoryNotFoundException
+
 apply plugin: 'com.android.application'
+apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'io.fabric'
+apply plugin: 'com.google.firebase.firebase-perf'
+
+//Version information
+def versionMajor = VERSION_MAJOR.toInteger()
+def versionMinor = VERSION_MINOR.toInteger()
+def versionPatch = VERSION_PATCH.toInteger()
+def versionRevision = getRevision()
+
+def appVersionCode = versionMajor * 1_000_000 + versionMinor * 1_000 + versionPatch
+def appVersionName = "${versionMajor}.${versionMinor}.${versionPatch}"
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion versions.androidSdk.compile
+    compileOptions {
+        sourceCompatibility versions.sourceCompatibility
+        targetCompatibility versions.targetCompatibility
+    }
+    signingConfigs {
+        debug {
+            try {
+                storeFile file("../capstone.jks")
+                storePassword CAPSTONE_KEYSTORE_PASSWORD
+                keyAlias "capstone-debug"
+                keyPassword CAPSTONE_KEY_PASSWORD
+            }
+            catch (ex) {
+                throw new InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
+            }
+        }
+        release {
+            try {
+                storeFile file("../capstone.jks")
+                storePassword CAPSTONE_KEYSTORE_PASSWORD
+                keyAlias "capstone-release"
+                keyPassword CAPSTONE_KEY_PASSWORD
+            }
+            catch (ex) {
+                throw new InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
+            }
+        }
+    }
     defaultConfig {
         applicationId "com.github.niltsiar.ultimatescrobbler"
-        minSdkVersion 19
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        minSdkVersion versions.androidSdk.min
+        targetSdkVersion versions.androidSdk.target
+
+        versionCode appVersionCode
+        versionName appVersionName
+
+        vectorDrawables.useSupportLibrary = true
+
+        buildConfigField "String", "LAST_FM_API_KEY", LAST_FM_API_KEY
+        buildConfigField "String", "LAST_FM_API_SECRET", LAST_FM_API_SECRET
     }
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation ('com.android.support.test.espresso:espresso-core:3.0.1', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    implementation project(':domain')
+    implementation project(':data')
+    implementation project(':remote')
+    implementation project(':cache')
+
+    implementation libraries.app.appCompat
+    implementation libraries.app.design
+    implementation libraries.app.palette
+    implementation libraries.app.recyclerView
+    implementation libraries.app.constraintLayout
+    implementation libraries.app.flexbox
+    implementation libraries.app.lifecycleExtensions
+    implementation libraries.app.materialDimens
+    implementation libraries.app.indicatorSeekBar
+
+    implementation libraries.app.rxjava2
+    implementation libraries.app.rxandroid
+    implementation libraries.app.rxbinding
+    implementation libraries.app.rxrelay
+    implementation libraries.app.butterknife
+    implementation libraries.app.timber
+    implementation libraries.app.dagger
+    implementation libraries.app.daggerSupport
+    implementation libraries.app.okhttp
+    implementation(libraries.app.retrofit) {
+        exclude module: 'okhttp'
+    }
+    implementation libraries.app.retrofitMoshi
+    implementation libraries.app.retrofitRx
+    implementation libraries.app.moshiLazyAdapters
+    implementation libraries.app.javaxInject
+    implementation libraries.app.rxpreferences
+    implementation libraries.app.firebaseJobDispatcher
+    implementation libraries.app.threetenbp
+    implementation(libraries.app.threetenabp) {
+        exclude module: 'threetenbp'
+    }
+    implementation libraries.app.picasso
+    implementation libraries.app.chipcloud
+    implementation libraries.app.firebaseCore
+    implementation (libraries.app.crashlytics) {
+        transitive = true
+    }
+    implementation libraries.app.firebasePerf
+
+    debugImplementation libraries.debug.loggingInterceptor
+    debugImplementation libraries.debug.oklog
+    debugImplementation libraries.debug.chuck
+    debugImplementation libraries.debug.stetho
+    debugImplementation libraries.debug.stethoOkhttp
+    debugImplementation(libraries.debug.stethoTimber) {
+        exclude module: 'timber'
+    }
+    debugImplementation libraries.debug.leakCanary
+
+    compileOnly libraries.app.javaxAnnotations
+    compileOnly libraries.app.autoValue
+
+    annotationProcessor libraries.apt.daggerCompiler
+    annotationProcessor libraries.apt.daggerProcessor
+    annotationProcessor libraries.apt.butterknife
+    annotationProcessor libraries.apt.autoValue
+}
+
+apply plugin: 'com.google.gms.google-services'
+
+android.applicationVariants.all { variant ->
+    if (variant.buildType.name == "debug") {
+        variant.mergedFlavor.versionName += "-${versionRevision}"
+    }
+}
+
+def static getRevision() {
+    def revision
+    try {
+        revision = getGitRevision()
+    } catch (RepositoryNotFoundException e) {
+        revision = 0
+    }
+    return revision
+}
+
+def static getGitRevision() {
+    def git = Grgit.open(dir: '.')
+    return git.head().abbreviatedId
 }
