@@ -3,6 +3,8 @@ import org.eclipse.jgit.errors.RepositoryNotFoundException
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'io.fabric'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 //Version information
 def versionMajor = VERSION_MAJOR.toInteger()
@@ -111,6 +113,11 @@ dependencies {
     implementation libraries.app.autoValue
     implementation libraries.app.picasso
     implementation libraries.app.chipcloud
+    implementation libraries.app.firebaseCore
+    implementation (libraries.app.crashlytics) {
+        transitive = true
+    }
+    implementation libraries.app.firebasePerf
 
     debugImplementation libraries.debug.loggingInterceptor
     debugImplementation libraries.debug.oklog
@@ -129,6 +136,8 @@ dependencies {
     annotationProcessor libraries.apt.butterknife
     annotationProcessor libraries.apt.autoValue
 }
+
+apply plugin: 'com.google.gms.google-services'
 
 android.applicationVariants.all { variant ->
     if (variant.buildType.name == "debug") {
