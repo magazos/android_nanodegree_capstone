@@ -61,7 +61,7 @@ ext {
                     gradleAndroidFixCache: "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin:${versions.android_cache_fix_gradle}",
                     googleServices       : "com.google.gms:google-services:${versions.google_services}",
                     crashlytics          : "io.fabric.tools:gradle:${versions.crashlytics_gradle}",
-                    firebasePlugins     : "com.google.firebase:firebase-plugins:${versions.firebase_plugins}",
+                    firebasePlugins      : "com.google.firebase:firebase-plugins:${versions.firebase_plugins}",
             ],
             app  : [
                     appCompat                : "com.android.support:appcompat-v7:${versions.support}",
