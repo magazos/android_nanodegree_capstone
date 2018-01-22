@@ -54,6 +54,7 @@ This app wouldn't be possible without the following libraries
 * [Chuck](https://github.com/jgilfelt/chuck)
 * [Stetho](http://facebook.github.io/stetho/)
 * [LeakCanary](https://github.com/square/leakcanary)
+* [RxSealedUnions2](https://github.com/pakoito/RxSealedUnions2)
 
 License
 =======
