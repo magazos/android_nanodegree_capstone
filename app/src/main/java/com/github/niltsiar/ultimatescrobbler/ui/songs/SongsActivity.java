@@ -33,6 +33,9 @@ public class SongsActivity extends AppCompatActivity implements NavigationView.O
     @BindView(R.id.scrobble_songs_fab)
     FloatingActionButton scrobbleFab;
 
+    private boolean isFabShown = false;
+    private String IS_FAB_SHOWN_KEY = "IS_FAB_SHOWN";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +50,28 @@ public class SongsActivity extends AppCompatActivity implements NavigationView.O
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        getSupportFragmentManager().beginTransaction()
-                                   .add(R.id.fragment, new ScrobbledSongsFragment())
-                                   .commit();
+        if (null == savedInstanceState) {
+            getSupportFragmentManager().beginTransaction()
+                                       .add(R.id.fragment, new ScrobbledSongsFragment())
+                                       .commit();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(IS_FAB_SHOWN_KEY, isFabShown);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (null != savedInstanceState && savedInstanceState.containsKey(IS_FAB_SHOWN_KEY)) {
+            isFabShown = savedInstanceState.getBoolean(IS_FAB_SHOWN_KEY);
+            if (isFabShown) {
+                scrobbleFab.show();
+            }
+        }
     }
 
     @Override
@@ -74,11 +96,13 @@ public class SongsActivity extends AppCompatActivity implements NavigationView.O
             transaction.replace(R.id.fragment, new ScrobbledSongsFragment());
             transaction.commit();
             scrobbleFab.hide();
+            isFabShown = false;
         } else if (R.id.nav_queue == id) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment, new PlayedSongsFragment());
             transaction.commit();
             scrobbleFab.show();
+            isFabShown = true;
         } else if (R.id.nav_settings == id) {
             Intent configurationIntent = ConfigurationActivity.createCallingIntent(getApplicationContext());
             startActivity(configurationIntent);
