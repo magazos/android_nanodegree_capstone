@@ -32,7 +32,12 @@ public class ConfigurationViewModel extends ViewModel {
         Disposable disposable = retrieveUserConfigurationUseCase.execute(null)
                                                                 .subscribe(userConfiguration -> {
                                                                     this.userConfiguration = userConfiguration;
-                                                                    configurationViewState = ConfigurationViewStateMapper.mapFromUserConfiguration(userConfiguration);
+                                                                    ConfigurationViewState tempViewState = ConfigurationViewStateMapper.mapFromUserConfiguration(userConfiguration);
+                                                                    if (null == configurationViewState) {
+                                                                        configurationViewState = tempViewState;
+                                                                    } else {
+                                                                        configurationViewState = tempViewState.withInvalidCredentialsError(configurationViewState.isInvalidCredentialsError());
+                                                                    }
                                                                     configurationViewStateBehaviorRelay.accept(configurationViewState);
                                                                 });
         disposables.add(disposable);
@@ -66,7 +71,12 @@ public class ConfigurationViewModel extends ViewModel {
 
     public void testUserCredentials() {
         requestMobileSessionTokenUseCase.execute(userConfiguration.getUserCredentials())
-                                        .subscribe();
+                                        .subscribe(item -> item.continued(ignored -> {
+                                            configurationViewState = configurationViewState.withInvalidCredentialsError(true);
+                                            configurationViewStateBehaviorRelay.accept(configurationViewState);
+                                        }, ignored -> {
+                                            configurationViewState = configurationViewState.withInvalidCredentialsError(false);
+                                        }));
     }
 
     @Override

@@ -24,5 +24,6 @@
   <string name="song_album_art_content_description">Song album art</string>
   <string name="logo_app_content_description">Logo of the application</string>
   <string name="upload_songs_content_description">Upload songs</string>
+  <string name="invalid_credentials_error">Invalid credentials</string>
 
 </resources>

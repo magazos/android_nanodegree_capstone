@@ -116,6 +116,7 @@ dependencies {
         transitive = true
     }
     implementation libraries.app.firebasePerf
+    implementation libraries.app.rxSealedUnions
 
     debugImplementation libraries.debug.loggingInterceptor
     debugImplementation libraries.debug.oklog

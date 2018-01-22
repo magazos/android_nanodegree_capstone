@@ -31,10 +31,6 @@ public class PlayedSongsFragment extends Fragment {
     private CompositeDisposable disposables;
     private Unbinder unbinder;
 
-    public PlayedSongsFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidSupportInjection.inject(this);
