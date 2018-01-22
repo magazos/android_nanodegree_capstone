@@ -19,7 +19,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.github.niltsiar.ultimatescrobbler.R;
 import com.github.niltsiar.ultimatescrobbler.cache.database.SongsProvider;
-import com.github.niltsiar.ultimatescrobbler.domain.model.InfoSong;
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -66,6 +65,9 @@ public class ScrobbledSongsFragment extends Fragment {
         getActivity().setTitle(R.string.scrobbled_songs_title);
         Disposable disposable = viewModel.getAdapter()
                                          .subscribe(scrobbledSongsAdapter -> {
+                                             Disposable clickedItemsDisposable = scrobbledSongsAdapter.getClickedItem()
+                                                                                                      .subscribe(this::onClickedItem);
+                                             disposables.add(clickedItemsDisposable);
                                              if (scrobbledSongsAdapter != recyclerView.getAdapter()) {
                                                  recyclerView.setAdapter(scrobbledSongsAdapter);
                                                  recyclerView.setHasFixedSize(true);
@@ -89,12 +91,13 @@ public class ScrobbledSongsFragment extends Fragment {
         super.onDestroyView();
     }
 
-    public void onClickedItem(InfoSong infoSong, View songTitleView, View songArtistView, View albumArtView) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, SongsProvider.InfoSong.withId(String.valueOf(infoSong.getTimestamp()
+    public void onClickedItem(ScrobbledSongItemClickedState clickedItem) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, SongsProvider.InfoSong.withId(String.valueOf(clickedItem.getInfoSong()
+                                                                                                               .getTimestamp()
                                                                                                             .toEpochMilli())));
-        Pair<View, String> sharedElement1 = new Pair<>(songTitleView, ViewCompat.getTransitionName(songTitleView));
-        Pair<View, String> sharedElement2 = new Pair<>(songArtistView, ViewCompat.getTransitionName(songArtistView));
-        Pair<View, String> sharedElement3 = new Pair<>(albumArtView, ViewCompat.getTransitionName(albumArtView));
+        Pair<View, String> sharedElement1 = new Pair<>(clickedItem.getSongTitleView(), ViewCompat.getTransitionName(clickedItem.getSongTitleView()));
+        Pair<View, String> sharedElement2 = new Pair<>(clickedItem.getSongArtistView(), ViewCompat.getTransitionName(clickedItem.getSongArtistView()));
+        Pair<View, String> sharedElement3 = new Pair<>(clickedItem.getAlbumArtView(), ViewCompat.getTransitionName(clickedItem.getAlbumArtView()));
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), sharedElement1, sharedElement2, sharedElement3);
         startActivity(intent, options.toBundle());
     }

@@ -10,6 +10,7 @@ import com.github.niltsiar.ultimatescrobbler.cache.mapper.InfoSongEntityMapper;
 import com.github.niltsiar.ultimatescrobbler.data.mapper.InfoSongMapper;
 import com.github.niltsiar.ultimatescrobbler.domain.model.InfoSong;
 import com.jakewharton.rxrelay2.PublishRelay;
+import io.reactivex.Observable;
 
 interface OnItemClickListener {
     void onClickedItem(InfoSong infoSong, View songTitleView, View songArtistView, View albumArtView);
@@ -55,5 +56,9 @@ public class ScrobbledSongsAdapter extends RecyclerView.Adapter<ScrobbledSongIte
                                                                                   .setAlbumArtView(albumArtView)
                                                                                   .build();
         clickedItems.accept(clickedState);
+    }
+
+    public Observable<ScrobbledSongItemClickedState> getClickedItem() {
+        return clickedItems;
     }
 }
