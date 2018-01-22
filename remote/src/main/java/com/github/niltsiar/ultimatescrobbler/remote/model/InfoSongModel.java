@@ -57,7 +57,7 @@ public abstract class InfoSongModel {
 
     @Json(name = "toptags")
     @Wrapped(path = "tag")
-    abstract List<InfoTagModel> getInfoTags();
+    public abstract List<InfoTagModel> getInfoTags();
 
     @Memoized
     public List<String> getTags() {
