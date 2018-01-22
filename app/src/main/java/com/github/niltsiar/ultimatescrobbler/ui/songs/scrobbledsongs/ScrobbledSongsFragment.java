@@ -25,7 +25,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import javax.inject.Inject;
 
-public class ScrobbledSongsFragment extends Fragment implements ScrobbledSongsAdapter.OnItemClickListener {
+public class ScrobbledSongsFragment extends Fragment {
 
     @Inject
     ScrobbledSongsViewModelFactory scrobbledSongsViewModelFactory;
@@ -42,7 +42,6 @@ public class ScrobbledSongsFragment extends Fragment implements ScrobbledSongsAd
         AndroidSupportInjection.inject(this);
         super.onCreate(savedInstanceState);
 
-        scrobbledSongsViewModelFactory.setSongItemClickListener(this);
         viewModel = ViewModelProviders.of(this, scrobbledSongsViewModelFactory)
                                       .get(ScrobbledSongsViewModel.class);
         disposables = new CompositeDisposable();
@@ -90,7 +89,6 @@ public class ScrobbledSongsFragment extends Fragment implements ScrobbledSongsAd
         super.onDestroyView();
     }
 
-    @Override
     public void onClickedItem(InfoSong infoSong, View songTitleView, View songArtistView, View albumArtView) {
         Intent intent = new Intent(Intent.ACTION_VIEW, SongsProvider.InfoSong.withId(String.valueOf(infoSong.getTimestamp()
                                                                                                             .toEpochMilli())));

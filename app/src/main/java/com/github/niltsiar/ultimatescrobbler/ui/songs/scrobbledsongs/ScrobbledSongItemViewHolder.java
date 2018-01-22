@@ -23,10 +23,10 @@ public class ScrobbledSongItemViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.scrobbled_song_album_art)
     ImageView scrobbledSongAlbumArt;
 
-    private ScrobbledSongsAdapter.OnItemClickListener listener;
+    private OnItemClickListener listener;
     private InfoSong infoSong;
 
-    public ScrobbledSongItemViewHolder(View itemView, ScrobbledSongsAdapter.OnItemClickListener listener) {
+    public ScrobbledSongItemViewHolder(View itemView, OnItemClickListener listener) {
         super(itemView);
         this.listener = listener;
         ButterKnife.bind(this, itemView);
