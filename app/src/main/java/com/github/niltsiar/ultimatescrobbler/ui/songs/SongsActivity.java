@@ -47,9 +47,11 @@ public class SongsActivity extends AppCompatActivity implements NavigationView.O
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        getSupportFragmentManager().beginTransaction()
-                                   .add(R.id.fragment, new ScrobbledSongsFragment())
-                                   .commit();
+        if (null == savedInstanceState) {
+            getSupportFragmentManager().beginTransaction()
+                                       .add(R.id.fragment, new ScrobbledSongsFragment())
+                                       .commit();
+        }
     }
 
     @Override
