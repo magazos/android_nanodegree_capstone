@@ -112,7 +112,7 @@ dependencies {
     implementation libraries.app.picasso
     implementation libraries.app.chipcloud
     implementation libraries.app.firebaseCore
-    implementation (libraries.app.crashlytics) {
+    implementation(libraries.app.crashlytics) {
         transitive = true
     }
     implementation libraries.app.firebasePerf
