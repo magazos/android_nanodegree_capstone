@@ -49,6 +49,7 @@ ext {
             firebase_plugins        : '1.1.5',
             crashlytics_gradle      : '1.25.1',
             crashlytics             : '2.7.1',
+            rx_sealed_unions        : '1.0.0',
     ]
 
     libraries = [
@@ -100,6 +101,7 @@ ext {
                     firebaseCore             : "com.google.firebase:firebase-core:${versions.firebase}",
                     crashlytics              : "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}@aar",
                     firebasePerf             : "com.google.firebase:firebase-perf:${versions.firebase}",
+                    rxSealedUnions           : "com.github.pakoito:RxSealedUnions2:${versions.rx_sealed_unions}",
             ],
             debug: [
                     loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",

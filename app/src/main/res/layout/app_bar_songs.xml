@@ -35,6 +35,7 @@
     android:tint="@color/material_light_white"
     android:layout_gravity="bottom|end"
     android:layout_margin="@dimen/fab_margin"
-    android:visibility="invisible" />
+    android:visibility="invisible"
+    android:contentDescription="@string/upload_songs_content_description" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
@@ -30,6 +32,8 @@ public class ConfigurationActivity extends AppCompatActivity {
     @Inject
     ConfigurationViewModelFactory configurationViewModelFactory;
 
+    @BindView(R.id.coordinator_container)
+    CoordinatorLayout coordinatorContainer;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.send_songs_batches_slider)
@@ -83,8 +87,11 @@ public class ConfigurationActivity extends AppCompatActivity {
                                                                    lastfmUsername.setText(viewState.getUsername());
                                                                    lastfmPassword.setText(viewState.getPassword());
                                                                    songBatches.setProgress(viewState.getNumberOfSongsPerBatch());
-                                                                   nowPlaying.setChecked(viewState.getSendNowPlaying());
-
+                                                                   nowPlaying.setChecked(viewState.isSendNowPlaying());
+                                                                   if (viewState.isInvalidCredentialsError()) {
+                                                                       Snackbar.make(coordinatorContainer, R.string.invalid_credentials_error, Snackbar.LENGTH_LONG)
+                                                                               .show();
+                                                                   }
                                                                    bindViews();
                                                                });
 
