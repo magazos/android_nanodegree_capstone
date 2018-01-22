@@ -9,12 +9,15 @@ public abstract class ConfigurationViewState {
 
     public abstract String getPassword();
 
-    public abstract Integer getNumberOfSongsPerBatch();
+    public abstract int getNumberOfSongsPerBatch();
 
-    public abstract Boolean getSendNowPlaying();
+    public abstract boolean isSendNowPlaying();
+
+    public abstract boolean isInvalidCredentialsError();
 
     public static Builder builder() {
-        return new AutoValue_ConfigurationViewState.Builder();
+        return new AutoValue_ConfigurationViewState.Builder().setSendNowPlaying(false)
+                                                             .setInvalidCredentialsError(false);
     }
 
     abstract Builder toBuilder();
@@ -34,8 +37,13 @@ public abstract class ConfigurationViewState {
                           .build();
     }
 
-    public ConfigurationViewState withSendNowPlating(Boolean newSendNowPlaying) {
+    public ConfigurationViewState withSendNowPlaying(Boolean newSendNowPlaying) {
         return toBuilder().setSendNowPlaying(newSendNowPlaying)
+                          .build();
+    }
+
+    public ConfigurationViewState withInvalidCredentialsError(Boolean invalidCredentialsError) {
+        return toBuilder().setInvalidCredentialsError(invalidCredentialsError)
                           .build();
     }
 
@@ -45,9 +53,11 @@ public abstract class ConfigurationViewState {
 
         public abstract Builder setPassword(String newPassword);
 
-        public abstract Builder setNumberOfSongsPerBatch(Integer newNumberOfSongsPerBatch);
+        public abstract Builder setNumberOfSongsPerBatch(int newNumberOfSongsPerBatch);
 
-        public abstract Builder setSendNowPlaying(Boolean newSendNowPlaying);
+        public abstract Builder setSendNowPlaying(boolean newSendNowPlaying);
+
+        public abstract Builder setInvalidCredentialsError(boolean invalidCredentialsError);
 
         public abstract ConfigurationViewState build();
     }

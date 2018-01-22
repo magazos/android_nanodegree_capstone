@@ -37,10 +37,6 @@ public class ScrobbledSongsFragment extends Fragment implements ScrobbledSongsAd
     private CompositeDisposable disposables;
     private Unbinder unbinder;
 
-    public ScrobbledSongsFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidSupportInjection.inject(this);

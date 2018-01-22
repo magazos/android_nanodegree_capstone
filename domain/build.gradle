@@ -12,6 +12,7 @@ dependencies {
     implementation libraries.app.rxjava2
     implementation libraries.app.rxrelay
     implementation libraries.app.threetenbp
+    implementation libraries.app.rxSealedUnions
 
     compileOnly libraries.app.autoValue
     compileOnly libraries.app.javaxAnnotations
