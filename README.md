@@ -1,4 +1,4 @@
-#Udacity Android Nanodegree Capstone
+Udacity Android Nanodegree Capstone
 ====================================
 
 Ultimate Scrobbler is the app that I've created as my capstone project for the Android Nanodegree of Udacity.
