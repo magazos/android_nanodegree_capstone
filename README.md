@@ -19,6 +19,12 @@ LAST_FM_API_KEY
 LAST_FM_API_SECRET
 ```
 
+## How the app works
+The app has 3 different screens:
+* Configuration: in this screen you can select the number of songs per batch and if you want to send the now listening message to [Last.fm](https://www.last.fm) This is also the screen where configure your credentials for the service.
+* Scrobble songs: in this screen you'll see the different songs that have been scrobbled to your account. Clicking in a row of this screen will launch a song details screen with additional information that might be downloaded for the song.
+* Queue to scrobble: this screen shows a list of songs that have been played and are queued to be scrobbled in the future. A song is added to this queue once it has been listened for about half its time to avoid adding false positives while skipping songs. This screen has a FAB to force a manual upload of queued songs to your account.
+
 ## Libraries
 This app wouldn't be possible without the following libraries
 
